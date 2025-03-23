@@ -20,6 +20,7 @@
               deno
               jdk21
               maven3
+              just
             ];
           };
 
