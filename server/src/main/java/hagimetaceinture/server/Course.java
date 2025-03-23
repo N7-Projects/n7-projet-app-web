@@ -116,4 +116,8 @@ public class Course {
     }
 
 
+@Entity
+public class Course {
+  @Id
+  private Long id;
 }
