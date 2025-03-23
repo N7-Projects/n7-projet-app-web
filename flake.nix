@@ -16,9 +16,10 @@
         }:
         {
           devShells.default = pkgs.mkShell {
-            packages = with pkgs; [ 
-                deno
-                jdk21 
+            packages = with pkgs; [
+              deno
+              jdk21
+              maven3
             ];
           };
 
