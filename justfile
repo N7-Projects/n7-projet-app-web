@@ -13,3 +13,7 @@ front:
 [working-directory : 'server']
 back:
     mvn spring-boot:run
+
+[working-directory : 'server']
+test-back:
+    mvn test
