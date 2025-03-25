@@ -38,22 +38,6 @@ public class Sponsoring {
 		this.idSponsoring = idSponsoring;
 	}
 
-	public long getIdEcurie() {
-		return idEcurie;
-	}
-
-	public void setIdEcurie(long idEcurie) {
-		this.idEcurie = idEcurie;
-	}
-
-	public long getIdSponsor() {
-		return idSponsor;
-	}
-
-	public void setIdSponsor(long idSponsor) {
-		this.idSponsor = idSponsor;
-	}
-
 	public Date getStartingDate() {
 		return startingDate;
 	}
@@ -78,53 +62,26 @@ public class Sponsoring {
 		this.invest = invest;
 	}
 
+    public Ecurie getEcurie() {
+        return ecurie;
+    }
+
+    public void setEcurie(Ecurie ecurie) {
+        this.ecurie = ecurie;
+    }
+
+    public Sponsor getSponsor() {
+        return sponsor;
+    }
+
+    public void setSponsor(Sponsor sponsor) {
+        this.sponsor = sponsor;
+    }
+
     @Override
     public String toString() {
-        return "Sponsoring [idSponsoring=" + idSponsoring + ", idEcurie=" + idEcurie + ", idSponsor=" + idSponsor
+        return "Sponsoring [idSponsoring=" + idSponsoring + ", ecurie=" + ecurie + ", sponsor=" + sponsor
                 + ", startingDate=" + startingDate + ", endingDate=" + endingDate + ", invest=" + invest + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (idSponsoring ^ (idSponsoring >>> 32));
-        result = prime * result + (int) (idEcurie ^ (idEcurie >>> 32));
-        result = prime * result + (int) (idSponsor ^ (idSponsor >>> 32));
-        result = prime * result + ((startingDate == null) ? 0 : startingDate.hashCode());
-        result = prime * result + ((endingDate == null) ? 0 : endingDate.hashCode());
-        result = prime * result + Float.floatToIntBits(invest);
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Sponsoring other = (Sponsoring) obj;
-        if (idSponsoring != other.idSponsoring)
-            return false;
-        if (idEcurie != other.idEcurie)
-            return false;
-        if (idSponsor != other.idSponsor)
-            return false;
-        if (startingDate == null) {
-            if (other.startingDate != null)
-                return false;
-        } else if (!startingDate.equals(other.startingDate))
-            return false;
-        if (endingDate == null) {
-            if (other.endingDate != null)
-                return false;
-        } else if (!endingDate.equals(other.endingDate))
-            return false;
-        if (Float.floatToIntBits(invest) != Float.floatToIntBits(other.invest))
-            return false;
-        return true;
     }
 
 }
