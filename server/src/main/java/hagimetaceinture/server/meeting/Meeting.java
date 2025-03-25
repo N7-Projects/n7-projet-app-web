@@ -1,8 +1,9 @@
-package hagimetaceinture.server;
+package hagimetaceinture.server.meeting;
 
 import java.sql.Date;
 import java.util.Collection;
 
+import hagimetaceinture.server.member.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +23,7 @@ public class Meeting {
 
     /**Les membres conviés à la réunion. */
     @OneToMany 
-    private Collection<Membre> guests;
+    private Collection<Member> guests;
 
     public Meeting() {
     }
@@ -51,11 +52,11 @@ public class Meeting {
         this.title = title;
     }
 
-    public Collection<Membre> getGuests() {
+    public Collection<Member> getGuests() {
         return guests;
     }
 
-    public void setGuests(Collection<Membre> guests) {
+    public void setGuests(Collection<Member> guests) {
         this.guests = guests;
     }
 

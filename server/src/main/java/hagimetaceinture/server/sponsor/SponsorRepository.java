@@ -1,4 +1,4 @@
-package hagimetaceinture.server;
+package hagimetaceinture.server.sponsor;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

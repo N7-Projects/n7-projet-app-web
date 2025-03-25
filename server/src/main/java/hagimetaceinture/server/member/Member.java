@@ -1,7 +1,8 @@
-package hagimetaceinture.server;
+package hagimetaceinture.server.member;
 
 import java.util.Collection;
 
+import hagimetaceinture.server.vehicule.Vehicule;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,23 +10,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Membre {
+public class Member {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idMembre;
     
-    private String nom;
+    private String name;
     
-    private String prenom;
+    private String firstname;
 
     @OneToMany
     private Collection<Vehicule> vehicules;
 
-    private boolean cotisant;
+    private boolean subscriber;
 
-	public Membre() {
+	public Member() {
     }
 
     public long getIdMembre() {
@@ -36,28 +37,28 @@ public class Membre {
 		this.idMembre = idMembre;
 	}
 
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getPrenom() {
-		return prenom;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
-	public boolean isCotisant() {
-		return cotisant;
+	public boolean isSubscriber() {
+		return subscriber;
 	}
 
-	public void setCotisant(boolean cotisant) {
-		this.cotisant = cotisant;
+	public void setSubscriber(boolean subscriber) {
+		this.subscriber = subscriber;
 	}
 
     public Collection<Vehicule> getVehicules() {

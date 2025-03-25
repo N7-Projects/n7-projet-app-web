@@ -1,7 +1,9 @@
-package hagimetaceinture.server;
+package hagimetaceinture.server.sponsoring;
 
 import java.sql.Date;
 
+import hagimetaceinture.server.racingteam.RacingTeam;
+import hagimetaceinture.server.sponsor.Sponsor;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +18,7 @@ public class Sponsoring {
     private long idSponsoring;
     
     @OneToOne 
-    private Ecurie ecurie;
+    private RacingTeam racingTeam;
 
     @OneToOne 
     private Sponsor sponsor;
@@ -25,7 +27,7 @@ public class Sponsoring {
 
     private Date endingDate;
 
-    private float invest;
+    private float investment;
 
 	public Sponsoring() {
 	}
@@ -54,20 +56,20 @@ public class Sponsoring {
 		this.endingDate = endingDate;
 	}
 
-	public float getInvest() {
-		return invest;
+	public float getInvestment() {
+		return investment;
 	}
 
-	public void setInvest(float invest) {
-		this.invest = invest;
+	public void setInvestment(float investment) {
+		this.investment = investment;
 	}
 
-    public Ecurie getEcurie() {
-        return ecurie;
+    public RacingTeam getRacingTeam() {
+        return racingTeam;
     }
 
-    public void setEcurie(Ecurie ecurie) {
-        this.ecurie = ecurie;
+    public void setRacingTeam(RacingTeam racingTeam) {
+        this.racingTeam = racingTeam;
     }
 
     public Sponsor getSponsor() {
@@ -80,8 +82,8 @@ public class Sponsoring {
 
     @Override
     public String toString() {
-        return "Sponsoring [idSponsoring=" + idSponsoring + ", ecurie=" + ecurie + ", sponsor=" + sponsor
-                + ", startingDate=" + startingDate + ", endingDate=" + endingDate + ", invest=" + invest + "]";
+        return "Sponsoring [idSponsoring=" + idSponsoring + ", racingTeam=" + racingTeam + ", sponsor=" + sponsor
+                + ", startingDate=" + startingDate + ", endingDate=" + endingDate + ", investment=" + investment + "]";
     }
 
 }

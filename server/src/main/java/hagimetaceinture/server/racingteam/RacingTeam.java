@@ -1,7 +1,9 @@
-package hagimetaceinture.server;
+package hagimetaceinture.server.racingteam;
 
 import java.util.Collection;
 
+import hagimetaceinture.server.member.Member;
+import hagimetaceinture.server.sponsor.Sponsor;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,11 +11,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 
 @Entity
-public class Ecurie {
+public class RacingTeam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idEcurie;
+    private long idRacingTeam;
 
     private String nom;
 
@@ -21,21 +23,21 @@ public class Ecurie {
 
 	/**Les Membres qui soutiennent l'écurie. */
     @ManyToMany
-    private Collection<Membre> membres;
+    private Collection<Member> membres;
 
 	/**Les Sponsors de l'ecurie. */
     @ManyToMany
     private Collection<Sponsor> sponsors;
 
-	public Ecurie() {
+	public RacingTeam() {
 	}
 
-	public long getIdEcurie() {
-		return idEcurie;
+	public long getIdRacingTeam() {
+		return idRacingTeam;
 	}
 
-	public void setIdEcurie(long idEcurie) {
-		this.idEcurie = idEcurie;
+	public void setIdRacingTeam(long idRacingTeam) {
+		this.idRacingTeam = idRacingTeam;
 	}
 
 	public String getNom() {
@@ -54,11 +56,11 @@ public class Ecurie {
 		this.classement = classement;
 	}
 
-    public Collection<Membre> getMembres() {
+    public Collection<Member> getMembres() {
         return membres;
     }
 
-    public void setMembres(Collection<Membre> membres) {
+    public void setMembres(Collection<Member> membres) {
         this.membres = membres;
     }
 
@@ -72,7 +74,7 @@ public class Ecurie {
 
     @Override
     public String toString() {
-        return "Ecurie [idEcurie=" + idEcurie + ", nom=" + nom + ", classement=" + classement + ", membres=" + membres
+        return "RacingTeam [idRacingTeam=" + idRacingTeam + ", nom=" + nom + ", classement=" + classement + ", membres=" + membres
                 + ", sponsors=" + sponsors + "]";
     }
 

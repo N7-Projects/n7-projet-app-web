@@ -1,4 +1,4 @@
-package hagimetaceinture.server;
+package hagimetaceinture.server.sponsor;
 
 import java.sql.Date;
 
@@ -16,7 +16,7 @@ public class Sponsor {
 
     private String name;
 
-    private int investCapital;
+    private int investedCapital;
 
     private Date fundationDate;
 
@@ -31,12 +31,12 @@ public class Sponsor {
         this.idSponsor = idSponsor;
     }
 
-    public int getInvestCapital() {
-        return investCapital;
+    public int getInvestedCapital() {
+        return investedCapital;
     }
 
-    public void setInvestCapital(int investCapital) {
-        this.investCapital = investCapital;
+    public void setInvestedCapital(int investedCapital) {
+        this.investedCapital = investedCapital;
     }
 
     public Date getFundationDate() {
@@ -52,7 +52,7 @@ public class Sponsor {
         final int prime = 31;
         int result = 1;
         result = prime * result + (int) (idSponsor ^ (idSponsor >>> 32));
-        result = prime * result + investCapital;
+        result = prime * result + investedCapital;
         result = prime * result + ((fundationDate == null) ? 0 : fundationDate.hashCode());
         return result;
     }
@@ -68,7 +68,7 @@ public class Sponsor {
         Sponsor other = (Sponsor) obj;
         if (idSponsor != other.idSponsor)
             return false;
-        if (investCapital != other.investCapital)
+        if (investedCapital != other.investedCapital)
             return false;
         if (fundationDate == null) {
             if (other.fundationDate != null)
@@ -88,7 +88,7 @@ public class Sponsor {
 
     @Override
     public String toString() {
-        return "Sponsor [idSponsor=" + idSponsor + ", name=" + name + ", investCapital=" + investCapital
+        return "Sponsor [idSponsor=" + idSponsor + ", name=" + name + ", investedCapital=" + investedCapital
                 + ", fundationDate=" + fundationDate + "]";
     }
 

@@ -1,7 +1,9 @@
-package hagimetaceinture.server;
+package hagimetaceinture.server.vehicule;
 
 import java.sql.Date;
 
+import hagimetaceinture.server.member.Member;
+import hagimetaceinture.server.vehiculetype.VehiculeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +17,7 @@ public class Vehicule {
     private long idVehicule;
 
     @ManyToOne
-    private TypeVehicule vehiculeType;
+    private VehiculeType vehiculeType;
 
     private String branch;
 
@@ -24,7 +26,7 @@ public class Vehicule {
     private String licensePlate;
 
     @ManyToOne
-    private Membre owner;
+    private Member owner;
 
     private Date firstLicensePlate;
 
@@ -71,11 +73,11 @@ public class Vehicule {
 		this.firstLicensePlate = firstLicensePlate;
 	}
 
-    public TypeVehicule getVehiculeType() {
+    public VehiculeType getVehiculeType() {
         return vehiculeType;
     }
 
-    public void setVehiculeType(TypeVehicule vehiculeType) {
+    public void setVehiculeType(VehiculeType vehiculeType) {
         this.vehiculeType = vehiculeType;
     }
 
@@ -86,11 +88,11 @@ public class Vehicule {
                 + firstLicensePlate + "]";
     }
 
-    public Membre getOwner() {
+    public Member getOwner() {
         return owner;
     }
 
-    public void setOwner(Membre owner) {
+    public void setOwner(Member owner) {
         this.owner = owner;
     }
 

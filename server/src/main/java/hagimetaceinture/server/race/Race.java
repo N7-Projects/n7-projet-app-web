@@ -1,8 +1,11 @@
-package hagimetaceinture.server;
+package hagimetaceinture.server.race;
 
 import java.sql.Date;
 import java.util.Collection;
 
+import hagimetaceinture.server.circuit.Circuit;
+import hagimetaceinture.server.member.Member;
+import hagimetaceinture.server.vehiculetype.VehiculeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Course {
+public class Race {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idCourse;
@@ -25,12 +28,12 @@ public class Course {
     
     /**Une course est spécialisé dans un certains type de vehicule */
     @OneToOne
-    private TypeVehicule typeVehicule;
+    private VehiculeType vehiculeType;
 
     @ManyToMany 
-    private Collection<Membre> participants;
+    private Collection<Member> participants;
 
-    public Course() {
+    public Race() {
     }
 
     public long getIdCourse() {
@@ -49,11 +52,11 @@ public class Course {
         this.date = date;
     }
 
-    public Collection<Membre> getParticipants() {
+    public Collection<Member> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(Collection<Membre> participants) {
+    public void setParticipants(Collection<Member> participants) {
         this.participants = participants;
     }
 
@@ -65,18 +68,18 @@ public class Course {
         this.circuit = circuit;
     }
 
-    public TypeVehicule getTypeVehicule() {
-        return typeVehicule;
+    public VehiculeType getVehiculeType() {
+        return vehiculeType;
     }
 
-    public void setTypeVehicule(TypeVehicule typeVehicule) {
-        this.typeVehicule = typeVehicule;
+    public void setVehiculeType(VehiculeType vehiculeType) {
+        this.vehiculeType = vehiculeType;
     }
 
     @Override
     public String toString() {
-        return "Course [idCourse=" + idCourse + ", circuit=" + circuit + ", date=" + date + ", typeVehicule="
-                + typeVehicule + ", participants=" + participants + "]";
+        return "Course [idCourse=" + idCourse + ", circuit=" + circuit + ", date=" + date + ", vehiculeType="
+                + vehiculeType + ", participants=" + participants + "]";
     }
 
 
