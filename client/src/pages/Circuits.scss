@@ -1,0 +1,5 @@
+@use "../index.scss" as index;
+
+.card {
+  box-shadow: 0.1em 0.1em index.$clr-secondary;
+}

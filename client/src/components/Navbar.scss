@@ -5,13 +5,17 @@
   right: min(10rem, 15%);
 }
 
+section {
+  padding: 1em;
+}
+
 .navbar {
   @extend %left-right;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
+  position: static;
   top: 3rem;
   height: 3rem;
   z-index: 3;
