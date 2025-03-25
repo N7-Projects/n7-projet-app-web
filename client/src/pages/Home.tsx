@@ -1,10 +1,7 @@
-import { useState } from "react";
 import Navbar from "../components/Navbar.tsx";
 import "./Home.scss";
 
 function Home() {
-  const [count, setCount] = useState(0);
-
   //   const { data, isPending, isError, error } = useQuery({
   //     queryKey: [{ location: pathLoc }],
   //     queryFn: async () => {
