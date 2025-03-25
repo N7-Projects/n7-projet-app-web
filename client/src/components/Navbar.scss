@@ -1,0 +1,47 @@
+@use "../index.scss" as index;
+
+%left-right {
+  left: min(10rem, 15%);
+  right: min(10rem, 15%);
+}
+
+.navbar {
+  @extend %left-right;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 3rem;
+  height: 3rem;
+  z-index: 3;
+
+  .image {
+    img {
+      width: 5rem;
+    }
+  }
+
+  .navbar-desktop {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style: none;
+    transition: transform 0.2s ease;
+    padding: 0;
+
+    button {
+      border-radius: 8px;
+      border: 1px solid transparent;
+      padding: 0.6em 1.2em;
+      margin: 0 0.5em 0 0.5em;
+      font-size: 1em;
+      font-weight: 500;
+      font-family: inherit;
+      background-color: #1a1a1a;
+      cursor: pointer;
+      transition: border-color 0.25s;
+      color: index.$clr-background;
+    }
+  }
+}
