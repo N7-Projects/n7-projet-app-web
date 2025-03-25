@@ -1,5 +1,7 @@
 package hagimetaceinture.server;
 
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,7 +15,7 @@ public class Vehicule {
     private long idVehicule;
 
     @ManyToOne
-    private long idVehiculeType;
+    private TypeVehicule vehiculeType;
 
     private String branch;
 
@@ -22,7 +24,7 @@ public class Vehicule {
     private String licensePlate;
 
     @ManyToOne
-    private long owner;
+    private Membre owner;
 
     private Date firstLicensePlate;
 
@@ -35,14 +37,6 @@ public class Vehicule {
 
 	public void setIdVehicule(long idVehicule) {
 		this.idVehicule = idVehicule;
-	}
-
-	public long getIdVehiculeType() {
-		return idVehiculeType;
-	}
-
-	public void setIdVehiculeType(long idVehiculeType) {
-		this.idVehiculeType = idVehiculeType;
 	}
 
 	public String getBranch() {
@@ -69,14 +63,6 @@ public class Vehicule {
 		this.licensePlate = licensePlate;
 	}
 
-	public long getOwner() {
-		return owner;
-	}
-
-	public void setOwner(long owner) {
-		this.owner = owner;
-	}
-
 	public Date getFirstLicensePlate() {
 		return firstLicensePlate;
 	}
@@ -85,64 +71,27 @@ public class Vehicule {
 		this.firstLicensePlate = firstLicensePlate;
 	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (idVehicule ^ (idVehicule >>> 32));
-        result = prime * result + (int) (idVehiculeType ^ (idVehiculeType >>> 32));
-        result = prime * result + ((branch == null) ? 0 : branch.hashCode());
-        result = prime * result + ((model == null) ? 0 : model.hashCode());
-        result = prime * result + ((licensePlate == null) ? 0 : licensePlate.hashCode());
-        result = prime * result + (int) (owner ^ (owner >>> 32));
-        result = prime * result + ((firstLicensePlate == null) ? 0 : firstLicensePlate.hashCode());
-        return result;
+    public TypeVehicule getVehiculeType() {
+        return vehiculeType;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Vehicule other = (Vehicule) obj;
-        if (idVehicule != other.idVehicule)
-            return false;
-        if (idVehiculeType != other.idVehiculeType)
-            return false;
-        if (branch == null) {
-            if (other.branch != null)
-                return false;
-        } else if (!branch.equals(other.branch))
-            return false;
-        if (model == null) {
-            if (other.model != null)
-                return false;
-        } else if (!model.equals(other.model))
-            return false;
-        if (licensePlate == null) {
-            if (other.licensePlate != null)
-                return false;
-        } else if (!licensePlate.equals(other.licensePlate))
-            return false;
-        if (owner != other.owner)
-            return false;
-        if (firstLicensePlate == null) {
-            if (other.firstLicensePlate != null)
-                return false;
-        } else if (!firstLicensePlate.equals(other.firstLicensePlate))
-            return false;
-        return true;
+    public void setVehiculeType(TypeVehicule vehiculeType) {
+        this.vehiculeType = vehiculeType;
     }
 
     @Override
     public String toString() {
-        return "Vehicule [idVehicule=" + idVehicule + ", idVehiculeType=" + idVehiculeType + ", branch=" + branch
+        return "Vehicule [idVehicule=" + idVehicule + ", vehiculeType=" + vehiculeType + ", branch=" + branch
                 + ", model=" + model + ", licensePlate=" + licensePlate + ", owner=" + owner + ", firstLicensePlate="
                 + firstLicensePlate + "]";
     }
 
+    public Membre getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Membre owner) {
+        this.owner = owner;
+    }
 
 }

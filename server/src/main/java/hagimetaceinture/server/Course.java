@@ -1,6 +1,8 @@
 package hagimetaceinture.server;
 
-import jakarta.annotation.Generated;
+import java.sql.Date;
+import java.util.Collection;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
-
 
 @Entity
 public class Course {
@@ -18,16 +19,16 @@ public class Course {
 
     /** Plusieurs course peuvent se passer sur un même circuit. */
     @ManyToOne
-    private long idCircuit;
+    private Circuit circuit;
 
     private Date date;
     
     /**Une course est spécialisé dans un certains type de vehicule */
     @OneToOne
-    private long idTypeVehicule;
+    private TypeVehicule typeVehicule;
 
     @ManyToMany 
-    private long Parcipant;
+    private Collection<Membre> participants;
 
     public Course() {
     }
@@ -40,14 +41,6 @@ public class Course {
         this.idCourse = idCourse;
     }
 
-    public long getIdCircuit() {
-        return idCircuit;
-    }
-
-    public void setIdCircuit(long idCircuit) {
-        this.idCircuit = idCircuit;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -56,63 +49,34 @@ public class Course {
         this.date = date;
     }
 
-    public long getIdTypeVehicule() {
-        return idTypeVehicule;
+    public Collection<Membre> getParticipants() {
+        return participants;
     }
 
-    public void setIdTypeVehicule(long idTypeVehicule) {
-        this.idTypeVehicule = idTypeVehicule;
+    public void setParticipants(Collection<Membre> participants) {
+        this.participants = participants;
     }
 
-    public long getParcipant() {
-        return Parcipant;
+    public Circuit getCircuit() {
+        return circuit;
     }
 
-    public void setParcipant(long parcipant) {
-        Parcipant = parcipant;
+    public void setCircuit(Circuit circuit) {
+        this.circuit = circuit;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (idCourse ^ (idCourse >>> 32));
-        result = prime * result + (int) (idCircuit ^ (idCircuit >>> 32));
-        result = prime * result + ((date == null) ? 0 : date.hashCode());
-        result = prime * result + (int) (idTypeVehicule ^ (idTypeVehicule >>> 32));
-        result = prime * result + (int) (Parcipant ^ (Parcipant >>> 32));
-        return result;
+    public TypeVehicule getTypeVehicule() {
+        return typeVehicule;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Course other = (Course) obj;
-        if (idCourse != other.idCourse)
-            return false;
-        if (idCircuit != other.idCircuit)
-            return false;
-        if (date == null) {
-            if (other.date != null)
-                return false;
-        } else if (!date.equals(other.date))
-            return false;
-        if (idTypeVehicule != other.idTypeVehicule)
-            return false;
-        if (Parcipant != other.Parcipant)
-            return false;
-        return true;
+    public void setTypeVehicule(TypeVehicule typeVehicule) {
+        this.typeVehicule = typeVehicule;
     }
 
     @Override
     public String toString() {
-        return "Course [idCourse=" + idCourse + ", idCircuit=" + idCircuit + ", date=" + date + ", idTypeVehicule="
-                + idTypeVehicule + ", Parcipant=" + Parcipant + "]";
+        return "Course [idCourse=" + idCourse + ", circuit=" + circuit + ", date=" + date + ", typeVehicule="
+                + typeVehicule + ", participants=" + participants + "]";
     }
 
 

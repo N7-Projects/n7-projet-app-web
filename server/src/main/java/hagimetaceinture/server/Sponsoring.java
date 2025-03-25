@@ -1,5 +1,7 @@
 package hagimetaceinture.server;
 
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,10 +16,10 @@ public class Sponsoring {
     private long idSponsoring;
     
     @OneToOne 
-    private long idEcurie;
+    private Ecurie ecurie;
 
     @OneToOne 
-    private long idSponsor;
+    private Sponsor sponsor;
 
     private Date startingDate;
 

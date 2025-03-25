@@ -1,5 +1,7 @@
 package hagimetaceinture.server;
 
+import java.util.Collection;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,11 +19,13 @@ public class Ecurie {
 
     private int classement;
 
-    @ManyToMany 
-    private long idMembre;
-
+	/**Les Membres qui soutiennent l'écurie. */
     @ManyToMany
-    private long idSponsor;
+    private Collection<Membre> membres;
+
+	/**Les Sponsors de l'ecurie. */
+    @ManyToMany
+    private Collection<Sponsor> sponsors;
 
 	public Ecurie() {
 	}
@@ -50,64 +54,27 @@ public class Ecurie {
 		this.classement = classement;
 	}
 
-	public long getIdMembre() {
-		return idMembre;
-	}
+    public Collection<Membre> getMembres() {
+        return membres;
+    }
 
-	public void setIdMembre(long idMembre) {
-		this.idMembre = idMembre;
-	}
+    public void setMembres(Collection<Membre> membres) {
+        this.membres = membres;
+    }
 
-	public long getIdSponsor() {
-		return idSponsor;
-	}
+    public Collection<Sponsor> getSponsors() {
+        return sponsors;
+    }
 
-	public void setIdSponsor(long idSponsor) {
-		this.idSponsor = idSponsor;
-	}
+    public void setSponsors(Collection<Sponsor> sponsors) {
+        this.sponsors = sponsors;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (idEcurie ^ (idEcurie >>> 32));
-		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
-		result = prime * result + classement;
-		result = prime * result + (int) (idMembre ^ (idMembre >>> 32));
-		result = prime * result + (int) (idSponsor ^ (idSponsor >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Ecurie other = (Ecurie) obj;
-		if (idEcurie != other.idEcurie)
-			return false;
-		if (nom == null) {
-			if (other.nom != null)
-				return false;
-		} else if (!nom.equals(other.nom))
-			return false;
-		if (classement != other.classement)
-			return false;
-		if (idMembre != other.idMembre)
-			return false;
-		if (idSponsor != other.idSponsor)
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Ecurie [idEcurie=" + idEcurie + ", nom=" + nom + ", classement=" + classement + ", idMembre=" + idMembre
-				+ ", idSponsor=" + idSponsor + "]";
-	}
+    @Override
+    public String toString() {
+        return "Ecurie [idEcurie=" + idEcurie + ", nom=" + nom + ", classement=" + classement + ", membres=" + membres
+                + ", sponsors=" + sponsors + "]";
+    }
 
     
 }

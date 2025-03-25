@@ -1,27 +1,30 @@
 # Projet d'application web
 
-## Initialisation projet
+## Setup
 
-### Installer et configurer deno
+### Deno
 
-Installer deno pour pouvoir lancer le server :
+Installer [deno](https://docs.deno.com/runtime/getting_started/installation/)
+pour pouvoir démarrer le serveur.
 
-> https://docs.deno.com/runtime/getting_started/installation/
+Eventuellement ajouter l'extension deno sur vscode pour avoir le lsp, coloration
+syntaxique. Puis dans le projet ouvrir la palette de commande et faire
+`Deno: initialize workspace`.
 
-Ajouter l'extension deno sur vscode pour avoir le lsp, coloration syntaxique :
+### Just
 
-> Dans le projet ouvrir la palette de commande et faire : Deno: initialize
-> workspace
+[Just](https://github.com/casey/just) permet de lancer facilement les commandes
+de build.
 
-### Lancer le front-end
+## Lancer le front-end
 
-Exécuter la commande suivante pour lancer le server du front-end :
+`just front` lancera le serveur de front-end.
 
-> deno task dev
->
-> Serveur lancé à l'adresse : localhost:3000
+## Lancer le back-end
 
-## Modifier le projet
+`just back` lancera le back-end du projet.
+
+# Modifier le projet
 
 ## Les entités
 

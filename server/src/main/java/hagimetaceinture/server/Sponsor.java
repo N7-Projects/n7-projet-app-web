@@ -1,5 +1,7 @@
 package hagimetaceinture.server;
 
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +13,8 @@ public class Sponsor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idSponsor;
+
+    private String name;
 
     private int investCapital;
 
@@ -74,10 +78,18 @@ public class Sponsor {
         return true;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
-        return "Sponsor [idSponsor=" + idSponsor + ", investCapital=" + investCapital + ", fundationDate="
-                + fundationDate + "]";
+        return "Sponsor [idSponsor=" + idSponsor + ", name=" + name + ", investCapital=" + investCapital
+                + ", fundationDate=" + fundationDate + "]";
     }
 
 

@@ -6,7 +6,7 @@ import Home from "./pages/Home.tsx";
 const queryClient = new QueryClient();
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [_count, _setCount] = useState(0);
 
   return (
     <QueryClientProvider client={queryClient}>
