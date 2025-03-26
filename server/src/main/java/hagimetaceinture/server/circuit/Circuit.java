@@ -10,97 +10,100 @@ import jakarta.persistence.Id;
 @Entity
 public class Circuit {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idCircuit;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long idCircuit;
 
-    private int turnNumber;
-    
-    private double distance;
-    
-    private double bestTime;
-    
-    private String name;
-    
-    private String place;
-    
-    private int spectatorNumber;
+  private int turnNumber;
 
-    private Date creationDate;
+  private double distance;
 
+  private double bestTime;
 
-    public Circuit() {
-    }
+  private String name;
 
-    public long getIdCircuit() {
-        return idCircuit;
-    }
+  private String place;
 
-    public int getTurnNumber() {
-        return turnNumber;
-    }
+  private int spectatorNumber;
 
-    public double getDistance() {
-        return distance;
-    }
+  private Date creationDate;
 
-    public double getBestTime() {
-        return bestTime;
-    }
+  public Circuit() {
+  }
 
-    public void setIdCircuit(long idCircuit) {
-        this.idCircuit = idCircuit;
-    }
+  public Circuit(String name) {
+    this.name = name;
+  }
 
-    public void setTurnNumber(int turnNumber) {
-        this.turnNumber = turnNumber;
-    }
+  public long getIdCircuit() {
+    return idCircuit;
+  }
 
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
+  public int getTurnNumber() {
+    return turnNumber;
+  }
 
-    public void setBestTime(double bestTime) {
-        this.bestTime = bestTime;
-    }
+  public double getDistance() {
+    return distance;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public double getBestTime() {
+    return bestTime;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setIdCircuit(long idCircuit) {
+    this.idCircuit = idCircuit;
+  }
 
-    public String getPlace() {
-        return place;
-    }
+  public void setTurnNumber(int turnNumber) {
+    this.turnNumber = turnNumber;
+  }
 
-    public void setPlace(String place) {
-        this.place = place;
-    }
+  public void setDistance(double distance) {
+    this.distance = distance;
+  }
 
-    public int getSpectatorNumber() {
-        return spectatorNumber;
-    }
+  public void setBestTime(double bestTime) {
+    this.bestTime = bestTime;
+  }
 
-    public void setSpectatorNumber(int spectatorNumber) {
-        this.spectatorNumber = spectatorNumber;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
+  public String getPlace() {
+    return place;
+  }
 
-    @Override
-    public String toString() {
-        return "Circuit [idCircuit=" + idCircuit + ", turnNumber=" + turnNumber + ", distance=" + distance
-                + ", bestTime=" + bestTime + ", name=" + name + ", place=" + place + ", spectatorNumber="
-                + spectatorNumber + ", creationDate=" + creationDate + "]";
-    }
+  public void setPlace(String place) {
+    this.place = place;
+  }
+
+  public int getSpectatorNumber() {
+    return spectatorNumber;
+  }
+
+  public void setSpectatorNumber(int spectatorNumber) {
+    this.spectatorNumber = spectatorNumber;
+  }
+
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
+
+  @Override
+  public String toString() {
+    return "Circuit [idCircuit=" + idCircuit + ", turnNumber=" + turnNumber + ", distance=" + distance
+        + ", bestTime=" + bestTime + ", name=" + name + ", place=" + place + ", spectatorNumber="
+        + spectatorNumber + ", creationDate=" + creationDate + "]";
+  }
 
 }

@@ -13,21 +13,21 @@ import jakarta.persistence.ManyToMany;
 @Entity
 public class RacingTeam {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idRacingTeam;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long idRacingTeam;
 
-    private String nom;
+	private String nom;
 
-    private int classement;
+	private int classement;
 
-	/**Les Membres qui soutiennent l'écurie. */
-    @ManyToMany
-    private Collection<Member> membres;
+	/** Les Membres qui soutiennent l'écurie. */
+	@ManyToMany
+	private Collection<Member> membres;
 
-	/**Les Sponsors de l'ecurie. */
-    @ManyToMany
-    private Collection<Sponsor> sponsors;
+	/** Les Sponsors de l'ecurie. */
+	@ManyToMany
+	private Collection<Sponsor> sponsors;
 
 	public RacingTeam() {
 	}
@@ -56,27 +56,27 @@ public class RacingTeam {
 		this.classement = classement;
 	}
 
-    public Collection<Member> getMembres() {
-        return membres;
-    }
+	public Collection<Member> getMembres() {
+		return membres;
+	}
 
-    public void setMembres(Collection<Member> membres) {
-        this.membres = membres;
-    }
+	public void setMembres(Collection<Member> membres) {
+		this.membres = membres;
+	}
 
-    public Collection<Sponsor> getSponsors() {
-        return sponsors;
-    }
+	public Collection<Sponsor> getSponsors() {
+		return sponsors;
+	}
 
-    public void setSponsors(Collection<Sponsor> sponsors) {
-        this.sponsors = sponsors;
-    }
+	public void setSponsors(Collection<Sponsor> sponsors) {
+		this.sponsors = sponsors;
+	}
 
-    @Override
-    public String toString() {
-        return "RacingTeam [idRacingTeam=" + idRacingTeam + ", nom=" + nom + ", classement=" + classement + ", membres=" + membres
-                + ", sponsors=" + sponsors + "]";
-    }
+	@Override
+	public String toString() {
+		return "RacingTeam [idRacingTeam=" + idRacingTeam + ", nom=" + nom + ", classement=" + classement + ", membres="
+				+ membres
+				+ ", sponsors=" + sponsors + "]";
+	}
 
-    
 }
