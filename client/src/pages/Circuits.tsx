@@ -1,11 +1,9 @@
 import Navbar from "../components/Navbar.tsx";
 import { CircuitCard } from "../components/CircuitCard.tsx";
+import { CircuitType } from "../types/circuitType.ts";
 
 import "./Circuits.scss";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-
-// Only useful for Guillaume now in dev
-type Dino = { name: string; description: string };
 
 // Should be the page for displaying basic info of the association
 function Circuits() {
@@ -14,16 +12,16 @@ function Circuits() {
   const { data, isPending, isError, error } = useQuery({
     queryKey: [{ circuits: "all-circuits" }],
     queryFn: async () => {
-      const route: string = "/api/dinosaurs";
+      const route: string = "/api/circuits";
       const response = await fetch(route);
 
       console.log("Getted ! ");
       console.log(response.status);
-      const allDinosaurs = await response.json() as Dino[];
+      const allCircuits = await response.json() as CircuitType[];
 
-      console.log(allDinosaurs[0].name);
+      console.log(allCircuits[0].name);
 
-      return allDinosaurs;
+      return allCircuits;
     },
   });
 
@@ -46,8 +44,9 @@ function Circuits() {
        */
       }
       <section className="grid">
-        {data.map((dino: Dino) => {
-          return <CircuitCard key={dino.name}></CircuitCard>;
+        {data.map((circuit: CircuitType) => {
+          // ...cicuit --> destructure all of the props of CircuitType inside the Component CorcuitCard
+          return <CircuitCard key={circuit.name} {...circuit}></CircuitCard>;
         })}
 
         {/* Transformer avec une boucle pour afficher avec chaque circuit (dinosaur en phase de test) */}

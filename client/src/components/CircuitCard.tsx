@@ -1,30 +1,39 @@
 import { Button } from "primereact";
 import { Card } from "primereact";
+import { CircuitType } from "../types/circuitType.ts";
 
-const header = (
-  <img
-    alt="Card"
-    src="./usercard.png"
-  />
-);
-const footer = (
-  <>
-    <Button label="View Circuit" severity="primary" icon="pi pi-search" />
-    <Button
-      label="Like"
-      severity="secondary"
-      icon="pi pi-star"
-      style={{ marginLeft: "0.5em" }}
+function CircuitCard(circuit: CircuitType) {
+  const header = (
+    <img
+      alt="Card"
+      src="./usercard.png"
     />
-  </>
-);
+  );
+  const footer = (
+    <>
+      <Button
+        label="View Circuit"
+        severity="primary"
+        icon="pi pi-search"
+        // Use Link if its not what do we want
+        onClick={() => {
+          globalThis.location.href = `/circuits/${circuit.id}`;
+        }}
+      />
+      <Button
+        label="Like"
+        severity="secondary"
+        icon="pi pi-star"
+        style={{ marginLeft: "0.5em" }}
+      />
+    </>
+  );
 
-function CircuitCard() {
   return (
     <div className="card flex justify-content-center col-4">
       <Card
-        title="Title"
-        subTitle="Card subtitle"
+        title={circuit.name}
+        subTitle={circuit.place}
         footer={footer}
         header={header}
         className="md:w-25rem"

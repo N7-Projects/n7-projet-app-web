@@ -2,7 +2,7 @@ import { Button } from "primereact/button";
 import "./Navbar.scss";
 
 /* Access path to the logo of Photo7 */
-const logoFlagPath: string = "./racing-flag-2-svgrepo-com.svg";
+const logoFlagPath: string = "../../public/racing-flags.svg";
 
 export default function Navbar() {
   return (

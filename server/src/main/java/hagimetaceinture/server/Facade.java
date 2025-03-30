@@ -52,13 +52,19 @@ public class Facade {
   /**
    * Adds test circuits. TODO: Remove this code.
    */
+  @PostConstruct
   public void populate() {
-    Circuit c1 = new Circuit();
-    c1.setCreationDate(Date.valueOf("1980-01-01"));
-    circuitRepo.save(c1);
+    Circuit circuit = new Circuit("Monza");
+    circuit.setCreationDate(Date.valueOf("1980-01-01"));
+    circuit.setDistance(5.793);
+    circuit.setTurnNumber(11);
+    circuit.setBestTime(1.20);
+    circuit.setPlace("Italy");
+    circuit.setSpectatorNumber(100000);
+    circuitRepo.save(circuit);
 
     // check if event has been added
-    System.out.println("List of circuits:");
+    System.out.println("\nList of circuits:");
     circuitRepo.findAll().forEach(System.out::println);
     System.out.println("List of events:");
     eventRepository.findAll().forEach(System.out::println);
@@ -67,6 +73,7 @@ public class Facade {
 
   @GetMapping("/api/circuits")
   public Collection<Circuit> getCircuits() {
+
     return circuitRepo.findAll();
   }
 
@@ -95,4 +102,5 @@ public class Facade {
     q.setParameter("date", dateD);
     return q.getResultList();
   }
+
 }
