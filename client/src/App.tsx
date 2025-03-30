@@ -16,7 +16,7 @@ function App() {
 
           <Route path="/circuits">
             <Route index element={<Circuits />} />
-            <Route path=":circuit" element={<Circuits />} />
+            <Route path=":circuit" element={<Home />} />
             <Route path=":circuit/edit" element={<Circuits />} />
           </Route>
 

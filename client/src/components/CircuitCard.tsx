@@ -11,7 +11,15 @@ function CircuitCard(circuit: CircuitType) {
   );
   const footer = (
     <>
-      <Button label="View Circuit" severity="primary" icon="pi pi-search" />
+      <Button
+        label="View Circuit"
+        severity="primary"
+        icon="pi pi-search"
+        // Use Link if its not what do we want
+        onClick={() => {
+          globalThis.location.href = `/circuits/${circuit.id}`;
+        }}
+      />
       <Button
         label="Like"
         severity="secondary"
