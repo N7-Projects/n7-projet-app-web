@@ -1,7 +1,7 @@
 package hagimetaceinture.server.event;
 
 import java.time.Duration;
-import java.util.Date;
+import java.sql.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +18,9 @@ public abstract class Event {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
 
+  private Date date;
+  private Duration duration = Duration.ZERO;
+
   public long getId() {
     return id;
   }
@@ -26,9 +29,20 @@ public abstract class Event {
     this.id = id;
   }
 
-  public abstract Date getDate();
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
+  }
 
   public Duration getDuration() {
-    return Duration.ZERO;
+    return duration;
   }
+
+  public void setDuration(Duration duration) {
+    this.duration = duration;
+  }
+
 }

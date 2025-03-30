@@ -12,8 +12,6 @@ public class Sponsor extends Event {
 
   private int investedCapital;
 
-  private Date fundationDate;
-
   public Sponsor() {
   }
 
@@ -26,11 +24,11 @@ public class Sponsor extends Event {
   }
 
   public Date getFundationDate() {
-    return fundationDate;
+    return getDate();
   }
 
   public void setFundationDate(Date fundationDate) {
-    this.fundationDate = fundationDate;
+    setDate(fundationDate);
   }
 
   @Override
@@ -39,7 +37,7 @@ public class Sponsor extends Event {
     int result = 1;
     result = prime * result + (int) (getId() ^ (getId() >>> 32));
     result = prime * result + investedCapital;
-    result = prime * result + ((fundationDate == null) ? 0 : fundationDate.hashCode());
+    result = prime * result + ((getDate() == null) ? 0 : getDate().hashCode());
     return result;
   }
 
@@ -56,10 +54,10 @@ public class Sponsor extends Event {
       return false;
     if (investedCapital != other.investedCapital)
       return false;
-    if (fundationDate == null) {
-      if (other.fundationDate != null)
+    if (getDate() == null) {
+      if (other.getDate() != null)
         return false;
-    } else if (!fundationDate.equals(other.fundationDate))
+    } else if (!getDate().equals(other.getDate()))
       return false;
     return true;
   }
@@ -75,11 +73,11 @@ public class Sponsor extends Event {
   @Override
   public String toString() {
     return "Sponsor [idSponsor=" + getId() + ", name=" + name + ", investedCapital=" + investedCapital
-        + ", fundationDate=" + fundationDate + "]";
+        + ", fundationDate=" + getDate() + "]";
   }
 
   @Override
-  public java.util.Date getDate() {
+  public java.sql.Date getDate() {
     return getFundationDate();
   }
 

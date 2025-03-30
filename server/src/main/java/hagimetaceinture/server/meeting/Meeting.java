@@ -17,8 +17,6 @@ public class Meeting extends Event {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  private Date date;
-
   private String title;
 
   /** Les membres conviés à la réunion. */
@@ -26,14 +24,6 @@ public class Meeting extends Event {
   private Collection<Member> guests;
 
   public Meeting() {
-  }
-
-  public Date getDate() {
-    return date;
-  }
-
-  public void setDate(Date date) {
-    this.date = date;
   }
 
   public String getTitle() {
@@ -54,7 +44,7 @@ public class Meeting extends Event {
 
   @Override
   public String toString() {
-    return "Meeting [idMeeting=" + getId() + ", date=" + date + ", title=" +
+    return "Meeting [idMeeting=" + getId() + ", date=" + getDate() + ", title=" +
         title + ", guests=" + guests + "]";
   }
 

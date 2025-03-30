@@ -1,7 +1,7 @@
 package hagimetaceinture.server.sponsoring;
 
 import java.time.Duration;
-import java.util.Date;
+import java.sql.Date;
 
 import hagimetaceinture.server.event.Event;
 import hagimetaceinture.server.racingteam.RacingTeam;
@@ -18,29 +18,27 @@ public class Sponsoring extends Event {
 	@OneToOne
 	private Sponsor sponsor;
 
-	private Date startingDate;
-
-	private Date endingDate;
-
 	private float investment;
 
 	public Sponsoring() {
 	}
 
 	public Date getStartingDate() {
-		return startingDate;
+		return getDate();
 	}
 
 	public void setStartingDate(Date startingDate) {
-		this.startingDate = startingDate;
+		setDate(startingDate);
 	}
 
 	public Date getEndingDate() {
-		return endingDate;
+		long milliSec = getStartingDate().getTime() + getDuration().toMillis();
+		return new Date(milliSec);
+
 	}
 
 	public void setEndingDate(Date endingDate) {
-		this.endingDate = endingDate;
+		setDuration(Duration.ofMillis(endingDate.getTime() - getDate().getTime()));
 	}
 
 	public float getInvestment() {
@@ -70,18 +68,7 @@ public class Sponsoring extends Event {
 	@Override
 	public String toString() {
 		return "Sponsoring [idSponsoring=" + getId() + ", racingTeam=" + racingTeam + ", sponsor=" + sponsor
-				+ ", startingDate=" + startingDate + ", endingDate=" + endingDate + ", investment=" + investment + "]";
-	}
-
-	@Override
-	public java.util.Date getDate() {
-		return startingDate;
-	}
-
-	@Override
-
-	public Duration getDuration() {
-		return Duration.ofMillis(endingDate.getTime() - startingDate.getTime());
+				+ ", startingDate=" + getDate() + ", endingDate=" + getEndingDate() + ", investment=" + investment + "]";
 	}
 
 }

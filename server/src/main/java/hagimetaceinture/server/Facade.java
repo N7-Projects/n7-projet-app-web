@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import hagimetaceinture.server.circuit.Circuit;
 import hagimetaceinture.server.circuit.CircuitRepository;
+import hagimetaceinture.server.event.Event;
 import hagimetaceinture.server.event.EventRepository;
 import hagimetaceinture.server.meeting.MeetingRepository;
 import hagimetaceinture.server.member.MemberRepository;
@@ -20,9 +21,13 @@ import hagimetaceinture.server.sponsoring.SponsoringRepository;
 import hagimetaceinture.server.vehicule.VehiculeRepository;
 import hagimetaceinture.server.vehiculetype.VehiculeTypeRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 @RestController
 public class Facade {
+  @Autowired
+  private EntityManager entityManager;
   @Autowired
   RaceRepository raceRepo;
   @Autowired
@@ -47,7 +52,6 @@ public class Facade {
   /**
    * Adds test circuits. TODO: Remove this code.
    */
-  @PostConstruct
   public void populate() {
     Circuit c1 = new Circuit();
     c1.setCreationDate(Date.valueOf("1980-01-01"));
@@ -61,21 +65,37 @@ public class Facade {
 
   }
 
-  @GetMapping("/circuits")
+  @GetMapping("/api/circuits")
   public Collection<Circuit> getCircuits() {
     return circuitRepo.findAll();
   }
 
-  @GetMapping("/circuits/{circuitId}")
+  @GetMapping("/api/circuits/{circuitId}")
   public Circuit getCircuit(@PathVariable String circuitId) {
     long id = Long.parseLong(circuitId);
     return circuitRepo.findById(id).get();
   }
 
-  @PostMapping("/circuits/{circuitId}/edit")
+  @PostMapping("pi/circuits/{circuitId}/edit")
   public void editCircuit(@PathVariable String circuitId) {
     // long id = Long.parseLong(circuitId);
     // Circuit c = circuitRepo.findById(id).get();
+  }
+
+  @GetMapping("/api/calendar")
+  public Collection<Event> getCalendar() {
+    return eventRepository.findAll();
+  }
+
+  @GetMapping("/api/calendar/{date}")
+  public Collection<Event> getDate(@PathVariable String dateStr) {
+    Date date = Date.valueOf(dateStr);
+    String query = "SELECT e FROM Event e WHERE e.date = :date";
+    TypedQuery<Event> q = entityManager.createQuery(query, Event.class);
+    q.setParameter("date", date);
+    Collection<Event> events = q.getResultList();
+    entityManager.close();
+    return events;
   }
 
 }

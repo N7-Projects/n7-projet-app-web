@@ -19,8 +19,6 @@ public class Race extends Event {
   @ManyToOne
   private Circuit circuit;
 
-  private Date date;
-
   /** Une course est spécialisé dans un certains type de vehicule */
   @OneToOne
   private VehiculeType vehiculeType;
@@ -29,14 +27,6 @@ public class Race extends Event {
   private Collection<Member> participants;
 
   public Race() {
-  }
-
-  public Date getDate() {
-    return date;
-  }
-
-  public void setDate(Date date) {
-    this.date = date;
   }
 
   public Collection<Member> getParticipants() {
@@ -65,7 +55,7 @@ public class Race extends Event {
 
   @Override
   public String toString() {
-    return "Course [idCourse=" + getId() + ", circuit=" + circuit + ", date=" + date + ", vehiculeType="
+    return "Course [idCourse=" + getId() + ", circuit=" + circuit + ", date=" + getDate() + ", vehiculeType="
         + vehiculeType + ", participants=" + participants + "]";
   }
 
