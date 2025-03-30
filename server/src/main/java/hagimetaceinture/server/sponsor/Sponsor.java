@@ -78,4 +78,9 @@ public class Sponsor extends Event {
         + ", fundationDate=" + fundationDate + "]";
   }
 
+  @Override
+  public java.util.Date getDate() {
+    return getFundationDate();
+  }
+
 }

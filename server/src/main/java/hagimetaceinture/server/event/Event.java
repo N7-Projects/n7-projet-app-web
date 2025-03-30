@@ -1,5 +1,8 @@
 package hagimetaceinture.server.event;
 
+import java.time.Duration;
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,5 +24,11 @@ public abstract class Event {
 
   public void setId(long id) {
     this.id = id;
+  }
+
+  public abstract Date getDate();
+
+  public Duration getDuration() {
+    return Duration.ZERO;
   }
 }

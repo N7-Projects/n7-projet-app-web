@@ -1,7 +1,6 @@
 package hagimetaceinture.server.circuit;
 
 import java.sql.Date;
-
 import hagimetaceinture.server.event.Event;
 import jakarta.persistence.Entity;
 
@@ -90,6 +89,11 @@ public class Circuit extends Event {
     return "Circuit [idCircuit=" + this.getId() + ", turnNumber=" + turnNumber + ", distance=" + distance
         + ", bestTime=" + bestTime + ", name=" + name + ", place=" + place + ", spectatorNumber="
         + spectatorNumber + ", creationDate=" + creationDate + "]";
+  }
+
+  @Override
+  public java.util.Date getDate() {
+    return getCreationDate();
   }
 
 }
