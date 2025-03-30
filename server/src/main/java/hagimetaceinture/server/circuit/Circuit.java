@@ -2,17 +2,11 @@ package hagimetaceinture.server.circuit;
 
 import java.sql.Date;
 
+import hagimetaceinture.server.event.Event;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
-public class Circuit {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long idCircuit;
+public class Circuit extends Event {
 
   private int turnNumber;
 
@@ -35,10 +29,6 @@ public class Circuit {
     this.name = name;
   }
 
-  public long getIdCircuit() {
-    return idCircuit;
-  }
-
   public int getTurnNumber() {
     return turnNumber;
   }
@@ -49,10 +39,6 @@ public class Circuit {
 
   public double getBestTime() {
     return bestTime;
-  }
-
-  public void setIdCircuit(long idCircuit) {
-    this.idCircuit = idCircuit;
   }
 
   public void setTurnNumber(int turnNumber) {
@@ -101,7 +87,7 @@ public class Circuit {
 
   @Override
   public String toString() {
-    return "Circuit [idCircuit=" + idCircuit + ", turnNumber=" + turnNumber + ", distance=" + distance
+    return "Circuit [idCircuit=" + this.getId() + ", turnNumber=" + turnNumber + ", distance=" + distance
         + ", bestTime=" + bestTime + ", name=" + name + ", place=" + place + ", spectatorNumber="
         + spectatorNumber + ", creationDate=" + creationDate + "]";
   }

@@ -1,9 +1,6 @@
 package hagimetaceinture.server;
 
-import java.awt.List;
 import java.util.Collection;
-import java.util.NoSuchElementException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import hagimetaceinture.server.circuit.Circuit;
 import hagimetaceinture.server.circuit.CircuitRepository;
+import hagimetaceinture.server.event.EventRepository;
 import hagimetaceinture.server.meeting.MeetingRepository;
 import hagimetaceinture.server.member.MemberRepository;
 import hagimetaceinture.server.race.RaceRepository;
@@ -42,13 +40,17 @@ public class Facade {
   SponsoringRepository sponsoringRepo;
   @Autowired
   VehiculeTypeRepository vehiculeTypeRepo;
+  @Autowired
+  EventRepository eventRepository;
 
   /**
-   * Adds test circuits.
+   * Adds test circuits. TODO: Remove this code.
    */
   @PostConstruct
   public void populate() {
-    circuitRepo.save(new Circuit("Test"));
+    Circuit c1 = new Circuit();
+    circuitRepo.save(c1);
+
   }
 
   @GetMapping("/circuits")
