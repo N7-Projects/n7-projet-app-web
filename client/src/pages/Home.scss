@@ -1,1 +1,11 @@
 @use "../index.scss" as index;
+
+section {}
+
+main {
+  background-image: url("/night-light-city-circuit.jpg");
+  background-size: cover;
+  background-position: center;
+
+  size: 100%;
+}

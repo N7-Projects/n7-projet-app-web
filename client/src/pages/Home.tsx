@@ -5,9 +5,8 @@ import "./Home.scss";
 function Home() {
   return (
     <>
-      <section className="home">
-        <Navbar />
-      </section>
+      <main>
+      </main>
     </>
   );
 }
