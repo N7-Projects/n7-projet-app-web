@@ -4,83 +4,59 @@ import java.sql.Date;
 import java.util.Collection;
 
 import hagimetaceinture.server.circuit.Circuit;
+import hagimetaceinture.server.event.Event;
 import hagimetaceinture.server.member.Member;
 import hagimetaceinture.server.vehiculetype.VehiculeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Race {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idCourse;
+public class Race extends Event {
 
-    /** Plusieurs course peuvent se passer sur un même circuit. */
-    @ManyToOne
-    private Circuit circuit;
+  /** Plusieurs course peuvent se passer sur un même circuit. */
+  @ManyToOne
+  private Circuit circuit;
 
-    private Date date;
-    
-    /**Une course est spécialisé dans un certains type de vehicule */
-    @OneToOne
-    private VehiculeType vehiculeType;
+  /** Une course est spécialisé dans un certains type de vehicule */
+  @OneToOne
+  private VehiculeType vehiculeType;
 
-    @ManyToMany 
-    private Collection<Member> participants;
+  @ManyToMany
+  private Collection<Member> participants;
 
-    public Race() {
-    }
+  public Race() {
+  }
 
-    public long getIdCourse() {
-        return idCourse;
-    }
+  public Collection<Member> getParticipants() {
+    return participants;
+  }
 
-    public void setIdCourse(long idCourse) {
-        this.idCourse = idCourse;
-    }
+  public void setParticipants(Collection<Member> participants) {
+    this.participants = participants;
+  }
 
-    public Date getDate() {
-        return date;
-    }
+  public Circuit getCircuit() {
+    return circuit;
+  }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+  public void setCircuit(Circuit circuit) {
+    this.circuit = circuit;
+  }
 
-    public Collection<Member> getParticipants() {
-        return participants;
-    }
+  public VehiculeType getVehiculeType() {
+    return vehiculeType;
+  }
 
-    public void setParticipants(Collection<Member> participants) {
-        this.participants = participants;
-    }
+  public void setVehiculeType(VehiculeType vehiculeType) {
+    this.vehiculeType = vehiculeType;
+  }
 
-    public Circuit getCircuit() {
-        return circuit;
-    }
-
-    public void setCircuit(Circuit circuit) {
-        this.circuit = circuit;
-    }
-
-    public VehiculeType getVehiculeType() {
-        return vehiculeType;
-    }
-
-    public void setVehiculeType(VehiculeType vehiculeType) {
-        this.vehiculeType = vehiculeType;
-    }
-
-    @Override
-    public String toString() {
-        return "Course [idCourse=" + idCourse + ", circuit=" + circuit + ", date=" + date + ", vehiculeType="
-                + vehiculeType + ", participants=" + participants + "]";
-    }
-
+  @Override
+  public String toString() {
+    return "Course [idCourse=" + getId() + ", circuit=" + circuit + ", date=" + getDate() + ", vehiculeType="
+        + vehiculeType + ", participants=" + participants + "]";
+  }
 
 }

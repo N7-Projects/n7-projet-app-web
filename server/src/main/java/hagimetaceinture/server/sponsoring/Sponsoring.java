@@ -1,59 +1,44 @@
 package hagimetaceinture.server.sponsoring;
 
+import java.time.Duration;
 import java.sql.Date;
 
+import hagimetaceinture.server.event.Event;
 import hagimetaceinture.server.racingteam.RacingTeam;
 import hagimetaceinture.server.sponsor.Sponsor;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Sponsoring {
+public class Sponsoring extends Event {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idSponsoring;
-    
-    @OneToOne 
-    private RacingTeam racingTeam;
+	@OneToOne
+	private RacingTeam racingTeam;
 
-    @OneToOne 
-    private Sponsor sponsor;
+	@OneToOne
+	private Sponsor sponsor;
 
-    private Date startingDate;
-
-    private Date endingDate;
-
-    private float investment;
+	private float investment;
 
 	public Sponsoring() {
 	}
 
-	public long getIdSponsoring() {
-		return idSponsoring;
-	}
-
-	public void setIdSponsoring(long idSponsoring) {
-		this.idSponsoring = idSponsoring;
-	}
-
 	public Date getStartingDate() {
-		return startingDate;
+		return getDate();
 	}
 
 	public void setStartingDate(Date startingDate) {
-		this.startingDate = startingDate;
+		setDate(startingDate);
 	}
 
 	public Date getEndingDate() {
-		return endingDate;
+		long milliSec = getStartingDate().getTime() + getDuration().toMillis();
+		return new Date(milliSec);
+
 	}
 
 	public void setEndingDate(Date endingDate) {
-		this.endingDate = endingDate;
+		setDuration(Duration.ofMillis(endingDate.getTime() - getDate().getTime()));
 	}
 
 	public float getInvestment() {
@@ -64,26 +49,26 @@ public class Sponsoring {
 		this.investment = investment;
 	}
 
-    public RacingTeam getRacingTeam() {
-        return racingTeam;
-    }
+	public RacingTeam getRacingTeam() {
+		return racingTeam;
+	}
 
-    public void setRacingTeam(RacingTeam racingTeam) {
-        this.racingTeam = racingTeam;
-    }
+	public void setRacingTeam(RacingTeam racingTeam) {
+		this.racingTeam = racingTeam;
+	}
 
-    public Sponsor getSponsor() {
-        return sponsor;
-    }
+	public Sponsor getSponsor() {
+		return sponsor;
+	}
 
-    public void setSponsor(Sponsor sponsor) {
-        this.sponsor = sponsor;
-    }
+	public void setSponsor(Sponsor sponsor) {
+		this.sponsor = sponsor;
+	}
 
-    @Override
-    public String toString() {
-        return "Sponsoring [idSponsoring=" + idSponsoring + ", racingTeam=" + racingTeam + ", sponsor=" + sponsor
-                + ", startingDate=" + startingDate + ", endingDate=" + endingDate + ", investment=" + investment + "]";
-    }
+	@Override
+	public String toString() {
+		return "Sponsoring [idSponsoring=" + getId() + ", racingTeam=" + racingTeam + ", sponsor=" + sponsor
+				+ ", startingDate=" + getDate() + ", endingDate=" + getEndingDate() + ", investment=" + investment + "]";
+	}
 
 }

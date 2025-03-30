@@ -2,95 +2,83 @@ package hagimetaceinture.server.sponsor;
 
 import java.sql.Date;
 
+import hagimetaceinture.server.event.Event;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
-public class Sponsor {
+public class Sponsor extends Event {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idSponsor;
+  private String name;
 
-    private String name;
+  private int investedCapital;
 
-    private int investedCapital;
+  public Sponsor() {
+  }
 
-    private Date fundationDate;
+  public int getInvestedCapital() {
+    return investedCapital;
+  }
 
-    public Sponsor() {
-    }
+  public void setInvestedCapital(int investedCapital) {
+    this.investedCapital = investedCapital;
+  }
 
-    public long getIdSponsor() {
-        return idSponsor;
-    }
+  public Date getFundationDate() {
+    return getDate();
+  }
 
-    public void setIdSponsor(long idSponsor) {
-        this.idSponsor = idSponsor;
-    }
+  public void setFundationDate(Date fundationDate) {
+    setDate(fundationDate);
+  }
 
-    public int getInvestedCapital() {
-        return investedCapital;
-    }
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (int) (getId() ^ (getId() >>> 32));
+    result = prime * result + investedCapital;
+    result = prime * result + ((getDate() == null) ? 0 : getDate().hashCode());
+    return result;
+  }
 
-    public void setInvestedCapital(int investedCapital) {
-        this.investedCapital = investedCapital;
-    }
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Sponsor other = (Sponsor) obj;
+    if (getId() != other.getId())
+      return false;
+    if (investedCapital != other.investedCapital)
+      return false;
+    if (getDate() == null) {
+      if (other.getDate() != null)
+        return false;
+    } else if (!getDate().equals(other.getDate()))
+      return false;
+    return true;
+  }
 
-    public Date getFundationDate() {
-        return fundationDate;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setFundationDate(Date fundationDate) {
-        this.fundationDate = fundationDate;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (idSponsor ^ (idSponsor >>> 32));
-        result = prime * result + investedCapital;
-        result = prime * result + ((fundationDate == null) ? 0 : fundationDate.hashCode());
-        return result;
-    }
+  @Override
+  public String toString() {
+    return "Sponsor [idSponsor=" + getId() + ", name=" + name + ", investedCapital=" + investedCapital
+        + ", fundationDate=" + getDate() + "]";
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Sponsor other = (Sponsor) obj;
-        if (idSponsor != other.idSponsor)
-            return false;
-        if (investedCapital != other.investedCapital)
-            return false;
-        if (fundationDate == null) {
-            if (other.fundationDate != null)
-                return false;
-        } else if (!fundationDate.equals(other.fundationDate))
-            return false;
-        return true;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Sponsor [idSponsor=" + idSponsor + ", name=" + name + ", investedCapital=" + investedCapital
-                + ", fundationDate=" + fundationDate + "]";
-    }
-
+  @Override
+  public java.sql.Date getDate() {
+    return getFundationDate();
+  }
 
 }

@@ -2,7 +2,7 @@ package hagimetaceinture.server.meeting;
 
 import java.sql.Date;
 import java.util.Collection;
-
+import hagimetaceinture.server.event.Event;
 import hagimetaceinture.server.member.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,58 +11,41 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Meeting {
+public class Meeting extends Event {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idMeeting;
-    
-    private Date date;
-    
-    private String title;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    /**Les membres conviés à la réunion. */
-    @OneToMany 
-    private Collection<Member> guests;
+  private String title;
 
-    public Meeting() {
-    }
+  /** Les membres conviés à la réunion. */
+  @OneToMany
+  private Collection<Member> guests;
 
-    public long getIdMeeting() {
-        return idMeeting;
-    }
+  public Meeting() {
+  }
 
-    public void setIdMeeting(long idMeeting) {
-        this.idMeeting = idMeeting;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public Date getDate() {
-        return date;
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+  public Collection<Member> getGuests() {
+    return guests;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public void setGuests(Collection<Member> guests) {
+    this.guests = guests;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Collection<Member> getGuests() {
-        return guests;
-    }
-
-    public void setGuests(Collection<Member> guests) {
-        this.guests = guests;
-    }
-
-    @Override
-    public String toString() {
-        return "Meeting [idMeeting=" + idMeeting + ", date=" + date + ", title=" + title + ", guests=" + guests + "]";
-    }
+  @Override
+  public String toString() {
+    return "Meeting [idMeeting=" + getId() + ", date=" + getDate() + ", title=" +
+        title + ", guests=" + guests + "]";
+  }
 
 }
