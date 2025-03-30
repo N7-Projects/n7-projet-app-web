@@ -2,25 +2,25 @@ import { Button } from "primereact";
 import { Card } from "primereact";
 import { CircuitType } from "../types/circuitType.ts";
 
-const header = (
-  <img
-    alt="Card"
-    src="./usercard.png"
-  />
-);
-const footer = (
-  <>
-    <Button label="View Circuit" severity="primary" icon="pi pi-search" />
-    <Button
-      label="Like"
-      severity="secondary"
-      icon="pi pi-star"
-      style={{ marginLeft: "0.5em" }}
-    />
-  </>
-);
-
 function CircuitCard(circuit: CircuitType) {
+  const header = (
+    <img
+      alt="Card"
+      src="./usercard.png"
+    />
+  );
+  const footer = (
+    <>
+      <Button label="View Circuit" severity="primary" icon="pi pi-search" />
+      <Button
+        label="Like"
+        severity="secondary"
+        icon="pi pi-star"
+        style={{ marginLeft: "0.5em" }}
+      />
+    </>
+  );
+
   return (
     <div className="card flex justify-content-center col-4">
       <Card
