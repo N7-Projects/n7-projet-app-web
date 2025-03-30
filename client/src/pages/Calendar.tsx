@@ -1,9 +1,10 @@
 import Navbar from "../components/Navbar.tsx";
 import { useQuery } from "@tanstack/react-query";
+import { EventType } from "../types/eventType.ts";
 import "./Calendar.scss";
 
 function Calendar() {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error } = useQuery<EventType[]>({
     queryKey: ["events"],
     queryFn: async () => {
       const response = await fetch("/api/calendar");
@@ -28,7 +29,7 @@ function Calendar() {
       <section className="calendar">
         <h1>Calendrier des Événements</h1>
         <div className="events-grid">
-          {data.map((event: any) => (
+          {data?.map((event: EventType) => (
             <div key={event.id} className="event-card">
               <h2>{event.name || "Événement"}</h2>
               <p>Date: {new Date(event.date).toLocaleDateString()}</p>
