@@ -1,5 +1,6 @@
 package hagimetaceinture.server;
 
+import java.sql.Date;
 import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +50,14 @@ public class Facade {
   @PostConstruct
   public void populate() {
     Circuit c1 = new Circuit();
+    c1.setCreationDate(Date.valueOf("1980-01-01"));
     circuitRepo.save(c1);
+
+    // check if event has been added
+    System.out.println("List of circuits:");
+    circuitRepo.findAll().forEach(System.out::println);
+    System.out.println("List of events:");
+    eventRepository.findAll().forEach(System.out::println);
 
   }
 
