@@ -24,74 +24,74 @@ import hagimetaceinture.server.event.EventRepository;
 @AutoConfigureMockMvc
 class FacadeTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-    @MockBean
-    private CircuitRepository circuitRepo;
+  @MockBean
+  private CircuitRepository circuitRepo;
 
-    @MockBean
-    private EventRepository eventRepo;
+  @MockBean
+  private EventRepository eventRepo;
 
-    private Circuit circuit;
+  private Circuit circuit;
 
-    @BeforeEach
-    void setUp() {
-        circuit = new Circuit("Monza");
-        circuit.setId(1L);
-        circuit.setCreationDate(Date.valueOf("1980-01-01"));
-        circuit.setDistance(5.793);
-        circuit.setTurnNumber(11);
-        circuit.setBestTime(1.20);
-        circuit.setPlace("Italy");
-        circuit.setSpectatorNumber(100000);
-    }
+  @BeforeEach
+  void setUp() {
+    circuit = new Circuit("Monza");
+    circuit.setId(1L);
+    circuit.setCreationDate(Date.valueOf("1980-01-01"));
+    circuit.setDistance(5.793);
+    circuit.setTurnNumber(11);
+    circuit.setBestTime(1.20);
+    circuit.setPlace("Italy");
+    circuit.setSpectatorNumber(100000);
+  }
 
-    @Test
-    void testGetCircuits() throws Exception {
-        when(circuitRepo.findAll()).thenReturn(Arrays.asList(circuit));
+  @Test
+  void testGetCircuits() throws Exception {
+    when(circuitRepo.findAll()).thenReturn(Arrays.asList(circuit));
 
-        mockMvc.perform(get("/api/circuits"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("Monza"));
-    }
+    mockMvc.perform(get("/api/circuits"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].name").value("Monza"));
+  }
 
-    @Test
-    void testGetCircuitById() throws Exception {
-        when(circuitRepo.findById(1L)).thenReturn(Optional.of(circuit));
+  @Test
+  void testGetCircuitById() throws Exception {
+    when(circuitRepo.findById(1L)).thenReturn(Optional.of(circuit));
 
-        mockMvc.perform(get("/api/circuits/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Monza"));
-    }
+    mockMvc.perform(get("/api/circuits/1"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.name").value("Monza"));
+  }
 
-    @Test
-    void testGetCalendar() throws Exception {
-        when(eventRepo.findAll()).thenReturn(Arrays.asList());
+  @Test
+  void testGetCalendar() throws Exception {
+    when(eventRepo.findAll()).thenReturn(Arrays.asList());
 
-        mockMvc.perform(get("/api/calendar"))
-                .andExpect(status().isOk());
-    }
+    mockMvc.perform(get("/api/calendar"))
+        .andExpect(status().isOk());
+  }
 
-    // @Test
-    // void testGetDate() throws Exception {
-    // String date = "2025-01-01";
+  // @Test
+  // void testGetDate() throws Exception {
+  // String date = "2025-01-01";
 
-    // Circuit circuit = new Circuit("Monza");
-    // circuit.setDate(Date.valueOf(date));
+  // Circuit circuit = new Circuit("Monza");
+  // circuit.setDate(Date.valueOf(date));
 
-    // when(eventRepo.findAll()).thenReturn(Arrays.asList(circuit));
+  // when(eventRepo.findAll()).thenReturn(Arrays.asList(circuit));
 
-    // mockMvc.perform(get("/api/calendar/" + date))
-    // .andExpect(status().isOk())
-    // .andExpect(jsonPath("$[0].date").value(date));
-    // }
+  // mockMvc.perform(get("/api/calendar/" + date))
+  // .andExpect(status().isOk())
+  // .andExpect(jsonPath("$[0].date").value(date));
+  // }
 
-    @Test
-    void testEditCircuit() throws Exception {
-        when(circuitRepo.findById(1L)).thenReturn(Optional.of(circuit));
+  @Test
+  void testEditCircuit() throws Exception {
+    when(circuitRepo.findById(1L)).thenReturn(Optional.of(circuit));
 
-        mockMvc.perform(post("/pi/circuits/1/edit"))
-                .andExpect(status().isOk());
-    }
+    mockMvc.perform(post("/pi/circuits/1/edit"))
+        .andExpect(status().isOk());
+  }
 }

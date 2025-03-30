@@ -26,81 +26,81 @@ import jakarta.persistence.TypedQuery;
 
 @RestController
 public class Facade {
-    @Autowired
-    private EntityManager entityManager;
-    @Autowired
-    RaceRepository raceRepo;
-    @Autowired
-    MemberRepository memberRepo;
-    @Autowired
-    CircuitRepository circuitRepo;
-    @Autowired
-    MeetingRepository meetingRepo;
-    @Autowired
-    SponsorRepository sponsorRepo;
-    @Autowired
-    VehiculeRepository vehiculeRepo;
-    @Autowired
-    RacingTeamRepository racingTeamRepo;
-    @Autowired
-    SponsoringRepository sponsoringRepo;
-    @Autowired
-    VehiculeTypeRepository vehiculeTypeRepo;
-    @Autowired
-    EventRepository eventRepository;
+  @Autowired
+  private EntityManager entityManager;
+  @Autowired
+  RaceRepository raceRepo;
+  @Autowired
+  MemberRepository memberRepo;
+  @Autowired
+  CircuitRepository circuitRepo;
+  @Autowired
+  MeetingRepository meetingRepo;
+  @Autowired
+  SponsorRepository sponsorRepo;
+  @Autowired
+  VehiculeRepository vehiculeRepo;
+  @Autowired
+  RacingTeamRepository racingTeamRepo;
+  @Autowired
+  SponsoringRepository sponsoringRepo;
+  @Autowired
+  VehiculeTypeRepository vehiculeTypeRepo;
+  @Autowired
+  EventRepository eventRepository;
 
-    /**
-     * Adds test circuits. TODO: Remove this code.
-     */
-    @PostConstruct
-    public void populate() {
-        Circuit circuit = new Circuit("Monza");
-        circuit.setCreationDate(Date.valueOf("1980-01-01"));
-        circuit.setDistance(5.793);
-        circuit.setTurnNumber(11);
-        circuit.setBestTime(1.20);
-        circuit.setPlace("Italy");
-        circuit.setSpectatorNumber(100000);
-        circuitRepo.save(circuit);
+  /**
+   * Adds test circuits. TODO: Remove this code.
+   */
+  @PostConstruct
+  public void populate() {
+    Circuit circuit = new Circuit("Monza");
+    circuit.setCreationDate(Date.valueOf("1980-01-01"));
+    circuit.setDistance(5.793);
+    circuit.setTurnNumber(11);
+    circuit.setBestTime(1.20);
+    circuit.setPlace("Italy");
+    circuit.setSpectatorNumber(100000);
+    circuitRepo.save(circuit);
 
-        // check if event has been added
-        System.out.println("\nList of circuits:");
-        circuitRepo.findAll().forEach(System.out::println);
-        System.out.println("List of events:");
-        eventRepository.findAll().forEach(System.out::println);
+    // check if event has been added
+    System.out.println("\nList of circuits:");
+    circuitRepo.findAll().forEach(System.out::println);
+    System.out.println("List of events:");
+    eventRepository.findAll().forEach(System.out::println);
 
-    }
+  }
 
-    @GetMapping("/api/circuits")
-    public Collection<Circuit> getCircuits() {
+  @GetMapping("/api/circuits")
+  public Collection<Circuit> getCircuits() {
 
-        return circuitRepo.findAll();
-    }
+    return circuitRepo.findAll();
+  }
 
-    @GetMapping("/api/circuits/{circuitId}")
-    public Circuit getCircuit(@PathVariable String circuitId) {
-        long id = Long.parseLong(circuitId);
-        return circuitRepo.findById(id).get();
-    }
+  @GetMapping("/api/circuits/{circuitId}")
+  public Circuit getCircuit(@PathVariable String circuitId) {
+    long id = Long.parseLong(circuitId);
+    return circuitRepo.findById(id).get();
+  }
 
-    @PostMapping("pi/circuits/{circuitId}/edit")
-    public void editCircuit(@PathVariable String circuitId) {
-        // long id = Long.parseLong(circuitId);
-        // Circuit c = circuitRepo.findById(id).get();
-    }
+  @PostMapping("pi/circuits/{circuitId}/edit")
+  public void editCircuit(@PathVariable String circuitId) {
+    // long id = Long.parseLong(circuitId);
+    // Circuit c = circuitRepo.findById(id).get();
+  }
 
-    @GetMapping("/api/calendar")
-    public Collection<Event> getCalendar() {
-        return eventRepository.findAll();
-    }
+  @GetMapping("/api/calendar")
+  public Collection<Event> getCalendar() {
+    return eventRepository.findAll();
+  }
 
-    @GetMapping("/api/calendar/{date}")
-    public Collection<Event> getDate(@PathVariable String date) {
-        Date dateD = Date.valueOf(date);
-        String query = "SELECT e FROM Event e WHERE e.date = :date";
-        TypedQuery<Event> q = entityManager.createQuery(query, Event.class);
-        q.setParameter("date", dateD);
-        return q.getResultList();
-    }
+  @GetMapping("/api/calendar/{date}")
+  public Collection<Event> getDate(@PathVariable String date) {
+    Date dateD = Date.valueOf(date);
+    String query = "SELECT e FROM Event e WHERE e.date = :date";
+    TypedQuery<Event> q = entityManager.createQuery(query, Event.class);
+    q.setParameter("date", dateD);
+    return q.getResultList();
+  }
 
 }
