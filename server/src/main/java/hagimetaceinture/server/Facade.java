@@ -88,14 +88,11 @@ public class Facade {
   }
 
   @GetMapping("/api/calendar/{date}")
-  public Collection<Event> getDate(@PathVariable String dateStr) {
-    Date date = Date.valueOf(dateStr);
+  public Collection<Event> getDate(@PathVariable String date) {
+    Date dateD = Date.valueOf(date);
     String query = "SELECT e FROM Event e WHERE e.date = :date";
     TypedQuery<Event> q = entityManager.createQuery(query, Event.class);
-    q.setParameter("date", date);
-    Collection<Event> events = q.getResultList();
-    entityManager.close();
-    return events;
+    q.setParameter("date", dateD);
+    return q.getResultList();
   }
-
 }
