@@ -46,9 +46,10 @@ function Circuits() {
        */
       }
       <section className="grid">
-        {data.map(() => {
-          return <CircuitCard></CircuitCard>;
+        {data.map((dino: Dino) => {
+          return <CircuitCard key={dino.name}></CircuitCard>;
         })}
+
         {/* Transformer avec une boucle pour afficher avec chaque circuit (dinosaur en phase de test) */}
       </section>
     </>
