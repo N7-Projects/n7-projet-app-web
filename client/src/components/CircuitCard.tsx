@@ -23,7 +23,7 @@ function CircuitCard() {
   return (
     <div className="card flex justify-content-center col-4">
       <Card
-        title="Circuit Name"
+        title="Title"
         subTitle="Card subtitle"
         footer={footer}
         header={header}
