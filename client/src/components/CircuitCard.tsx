@@ -1,5 +1,6 @@
 import { Button } from "primereact";
 import { Card } from "primereact";
+import { CircuitType } from "../types/circuitType.ts";
 
 const header = (
   <img
@@ -19,12 +20,12 @@ const footer = (
   </>
 );
 
-function CircuitCard() {
+function CircuitCard(circuit: CircuitType) {
   return (
     <div className="card flex justify-content-center col-4">
       <Card
-        title="Title"
-        subTitle="Card subtitle"
+        title={circuit.name}
+        subTitle={circuit.place}
         footer={footer}
         header={header}
         className="md:w-25rem"
