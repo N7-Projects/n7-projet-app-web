@@ -17,6 +17,7 @@
     "npm:primeflex@4": "4.0.0",
     "npm:primeicons@7": "7.0.0",
     "npm:primereact@^10.9.3": "10.9.3_@types+react@18.3.19_react@19.0.0_react-dom@19.0.0__react@19.0.0",
+    "npm:process@~0.11.10": "0.11.10",
     "npm:quill@^2.0.3": "2.0.3",
     "npm:react-router-dom@^6.30.0": "6.30.0_react@19.0.0_react-dom@19.0.0__react@19.0.0",
     "npm:sass@^1.86.0": "1.86.0",
@@ -706,6 +707,9 @@
         "react-transition-group"
       ]
     },
+    "process@0.11.10": {
+      "integrity": "sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A=="
+    },
     "prop-types@15.8.1": {
       "integrity": "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==",
       "dependencies": [
@@ -882,6 +886,7 @@
       "npm:primeflex@4",
       "npm:primeicons@7",
       "npm:primereact@^10.9.3",
+      "npm:process@~0.11.10",
       "npm:quill@^2.0.3",
       "npm:react-router-dom@^6.30.0",
       "npm:sass@^1.86.0",

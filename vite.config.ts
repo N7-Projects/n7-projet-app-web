@@ -4,6 +4,7 @@ import deno from "@deno/vite-plugin";
 
 import "react";
 import "react-dom";
+import process from "process";
 
 export default defineConfig({
   root: "./client",
