@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, searchForWorkspaceRoot } from "vite";
 import react from "@vitejs/plugin-react";
 import deno from "@deno/vite-plugin";
 
@@ -9,6 +9,12 @@ export default defineConfig({
   root: "./client",
   server: {
     port: 3000,
+    fs: {
+      allow: [
+        // search up for workspace root
+        searchForWorkspaceRoot(process.cwd()),
+      ],
+    },
   },
   plugins: [
     react(),

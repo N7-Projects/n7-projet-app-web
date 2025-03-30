@@ -8,6 +8,8 @@ export default function Navbar() {
   return (
     <section className="navbar">
       <Button
+        severity="secondary"
+        outlined
         className="image"
         onClick={() => {
           globalThis.location.href = "/";
