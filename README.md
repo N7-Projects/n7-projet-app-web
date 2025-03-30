@@ -47,5 +47,5 @@ de build.
 - `/calendar` : afficher le calendrier des événements -`calendar/edit` : éditer
   le calendrier
 - `/forum` : accéder au forum et afficher tous les sujets
-  - `/forum/:sujetId` : accéder au sujet `sujetId`
+  - `/forum/:topucId` : accéder au sujet `sujetId`
 - `subscribe` : pouvoir s'inscrire à la newsletter

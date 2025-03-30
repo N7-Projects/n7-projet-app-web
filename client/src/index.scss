@@ -1,0 +1,62 @@
+@use "primeicons/primeicons.css";
+
+@font-face {
+  font-family: "Roboto";
+  src: url(../assets/fonts/Roboto-VariableFont_wdth\,wght.ttf);
+}
+
+@font-face {
+  font-family: "NotoSerif";
+  src: url(../../assets/fonts/NotoSerif-VariableFont_wdth\,wght.ttf);
+}
+
+@font-face {
+  font-family: "Pacifico";
+  src: url(../../assets/fonts/Pacifico-Regular.ttf);
+}
+
+/* Breakpoints */
+$bp-tablets: 1500px;
+$bp-phones: 600px;
+
+/* Colors */
+$clr-white: #ffffff;
+$clr-black: #000000;
+$clr-background: #e6eef6;
+$clr-text: #0a0a0a;
+$clr-secondary: #374151;
+$clr-border: #d1d5db;
+
+/* Font sizes */
+$h1-font-size: clamp(1.8rem, calc(3vw + 1rem), 2.5rem);
+$p-font-size: clamp(0.5rem, calc(0.2vw + 1rem), 1.3rem);
+
+/* Spacings */
+$xsmall-spacing: 1.5rem;
+$xxsmall-spacing: 0.5 * $xsmall-spacing;
+$small-spacing: 2 * $xsmall-spacing;
+$medium-spacing: 2 * $small-spacing;
+$large-spacing: 2 * $medium-spacing;
+
+html,
+body {
+  font-family: "Roboto";
+  color: $clr-text;
+  background-color: $clr-background;
+  margin: 0;
+  scroll-behavior: smooth;
+}
+
+h1,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: $h1-font-size;
+}
+
+p {
+  font-size: $p-font-size;
+}
