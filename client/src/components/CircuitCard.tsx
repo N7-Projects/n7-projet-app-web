@@ -6,7 +6,7 @@ function CircuitCard(circuit: CircuitType) {
   const header = (
     <img
       alt="Card"
-      src="./usercard.png"
+      src="/usercard.png"
     />
   );
   const footer = (

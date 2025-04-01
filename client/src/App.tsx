@@ -4,6 +4,7 @@ import Home from "./pages/Home.tsx";
 import Circuits from "./pages/Circuits.tsx";
 import Calendar from "./pages/Calendar.tsx";
 import Navbar from "./components/Navbar.tsx";
+import NewCircuit from "./pages/NewCircuit.tsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ function App() {
 
           <Route path="/circuits">
             <Route index element={<Circuits />} />
+            <Route path="new" element={<NewCircuit />} />
             <Route path=":circuit" element={<Home />} />
             <Route path=":circuit/edit" element={<Circuits />} />
           </Route>
