@@ -32,12 +32,11 @@ de build.
    _participant(member)_
 2. **Member** : <ins>idMember</ins>, Name, Firstname, _Vehicule_,
    subscriber(boolean)
-3. **Vehicule**: <ins>idVehicule</ins>, _VehiculeType_, Marque, Model,
-   Plaque, Année, _owner_
-4. **RacingTeam**: <ins>idRacingTeam</ins>, name, ranking,
-   _supporter(member)_, _Sponsor_
-5. **Circuit**: <ins>idCircuit</ins>, place, distance, turnNumber,
-   spectator
+3. **Vehicule**: <ins>idVehicule</ins>, _VehiculeType_, Marque, Model, Plaque,
+   Année, _owner_
+4. **RacingTeam**: <ins>idRacingTeam</ins>, name, ranking, _supporter(member)_,
+   _Sponsor_
+5. **Circuit**: <ins>idCircuit</ins>, place, distance, turnNumber, spectator
 6. **Meeting**: <ins>idMeeting</ins>, place, date, title,
    _Participant(Member)_
 7. **Sponsor**: <ins>idSponsor</ins>, investmentCapital, creationDate
