@@ -27,9 +27,11 @@ class FacadeTest {
   @Autowired
   private MockMvc mockMvc;
 
+  @SuppressWarnings("removal")
   @MockBean
   private CircuitRepository circuitRepo;
 
+  @SuppressWarnings("removal")
   @MockBean
   private EventRepository eventRepo;
 

@@ -59,4 +59,12 @@ public class Race extends Event {
         + vehiculeType + ", participants=" + participants + "]";
   }
 
+  public Date getCreationDate() {
+    return this.getDate();
+  }
+
+  public void setCreationDate(Date date) {
+    this.setDate(date);
+  }
+
 }
