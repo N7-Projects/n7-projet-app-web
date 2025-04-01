@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar.tsx";
 import { CircuitCard } from "../components/CircuitCard.tsx";
 import { CircuitType } from "../types/circuitType.ts";
 
@@ -35,10 +34,6 @@ function Circuits() {
 
   return (
     <>
-      <section className="circuits">
-        <Navbar />
-      </section>
-
       {
         /* <section className="flex flex-row flex wrap align-items-center justify-content-center lg:gap-3">
        */
