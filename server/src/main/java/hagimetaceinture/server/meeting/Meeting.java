@@ -1,5 +1,6 @@
 package hagimetaceinture.server.meeting;
 
+import java.sql.Date;
 import java.util.Collection;
 import hagimetaceinture.server.event.Event;
 import hagimetaceinture.server.member.Member;
