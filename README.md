@@ -30,16 +30,19 @@ de build.
 
 1. **Race**: <ins>idRace</ins>, _idCircuit_, date, _VehiculeType_, 
    _participant(member)_
-2. **Member** : <ins>idMember</ins>, Name, Firstname, _Vehicule_, subscriber(boolean)
-3. **Vehicule**: <ins>idVehicule</ins>, _VehiculeType_, Marque, Model, Plaque, Année,
-   _owner_
-4. **RacingTeam**: <ins>idRacingTeam</ins>, name, ranking, _supporter(member)_, 
-   _Sponsor_
-5. **Circuit**: <ins>idCircuit</ins>, place, distance, turnNumber, spectator
-6. **Meeting**: <ins>idMeeting</ins>, place, date, title, _Participant(Member)_
+2. **Member** : <ins>idMember</ins>, Name, Firstname, _Vehicule_, 
+   subscriber(boolean)
+3. **Vehicule**: <ins>idVehicule</ins>, _VehiculeType_, Marque, Model, 
+   Plaque, Année, _owner_
+4. **RacingTeam**: <ins>idRacingTeam</ins>, name, ranking, 
+   _supporter(member)_, _Sponsor_
+5. **Circuit**: <ins>idCircuit</ins>, place, distance, turnNumber,
+   spectator
+6. **Meeting**: <ins>idMeeting</ins>, place, date, title, 
+   _Participant(Member)_
 7. **Sponsor**: <ins>idSponsor</ins>, investmentCapital, creationDate
-8. **Sponsoring**: <ins>idSponsoring</ins>, _RacingTeam_, _sponsor_, StartingDate,
-   EndingDate, investmentCapital
+8. **Sponsoring**: <ins>idSponsoring</ins>, _RacingTeam_, _sponsor_, 
+   StartingDate, EndingDate, investmentCapital
 
 ## Les routes
 
