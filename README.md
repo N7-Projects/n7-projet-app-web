@@ -28,14 +28,18 @@ de build.
 
 ## Les entités
 
-1. **Race**: __idRace__, _idCircuit_, date, _VehiculeType_, _participant(member)_
+1. **Race**: __idRace__, _idCircuit_, date, _VehiculeType_, 
+  _participant(member)_
 2. **Member** : __idMember__, Name, Firstname, _Vehicule_, subscriber(boolean)
-3. **Vehicule**: __idVehicule__, _VehiculeType_, Marque, Model, Plaque, Année, _owner_
-4. **RacingTeam**: __idRacingTeam__, name, ranking, _supporter(member)_, _Sponsor_
+3. **Vehicule**: __idVehicule__, _VehiculeType_, Marque, Model, Plaque, Année,
+  _owner_
+4. **RacingTeam**: __idRacingTeam__, name, ranking, _supporter(member)_, 
+  _Sponsor_
 5. **Circuit**: __idCircuit__, place, distance, turnNumber, spectator
 6. **Meeting**: __idMeeting__, place, date, title, _Participant(Member)_
 7. **Sponsor**: __idSponsor__, investmentCapital, creationDate
-8. **Sponsoring**: __idSponsoring__, _RacingTeam_, _sponsor_, StartingDate, EndingDate, investmentCapital
+8. **Sponsoring**: __idSponsoring__, _RacingTeam_, _sponsor_, StartingDate,
+  EndingDate, investmentCapital
 
 ## Les routes
 
