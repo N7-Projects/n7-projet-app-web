@@ -42,7 +42,6 @@ de build.
 8. **Sponsoring**: <ins>idSponsoring</ins>, _RacingTeam_, _sponsor_,
    StartingDate, EndingDate, investmentCapital
 
-
 ## Les routes
 
 - `/` : route index
