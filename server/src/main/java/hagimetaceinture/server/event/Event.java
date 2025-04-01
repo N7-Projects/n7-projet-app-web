@@ -29,11 +29,11 @@ public abstract class Event {
     this.id = id;
   }
 
-  public Date getDate() {
+  protected Date getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  protected void setDate(Date date) {
     this.date = date;
   }
 
