@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar.tsx";
 import { CircuitCard } from "../components/CircuitCard.tsx";
 import { CircuitType } from "../types/circuitType.ts";
 
