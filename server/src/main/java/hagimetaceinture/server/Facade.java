@@ -55,7 +55,7 @@ public class Facade {
   @PostConstruct
   public void populate() {
     Circuit circuit = new Circuit("Monza");
-    circuit.setCreationDate(Date.valueOf("1980-01-01"));
+    circuit.setDate(Date.valueOf("1980-01-01"));
     circuit.setDistance(5.793);
     circuit.setTurnNumber(11);
     circuit.setBestTime(1.20);

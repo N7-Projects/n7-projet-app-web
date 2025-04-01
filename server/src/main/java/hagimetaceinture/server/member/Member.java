@@ -12,24 +12,23 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Member {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long idMembre;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idMembre;
-    
-    private String name;
-    
-    private String firstname;
+	private String name;
 
-    @OneToMany
-    private Collection<Vehicule> vehicules;
+	private String firstname;
 
-    private boolean subscriber;
+	@OneToMany
+	private Collection<Vehicule> vehicules;
+
+	private boolean subscriber;
 
 	public Member() {
-    }
+	}
 
-    public long getIdMembre() {
+	public long getIdMembre() {
 		return idMembre;
 	}
 
@@ -61,12 +60,12 @@ public class Member {
 		this.subscriber = subscriber;
 	}
 
-    public Collection<Vehicule> getVehicules() {
-        return vehicules;
-    }
+	public Collection<Vehicule> getVehicules() {
+		return vehicules;
+	}
 
-    public void setVehicules(Collection<Vehicule> vehicules) {
-        this.vehicules = vehicules;
-    }
+	public void setVehicules(Collection<Vehicule> vehicules) {
+		this.vehicules = vehicules;
+	}
 
 }

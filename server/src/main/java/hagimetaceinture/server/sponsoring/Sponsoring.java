@@ -23,16 +23,8 @@ public class Sponsoring extends Event {
 	public Sponsoring() {
 	}
 
-	public Date getStartingDate() {
-		return getDate();
-	}
-
-	public void setStartingDate(Date startingDate) {
-		setDate(startingDate);
-	}
-
 	public Date getEndingDate() {
-		long milliSec = getStartingDate().getTime() + getDuration().toMillis();
+		long milliSec = getDate().getTime() + getDuration().toMillis();
 		return new Date(milliSec);
 
 	}

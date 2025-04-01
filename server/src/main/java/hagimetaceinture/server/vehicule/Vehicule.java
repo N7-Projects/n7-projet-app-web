@@ -2,6 +2,7 @@ package hagimetaceinture.server.vehicule;
 
 import java.sql.Date;
 
+import hagimetaceinture.server.event.Event;
 import hagimetaceinture.server.member.Member;
 import hagimetaceinture.server.vehiculetype.VehiculeType;
 import jakarta.persistence.Entity;
@@ -11,34 +12,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Vehicule {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idVehicule;
+public class Vehicule extends Event {
 
-    @ManyToOne
-    private VehiculeType vehiculeType;
+	@ManyToOne
+	private VehiculeType vehiculeType;
 
-    private String branch;
+	private String branch;
 
-    private String model;
+	private String model;
 
-    private String licensePlate;
+	private String licensePlate;
 
-    @ManyToOne
-    private Member owner;
-
-    private Date firstLicensePlate;
+	@ManyToOne
+	private Member owner;
 
 	public Vehicule() {
-    }
-
-    public long getIdVehicule() {
-		return idVehicule;
-	}
-
-	public void setIdVehicule(long idVehicule) {
-		this.idVehicule = idVehicule;
 	}
 
 	public String getBranch() {
@@ -65,35 +53,27 @@ public class Vehicule {
 		this.licensePlate = licensePlate;
 	}
 
-	public Date getFirstLicensePlate() {
-		return firstLicensePlate;
+	public VehiculeType getVehiculeType() {
+		return vehiculeType;
 	}
 
-	public void setFirstLicensePlate(Date firstLicensePlate) {
-		this.firstLicensePlate = firstLicensePlate;
+	public void setVehiculeType(VehiculeType vehiculeType) {
+		this.vehiculeType = vehiculeType;
 	}
 
-    public VehiculeType getVehiculeType() {
-        return vehiculeType;
-    }
+	@Override
+	public String toString() {
+		return "Vehicule [idVehicule=" + getId() + ", vehiculeType=" + vehiculeType + ", branch=" + branch
+				+ ", model=" + model + ", licensePlate=" + licensePlate + ", owner=" + owner + ", firstLicensePlate="
+				+ getDate() + "]";
+	}
 
-    public void setVehiculeType(VehiculeType vehiculeType) {
-        this.vehiculeType = vehiculeType;
-    }
+	public Member getOwner() {
+		return owner;
+	}
 
-    @Override
-    public String toString() {
-        return "Vehicule [idVehicule=" + idVehicule + ", vehiculeType=" + vehiculeType + ", branch=" + branch
-                + ", model=" + model + ", licensePlate=" + licensePlate + ", owner=" + owner + ", firstLicensePlate="
-                + firstLicensePlate + "]";
-    }
-
-    public Member getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Member owner) {
-        this.owner = owner;
-    }
+	public void setOwner(Member owner) {
+		this.owner = owner;
+	}
 
 }

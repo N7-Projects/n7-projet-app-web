@@ -23,14 +23,6 @@ public class Sponsor extends Event {
     this.investedCapital = investedCapital;
   }
 
-  public Date getFundationDate() {
-    return getDate();
-  }
-
-  public void setFundationDate(Date fundationDate) {
-    setDate(fundationDate);
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -74,11 +66,6 @@ public class Sponsor extends Event {
   public String toString() {
     return "Sponsor [idSponsor=" + getId() + ", name=" + name + ", investedCapital=" + investedCapital
         + ", fundationDate=" + getDate() + "]";
-  }
-
-  @Override
-  public java.sql.Date getDate() {
-    return getFundationDate();
   }
 
 }
