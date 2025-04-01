@@ -1,1 +1,14 @@
 @use "../index.scss" as index;
+
+main {
+  background-image: url("/night-light-city-circuit.jpg");
+  background-size: cover;
+  background-position: center;
+
+  height: 100vh;
+  border-radius: 1em;
+}
+
+.hagi-title {
+  color: index.$clr-background;
+}

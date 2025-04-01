@@ -2,12 +2,15 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Home from "./pages/Home.tsx";
 import Circuits from "./pages/Circuits.tsx";
+import Navbar from "./components/Navbar.tsx";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <Navbar />
+
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
