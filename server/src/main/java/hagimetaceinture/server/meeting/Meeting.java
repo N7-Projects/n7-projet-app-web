@@ -38,6 +38,14 @@ public class Meeting extends Event {
     return guests;
   }
 
+  public Date getMeetingDate() {
+    return this.getDate();
+  }
+
+  public void setMeetingDate(Date date) {
+    this.setDate(date);
+  }
+
   public void setGuests(Collection<Member> guests) {
     this.guests = guests;
   }
