@@ -13,7 +13,7 @@ dist-ssr
 *.local
 
 # Base de Donnees
-db
+db/hsqldb/
 
 # Editor directories and files
 .vscode/*
