@@ -1,5 +1,6 @@
 package hagimetaceinture.server.race;
 
+import java.sql.Date;
 import java.util.Collection;
 
 import hagimetaceinture.server.circuit.Circuit;
