@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { EventType } from "../types/eventType.ts";
 import "./Calendar.scss";
@@ -25,7 +24,6 @@ function Calendar() {
 
   return (
     <>
-      <Navbar />
       <section className="calendar">
         <h1>Calendrier des Événements</h1>
         <div className="events-grid">
