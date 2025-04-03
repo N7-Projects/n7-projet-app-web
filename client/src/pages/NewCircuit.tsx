@@ -33,6 +33,7 @@ function NewCircuit() {
   );
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    // Remove the above line when the back is added
     event.preventDefault();
     alert(`The date you entered was: ${date}`);
   };
@@ -123,6 +124,7 @@ function NewCircuit() {
           </label>
           <InputMask
             id="circuitBestTime"
+            name="circuit[bestTime]"
             name="circuit[bestTime]"
             mask="99.99,999"
             placeholder="99.99,999"
