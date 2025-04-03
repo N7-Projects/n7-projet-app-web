@@ -46,6 +46,7 @@ de build.
 
 - `/` : route index
 - `/circuits` : afficher un résumé tous les circuits
+  - `/circuits/new` : permet de créer un circuit
   - `/circuits/:circuitId` : afficher les informations du circuit `circuitId`
   - `/circuits/:circuitId/edit` : éditer le circuit `circuitId`
 - `/calendar` : afficher le calendrier des événements -`calendar/edit` : éditer
