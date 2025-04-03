@@ -2,7 +2,7 @@ import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
 import { Calendar } from "primereact/calendar";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 function NewCircuit() {
   const [date, setDate] = useState<Date | null>();
@@ -19,6 +19,8 @@ function NewCircuit() {
         label="Créer"
         severity="primary"
         icon="pi pi-send"
+        type="submit"
+        form="circuitForm"
         // Use Link if its not what do we want
       />
       <Button
@@ -30,6 +32,11 @@ function NewCircuit() {
     </>
   );
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    alert(`The date you entered was: ${date}`);
+  };
+
   return (
     <div className="circuit-new-card flex justify-content-center">
       <Card
@@ -40,9 +47,11 @@ function NewCircuit() {
         className="w-6"
       >
         <form
+          id="circuitForm"
           action="/api/circuits/new"
           method="post"
           className="flex flex-column"
+          onSubmit={handleSubmit}
         >
           <label htmlFor="circuitName" className="font-bold block mb-2">
             Nom du circuit
@@ -114,7 +123,7 @@ function NewCircuit() {
           </label>
           <InputMask
             id="circuitBestTime"
-            name="circuit[bestTime"
+            name="circuit[bestTime]"
             mask="99.99,999"
             placeholder="99.99,999"
           />
