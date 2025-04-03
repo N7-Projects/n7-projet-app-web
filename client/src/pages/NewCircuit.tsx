@@ -125,7 +125,6 @@ function NewCircuit() {
           <InputMask
             id="circuitBestTime"
             name="circuit[bestTime]"
-            name="circuit[bestTime]"
             mask="99.99,999"
             placeholder="99.99,999"
           />
