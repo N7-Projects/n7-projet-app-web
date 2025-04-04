@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import hagimetaceinture.server.circuit.Circuit;
@@ -83,10 +84,16 @@ public class Facade {
     return circuitRepo.findById(id).get();
   }
 
-  @PostMapping("pi/circuits/{circuitId}/edit")
+  @PostMapping("api/circuits/{circuitId}/edit")
   public void editCircuit(@PathVariable String circuitId) {
     // long id = Long.parseLong(circuitId);
     // Circuit c = circuitRepo.findById(id).get();
+  }
+
+  @PostMapping("api/circuits/new")
+  public Circuit newCircuit(@RequestBody Circuit newCircuit) {
+    System.out.println("Added new circuit " + newCircuit);
+    return circuitRepo.save(newCircuit);
   }
 
   @GetMapping("/api/calendar")

@@ -1,11 +1,12 @@
 import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
-import { InputMask } from "primereact/inputmask";
 import { Calendar } from "primereact/calendar";
 import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function NewCircuit() {
   const [date, setDate] = useState<Date | null>();
+  const navigate = useNavigate();
 
   const header = (
     <img
@@ -32,10 +33,39 @@ function NewCircuit() {
     </>
   );
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    // Remove the above line when the back is added
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    alert(`The date you entered was: ${date}`);
+
+    const formData = new FormData(event.currentTarget);
+    const circuitData = {
+      name: formData.get("name"),
+      place: formData.get("place"),
+      creationDate: formData.get("creationDate"),
+      spectatorNumber: parseInt(formData.get("spectatorNumber") as string, 10),
+      turnNumber: parseInt(formData.get("turnNumber") as string, 10),
+      distance: parseFloat(formData.get("distance") as string),
+      bestTime: parseFloat(formData.get("bestTime") as string),
+    };
+
+    try {
+      const response = await fetch("/api/circuits/new", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(circuitData),
+      });
+
+      if (response.ok) {
+        const createdCircuit = await response.json();
+        navigate(`/circuits/${createdCircuit.id}`);
+      } else {
+        alert("Failed to create circuit.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while creating the circuit.");
+    }
   };
 
   return (
@@ -49,84 +79,71 @@ function NewCircuit() {
       >
         <form
           id="circuitForm"
-          action="/api/circuits/new"
-          method="post"
           className="flex flex-column"
           onSubmit={handleSubmit}
         >
-          <label htmlFor="circuitName" className="font-bold block mb-2">
+          <label htmlFor="name" className="font-bold block mb-2">
             Nom du circuit
           </label>
-          <InputText
-            id="circuitName"
-            name="circuit[name]"
-            placeholder="Paul Ricard"
-          />
+          <InputText id="name" name="name" placeholder="Paul Ricard" />
 
-          <label htmlFor="circuitCountry" className="font-bold block mb-2 mt-3">
+          <label htmlFor="place" className="font-bold block mb-2 mt-3">
             Pays du circuit
           </label>
-          <InputText
-            id="circuitCountry"
-            name="circuit[place]"
-            placeholder="France"
-          />
+          <InputText id="place" name="place" placeholder="France" />
 
           <label htmlFor="creationDate" className="font-bold block mb-2 mt-3">
             Date de création
           </label>
           <Calendar
             id="creationDate"
-            name="circuit[creationDate]"
-            dateFormat="dd-mm-yy"
+            name="creationDate"
+            dateFormat="yy-mm-dd"
             value={date}
             onChange={(e) => setDate(e.value)}
           />
 
-          <label htmlFor="circuitCapacty" className="font-bold block mb-2 mt-3">
+          <label
+            htmlFor="spectatorNumber"
+            className="font-bold block mb-2 mt-3"
+          >
             Capacité de spectateurs
           </label>
           <InputText
-            id="circuitCapacity"
-            name="circuit[spectatorNumber]"
+            id="spectatorNumber"
+            name="spectatorNumber"
             keyfilter="pint"
             placeholder="3000"
           />
 
-          <label htmlFor="circuitTurns" className="font-bold block mb-2 mt-3">
+          <label htmlFor="turnNumber" className="font-bold block mb-2 mt-3">
             Nombre de virages
           </label>
           <InputText
-            id="circuitTurns"
-            name="circuit[turnNumber]"
+            id="turnNumber"
+            name="turnNumber"
             keyfilter="pint"
             placeholder="15"
           />
 
-          <label
-            htmlFor="circuitDistance"
-            className="font-bold block mb-2 mt-3"
-          >
+          <label htmlFor="distance" className="font-bold block mb-2 mt-3">
             Distance du circuit
           </label>
           <InputText
-            id="circuitDistance"
-            name="circuit[distance]"
+            id="distance"
+            name="distance"
             keyfilter="pnum"
             placeholder="5.842"
           />
 
-          <label
-            htmlFor="circuitBestTime"
-            className="font-bold block mb-2 mt-3"
-          >
+          <label htmlFor="bestTime" className="font-bold block mb-2 mt-3">
             Meilleur temps
           </label>
-          <InputMask
-            id="circuitBestTime"
-            name="circuit[bestTime]"
-            mask="99.99,999"
-            placeholder="99.99,999"
+          <InputText
+            id="bestTime"
+            name="bestTime"
+            keyfilter="pnum"
+            placeholder="99.99"
           />
         </form>
       </Card>
