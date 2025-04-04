@@ -1,7 +1,11 @@
 package hagimetaceinture.server;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +17,12 @@ import hagimetaceinture.server.circuit.Circuit;
 import hagimetaceinture.server.circuit.CircuitRepository;
 import hagimetaceinture.server.event.Event;
 import hagimetaceinture.server.event.EventRepository;
+import hagimetaceinture.server.forumtopic.ForumTopic;
+import hagimetaceinture.server.forumtopic.ForumTopicRepository;
 import hagimetaceinture.server.meeting.MeetingRepository;
 import hagimetaceinture.server.member.MemberRepository;
+import hagimetaceinture.server.message.Message;
+import hagimetaceinture.server.message.MessageRepository;
 import hagimetaceinture.server.race.RaceRepository;
 import hagimetaceinture.server.racingteam.RacingTeamRepository;
 import hagimetaceinture.server.sponsor.SponsorRepository;
@@ -49,12 +57,17 @@ public class Facade {
   VehiculeTypeRepository vehiculeTypeRepo;
   @Autowired
   EventRepository eventRepository;
+  @Autowired
+  ForumTopicRepository forumTopicRepository;
+  @Autowired
+  MessageRepository messageRepository;
 
   /**
    * Adds test circuits. TODO: Remove this code.
    */
   @PostConstruct
   public void populate() {
+    // ajout d'un circuit
     Circuit circuit = new Circuit("Monza");
     circuit.setCreationDate(Date.valueOf("1980-01-01"));
     circuit.setDistance(5.793);
@@ -63,6 +76,12 @@ public class Facade {
     circuit.setPlace("Italy");
     circuit.setSpectatorNumber(100000);
     circuitRepo.save(circuit);
+
+    // ajout d'un Forum Topic
+    ForumTopic ft = new ForumTopic();
+    ft.setTitle("Le circuit de Gettedla Monza est-"
+        + "il confortable pour les spectateurs ?");
+    forumTopicRepository.save(ft);
 
     // check if event has been added
     System.out.println("\nList of circuits:");
@@ -108,6 +127,75 @@ public class Facade {
     TypedQuery<Event> q = entityManager.createQuery(query, Event.class);
     q.setParameter("date", dateD);
     return q.getResultList();
+  }
+
+  @GetMapping("/api/forum")
+  public Collection<ForumTopic> getForumTopics() {
+    return forumTopicRepository.findAll();
+  }
+
+  @GetMapping("/api/forum/{idForumTopic}")
+  public Collection<Message> getMessageOnTopic(@PathVariable String idForumTopic) {
+
+    // handle id parsing
+    long id;
+    try {
+      id = Long.parseLong(idForumTopic);
+    } catch (NumberFormatException e) {
+      id = -1;
+    }
+    Collection<Message> res = new ArrayList<>();
+    if (id != -1) {
+      List<Message> lms = messageRepository.findAll();
+      Optional<ForumTopic> oft = forumTopicRepository.findById(id);
+      // whether the subject exists
+      if (oft.isPresent()) {
+        for (Message message : lms) {
+          if (id == message.getSubject().getIdForumTopic()) {
+            res.add(message);
+          }
+        }
+      }
+    }
+
+    return res;
+  }
+
+  @PostMapping("/api/forum/{idForumTopic}/post")
+  public Message postMessageOnTopic(@RequestBody Message newMessage, @PathVariable String idForumTopic) {
+
+    // handle id long parsing
+    long id;
+    try {
+      id = Long.parseLong(idForumTopic);
+    } catch (NumberFormatException e) {
+      id = -1;
+    }
+
+    if (id != -1) {
+      // Optional<ForumTopic> oft = forumTopicRepository.findById(Long.parseLong(idForumTopic));
+      return messageRepository.save(newMessage);
+    }
+    return null;  
+  }
+
+  @GetMapping("/api/forum/{idForumTopic}/consult")
+  public String getTiteTopic(@PathVariable String idForumTopic) {
+    String res = "";
+    long id;
+    try {
+      id = Long.parseLong(idForumTopic);
+    } catch (NumberFormatException e) {
+      id = -1;
+    }
+
+    if (id != -1) {
+      Optional<ForumTopic> ft = forumTopicRepository.findById(id);
+      if (ft.isPresent()) {
+        res = ft.get().getTitle();
+      }
+    }
+    return res;
   }
 
 }
