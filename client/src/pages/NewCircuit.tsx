@@ -2,9 +2,11 @@ import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function NewCircuit() {
   const [date, setDate] = useState<Date | null>();
+  const navigate = useNavigate();
 
   const header = (
     <img
@@ -55,7 +57,8 @@ function NewCircuit() {
       });
 
       if (response.ok) {
-        alert("Circuit created successfully!");
+        const createdCircuit = await response.json();
+        navigate(`/circuits/${createdCircuit.id}`);
       } else {
         alert("Failed to create circuit.");
       }
