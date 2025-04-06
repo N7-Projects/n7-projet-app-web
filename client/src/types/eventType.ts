@@ -7,4 +7,5 @@ export type EventType = {
   location: string;
   participantNumber: number;
   creationDate: Date;
+  allDay?: boolean;
 };
