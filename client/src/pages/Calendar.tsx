@@ -71,6 +71,13 @@ function Calendar() {
       `Détails de l'événement:\n\nNom: ${event.name}\nType: ${event.type}\nLieu: ${event.location}`,
     );
   };
+  const handleNavigate = (date: Date, view: string) => {
+    console.log(`Navigated to date: ${date}, view: ${view}`);
+  };
+
+  const handleViewChange = (view: string) => {
+    console.log(`View changed to: ${view}`);
+  };
 
   return (
     <>
@@ -84,6 +91,8 @@ function Calendar() {
           style={{ height: 500 }}
           eventPropGetter={eventStyleGetter}
           onSelectEvent={handleEventClick}
+          onNavigate={handleNavigate} // Gestionnaire pour la navigation
+          onView={handleViewChange} // Gestionnaire pour le changement de vue
           messages={{
             today: "Aujourd'hui",
             previous: "Précédent",
