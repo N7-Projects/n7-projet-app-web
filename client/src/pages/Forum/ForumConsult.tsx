@@ -4,6 +4,7 @@ import { MessageCard } from "../../components/forum/MessageCard.tsx";
 import { useParams } from "react-router-dom";
 import ForumPost from "./ForumPost.tsx";
 import { Button } from "primereact";
+import "./ForumConsult.scss";
 
 function ForumConsult() {
   const url = useParams();
@@ -28,14 +29,6 @@ function ForumConsult() {
       console.log(title.status);
 
       console.log("Both Getted ! ");
-
-      if (allMessageOnTopic.length > 0) {
-        console.log(allMessageOnTopic[0].text);
-      }
-
-      if (tite.length > 0) {
-        console.log(tite);
-      }
 
       return { allMessageOnTopic, tite };
     },
@@ -63,12 +56,16 @@ function ForumConsult() {
           {data.allMessageOnTopic.map((message: MessageType) => {
             // ...message --> destructure all of the props of MessageType inside the Component
             // Message Card;
-            return <MessageCard key={message.id} {...message}></MessageCard>;
+
+            // console.log("messageid = ", message.idMessage);
+            return (
+              <MessageCard key={message.idMessage} {...message}></MessageCard>
+            );
           })}
 
           {/* Transformer avec une boucle pour afficher avec chaque message (dinosaur en phase de test) */}
         </section>
-        <div className="flex justify-content-center col-12 md:w-80rem">
+        <div className="flex justify-content-center col-12 md:w-100rem">
           <ForumPost />
         </div>
       </>
@@ -92,21 +89,23 @@ function ForumConsult() {
   } else {
     return (
       <>
-        <div className="flex justify-content-center col-12">
-          <h1>Erreur lors du chargement du Forum : Forum inconnue</h1>
-        </div>
-        <div className="flex justify-content-center col-12">
-          <h2>
-            Revenir vers l'ensemble des Forum
-          </h2>
-        </div>
-        <div className="flex justify-content-center col-12">
-          <Button
-            label="Retour au Forum"
-            icon="pi pi-arrow-left"
-            severity="primary"
-            onClick={() => globalThis.location.href = "/forum"}
-          />
+        <div className="bg-error">
+          <div className="flex justify-content-center col-12">
+            <h1>Erreur lors du chargement du Forum : Forum inconnue</h1>
+          </div>
+          <div className="flex justify-content-center col-12">
+            <h2>
+              Revenir vers l'ensemble des Forum
+            </h2>
+          </div>
+          <div className="flex justify-content-center col-12">
+            <Button
+              label="Retour au Forum"
+              icon="pi pi-arrow-left"
+              severity="primary"
+              onClick={() => globalThis.location.href = "/forum"}
+            />
+          </div>
         </div>
       </>
     );

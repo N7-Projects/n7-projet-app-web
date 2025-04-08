@@ -3,6 +3,7 @@ import { forumTopicType } from "../../types/forumTopicType.ts";
 
 import "./Forum.scss";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import NewForum from "./NewForum.tsx";
 
 function Forum() {
   const _queryClient = useQueryClient();
@@ -51,6 +52,7 @@ function Forum() {
 
           {/* Transformer avec une boucle pour afficher avec chaque forum (dinosaur en phase de test) */}
         </section>
+        <NewForum />
       </main>
     </>
   );

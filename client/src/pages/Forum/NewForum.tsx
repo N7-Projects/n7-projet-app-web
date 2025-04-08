@@ -1,37 +1,28 @@
 import { useParams } from "react-router-dom";
-import { Editor } from "primereact/editor";
 // @ts-types="react"
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { Button } from "primereact";
+import { FormEvent, SetStateAction, useEffect, useRef, useState } from "react";
+import { Button, InputText } from "primereact";
 import { MessageType } from "../../types/messageType.ts";
 
-function ForumPost() {
+function NewForum() {
   // State for the text input
   const [text, setText] = useState<string>("");
 
   // Create a ref to the input element
-  const editorRef = useRef<Editor>(null);
+  const textInputRef = useRef<InputText>(null);
 
   // Set focus on the text input when the component mounts
   useEffect(() => {
-    editorRef.current?.focus; //inputElement?.focus();
+    textInputRef.current?.focus(); //inputElement?.focus();
   }, []);
-
-  const url = useParams();
-  const topicId = url.topicId;
-
-  const handleErase = async () => {
-    const quill = editorRef.current?.getQuill();
-    quill.deleteText(0, quill.getLength());
-    setText("");
-  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!text) {
-      console.error(text);
-      alert("Message cannot be empty.");
+      console.log(text);
+
+      alert("Forum question cannot be empty.");
       return;
     }
 
@@ -39,7 +30,7 @@ function ForumPost() {
       text,
     };
 
-    const route: string = `/api/forum/${topicId}/post`;
+    const route: string = `/api/forum/post`;
 
     try {
       const response = await fetch(route, {
@@ -73,16 +64,16 @@ function ForumPost() {
         className="flex"
         onSubmit={handleSubmit}
       >
-        <Editor
+        <InputText
           id="text"
           name="text"
-          placeholder="Saisir votre message"
-          onTextChange={(e) => {
-            if (e.htmlValue) {
-              setText(e.htmlValue);
+          placeholder="Saisir votre nouveau sujet de dicussion"
+          onChange={(e: { target: { value: SetStateAction<string> } }) => {
+            if (e.target) {
+              setText(e.target.value);
             }
           }}
-          ref={editorRef}
+          ref={textInputRef}
         />
         <Button
           label="Envoyer"
@@ -91,16 +82,9 @@ function ForumPost() {
           type="submit"
           disabled={text.trim() === ""}
         />
-        <Button
-          label="Effacer"
-          severity="secondary"
-          icon="pi pi-trash"
-          disabled={text.trim() === ""}
-          onClick={handleErase}
-        />
       </form>
     </div>
   );
 }
 
-export default ForumPost;
+export default NewForum;

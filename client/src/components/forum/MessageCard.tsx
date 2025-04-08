@@ -12,10 +12,10 @@ export const StringToHtml = (text: string) => {
 
 function MessageCard(mes: MessageType) {
   return (
-    <div className="card flex justify-content-center col-12">
-      <Card className="md:w-80rem">
+    <div className="card col-12">
+      <Card className="md:w-100rem">
         <p>
-          {new Date(mes.dateOfPublication).toLocaleString()} :{" "}
+          {new Date(mes.dateOfPublication).toLocaleString()} :
         </p>
         {StringToHtml(mes.text)}
       </Card>
