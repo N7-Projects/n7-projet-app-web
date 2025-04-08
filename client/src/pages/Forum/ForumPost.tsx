@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { InputText } from "primereact/inputtext";
+import { Editor } from "primereact/editor";
 // @ts-types="react"
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { Button } from "primereact";
@@ -10,13 +10,11 @@ function ForumPost() {
   const [text, setText] = useState<string>("");
 
   // Create a ref to the input element
-  const textInputRef = useRef<InputText>(null);
+  const editorRef = useRef<Editor>(null);
 
   // Set focus on the text input when the component mounts
   useEffect(() => {
-    if (textInputRef.current) {
-      textInputRef.current.focus(); //inputElement?.focus();
-    }
+    editorRef.current?.focus; //inputElement?.focus();
   }, []);
 
   const url = useParams();
@@ -25,10 +23,9 @@ function ForumPost() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-
-    const text = formData.get("text");
     if (!text) {
+      console.log(text);
+
       alert("Message cannot be empty.");
       return;
     }
@@ -50,7 +47,7 @@ function ForumPost() {
 
       console.log(response.status);
       if (response.ok) {
-        const mre = await response.json() as MessageType;
+        const _mre = await response.json() as MessageType;
         console.log("Posted ! ");
 
         globalThis.location.reload();
@@ -71,14 +68,21 @@ function ForumPost() {
         className="flex"
         onSubmit={handleSubmit}
       >
-        <InputText
+        <Editor
           id="text"
+          className="forum-editor"
           name="text"
           placeholder="Saisir votre message"
-          onChange={(e) => setText(e.target.value)}
-          ref={textInputRef}
+          onTextChange={(e) => {
+            if (e.htmlValue) {
+              setText(e.htmlValue);
+            }
+            console.log(e.htmlValue);
+          }}
+          ref={editorRef}
         />
         <Button
+          className="forum-editor"
           label="Envoyer"
           severity="primary"
           icon="pi pi-send"
