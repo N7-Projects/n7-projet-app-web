@@ -1,6 +1,7 @@
 package hagimetaceinture.server;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -79,7 +80,7 @@ public class Facade {
 
     // ajout d'un Forum Topic
     ForumTopic ft = new ForumTopic();
-    ft.setTitle("Le circuit de Gettedla Monza est-"
+    ft.setTitle("Le circuit de la Monza est-"
         + "il confortable pour les spectateurs ?");
     forumTopicRepository.save(ft);
 
@@ -163,20 +164,42 @@ public class Facade {
 
   @PostMapping("/api/forum/{idForumTopic}/post")
   public Message postMessageOnTopic(@RequestBody Message newMessage, @PathVariable String idForumTopic) {
+    Message res = new Message();
+    // precondition
+    if (newMessage == null) {
+      System.out.println("IGNORING: postMessageOnTopic(null)");
+      return res;
+    }
+    if (newMessage.getText() == null) {
+      System.out.println("IGNORING: postMessageOnTopic with a null text");
+      return res;
+    }
 
-    // handle id long parsing
+    if (newMessage.getText().length() == 0) {
+      System.out.println("IGNORING: postMessageOnTopic with a empty text");
+      return res;
+    }
+
+    newMessage.setDateOfPublication(LocalDateTime.now());
+
+    // handler of the pathvariable
     long id;
     try {
       id = Long.parseLong(idForumTopic);
     } catch (NumberFormatException e) {
       id = -1;
+      return res;
     }
 
-    if (id != -1) {
-      // Optional<ForumTopic> oft = forumTopicRepository.findById(Long.parseLong(idForumTopic));
-      return messageRepository.save(newMessage);
+    Optional<ForumTopic> ft = forumTopicRepository.findById(id);
+    if (ft.isPresent()) {
+      newMessage.setSubject(ft.get());
+      res = messageRepository.save(newMessage);
+    } else {
+      System.out.println("IGNORING: postMessageOnTopic on no topic");
     }
-    return null;  
+
+    return res;
   }
 
   @GetMapping("/api/forum/{idForumTopic}/consult")

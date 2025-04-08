@@ -1,14 +1,23 @@
 import { useParams } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
-import { Button } from "primereact";
 // @ts-types="react"
-import { FormEvent, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { Button } from "primereact";
+import { MessageType } from "../../types/messageType.ts";
 
-function ForumPost(title: string) {
-  const date = useState<Date | null>();
+function ForumPost() {
+  // State for the text input
+  const [text, setText] = useState<string>("");
 
-  const _queryClient = useQueryClient();
+  // Create a ref to the input element
+  const textInputRef = useRef<InputText>(null);
+
+  // Set focus on the text input when the component mounts
+  useEffect(() => {
+    if (textInputRef.current) {
+      textInputRef.current.focus(); //inputElement?.focus();
+    }
+  }, []);
 
   const url = useParams();
   const topicId = url.topicId;
@@ -18,13 +27,17 @@ function ForumPost(title: string) {
 
     const formData = new FormData(event.currentTarget);
 
+    const text = formData.get("text");
+    if (!text) {
+      alert("Message cannot be empty.");
+      return;
+    }
+
     const messageData = {
-      text: formData.get("text"),
-      dateOfPublication: date,
-      subject: { idForumTopic: topicId, title: title },
+      text,
     };
 
-    const route: string = "/api/forum/" + topicId + "/new";
+    const route: string = `/api/forum/${topicId}/post`;
 
     try {
       const response = await fetch(route, {
@@ -35,16 +48,16 @@ function ForumPost(title: string) {
         body: JSON.stringify(messageData),
       });
 
-      console.log(response);
-
+      console.log(response.status);
       if (response.ok) {
-        alert("Message posted successfully!");
+        const mre = await response.json() as MessageType;
+        console.log("Posted ! ");
+
+        globalThis.location.reload();
       } else {
         alert("Failed to post message.");
+        console.log("Failed to Post !");
       }
-
-      console.log(response.status);
-      console.log("Post !");
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while posting the message.");
@@ -52,20 +65,25 @@ function ForumPost(title: string) {
   };
 
   return (
-    <div className="flex flex-column">
+    <div className="flex justify-content-center">
       <form
         id="messageForm"
         className="flex"
         onSubmit={handleSubmit}
       >
-        <InputText id="text" name="text" placeholder="Saisir votre message" />
-
+        <InputText
+          id="text"
+          name="text"
+          placeholder="Saisir votre message"
+          onChange={(e) => setText(e.target.value)}
+          ref={textInputRef}
+        />
         <Button
           label="Envoyer"
           severity="primary"
           icon="pi pi-send"
           type="submit"
-          form="MessageForm"
+          disabled={text.trim() === ""}
         />
       </form>
     </div>

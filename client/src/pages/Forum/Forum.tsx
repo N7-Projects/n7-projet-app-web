@@ -33,18 +33,25 @@ function Forum() {
 
   return (
     <>
-      {
-        /* <section className="flex flex-row flex wrap align-items-center justify-content-center lg:gap-3">
-       */
-      }
-      <section className="grid">
-        {data.map((forum: forumTopicType) => {
-          // ...forum --> destructure all of the props of CircuitType inside the Component CorcuitCard
-          return <ForumTopicCard key={forum.title} {...forum}></ForumTopicCard>;
-        })}
+      <main className="forum">
+        <div className="flex justify-content-center flex-column align-items-center hagi-title">
+          <h1>Forum</h1>
+        </div>
+        {
+          /* <section className="flex flex-row flex wrap align-items-center justify-content-center lg:gap-3">
+        */
+        }
+        <section className="grid">
+          {data.map((forum: forumTopicType) => {
+            // ...forum --> destructure all of the props of CircuitType inside the Component CorcuitCard
+            return (
+              <ForumTopicCard key={forum.title} {...forum}></ForumTopicCard>
+            );
+          })}
 
-        {/* Transformer avec une boucle pour afficher avec chaque forum (dinosaur en phase de test) */}
-      </section>
+          {/* Transformer avec une boucle pour afficher avec chaque forum (dinosaur en phase de test) */}
+        </section>
+      </main>
     </>
   );
 }

@@ -1,6 +1,6 @@
 package hagimetaceinture.server.message;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import hagimetaceinture.server.forumtopic.ForumTopic;
 import jakarta.persistence.Entity;
@@ -21,7 +21,7 @@ public class Message {
 
     private String text;
 
-    private Date dateOfPublication;
+    private LocalDateTime dateOfPublication;
     
 
     public Message(ForumTopic forumTopic, String text) {
@@ -61,14 +61,12 @@ public class Message {
         this.subject = subject;
     }
 
-    public Date getDateOfPublication() {
+    public LocalDateTime getDateOfPublication() {
         return dateOfPublication;
     }
 
-    public void setDateOfPublication(Date dateOfPublication) {
+    public void setDateOfPublication(LocalDateTime dateOfPublication) {
         this.dateOfPublication = dateOfPublication;
     }
-
-    
 
 }

@@ -3,6 +3,7 @@ import { MessageType } from "../../types/messageType.ts";
 import { MessageCard } from "../../components/forum/MessageCard.tsx";
 import { useParams } from "react-router-dom";
 import ForumPost from "./ForumPost.tsx";
+import { Button } from "primereact";
 
 function ForumConsult() {
   const url = useParams();
@@ -51,20 +52,25 @@ function ForumConsult() {
   if (data.allMessageOnTopic.length > 0 && data.tite.length > 0) {
     return (
       <>
-        <h1>{data.tite}</h1>
+        <div className="flex justify-content-center flex-column align-items-center">
+          <h1>{data.tite}</h1>
+        </div>
         {
           /* <section className="flex flex-row flex wrap align-items-center justify-content-center lg:gap-3">
          */
-        }
-        <section className="flex flex-row flex wrap align-items-center justify-content-center lg:gap-3">
+        }-
+        <section className="grid">
           {data.allMessageOnTopic.map((message: MessageType) => {
             // ...message --> destructure all of the props of MessageType inside the Component
             // Message Card;
-            return <MessageCard key={message.text} {...message}></MessageCard>;
+            return <MessageCard key={message.id} {...message}></MessageCard>;
           })}
 
           {/* Transformer avec une boucle pour afficher avec chaque message (dinosaur en phase de test) */}
         </section>
+        <div className="flex justify-content-center col-12 md:w-80rem">
+          <ForumPost />
+        </div>
       </>
     );
   } else if (data.tite.length > 0) {
@@ -79,7 +85,7 @@ function ForumConsult() {
           </h2>
         </div>
         <div className="flex justify-content-center col-12">
-          <ForumPost title={data.tite} />
+          <ForumPost />
         </div>
       </>
     );
@@ -95,7 +101,12 @@ function ForumConsult() {
           </h2>
         </div>
         <div className="flex justify-content-center col-12">
-          <ForumPost title={data.tite} />
+          <Button
+            label="Retour au Forum"
+            icon="pi pi-arrow-left"
+            severity="primary"
+            onClick={() => globalThis.location.href = "/forum"}
+          />
         </div>
       </>
     );

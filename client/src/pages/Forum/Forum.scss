@@ -1,1 +1,11 @@
 @use "../../index.scss" as index;
+@use "../Home.scss" as home;
+
+.forum {
+  background-image: url("/sports-car-4815234.jpg");
+  background-size: cover;
+  background-position: center;
+
+  height: 100vh;
+  border-radius: 1em;
+}
