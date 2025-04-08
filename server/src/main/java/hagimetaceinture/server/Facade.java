@@ -154,6 +154,7 @@ public class Facade {
         for (Message message : lms) {
           if (id == message.getSubject().getIdForumTopic()) {
             res.add(message);
+            System.out.println("Id Message added = " + message.getIdMessage());
           }
         }
       }
