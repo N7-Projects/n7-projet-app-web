@@ -76,12 +76,14 @@ function ForumConsult() {
         <div className="flex justify-content-center col-12">
           <h1>{data.tite}</h1>
         </div>
-        <div className="flex justify-content-center col-12">
-          <h2>
-            Ce forum ne contient pas de messages.
-          </h2>
+        <div className="col-6">
+          <div className="flex justify-content-center col-12">
+            <h2>
+              Ce forum ne contient pas de messages.
+            </h2>
+          </div>
         </div>
-        <div className="flex justify-content-center col-12">
+        <div className="flex justify-content-center col-6">
           <ForumPost />
         </div>
       </>

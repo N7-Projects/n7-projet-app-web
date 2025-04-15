@@ -1,8 +1,9 @@
-import { useParams } from "react-router-dom";
 // @ts-types="react"
-import { FormEvent, SetStateAction, useEffect, useRef, useState } from "react";
+import { FormEvent, SetStateAction, useRef, useState } from "react";
 import { Button, InputText } from "primereact";
 import { MessageType } from "../../types/messageType.ts";
+import { forumTopicType } from "../../types/forumTopicType.ts";
+import { title } from "node:process";
 
 function NewForum() {
   // State for the text input
@@ -11,23 +12,18 @@ function NewForum() {
   // Create a ref to the input element
   const textInputRef = useRef<InputText>(null);
 
-  // Set focus on the text input when the component mounts
-  useEffect(() => {
-    textInputRef.current?.focus(); //inputElement?.focus();
-  }, []);
-
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!text) {
-      console.log(text);
+      console.error("text must not be empty text: ", text);
 
       alert("Forum question cannot be empty.");
       return;
     }
 
     const messageData = {
-      text,
+      title: text,
     };
 
     const route: string = `/api/forum/post`;
@@ -43,8 +39,8 @@ function NewForum() {
 
       console.log(response.status);
       if (response.ok) {
-        const _mre = await response.json() as MessageType;
-        console.log("Posted ! ");
+        const _mre = await response.json() as forumTopicType;
+        console.log("Posted ! " + _mre.title);
 
         globalThis.location.reload();
       } else {

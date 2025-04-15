@@ -222,4 +222,17 @@ public class Facade {
     return res;
   }
 
+  @PostMapping("/api/forum/post")
+  public ForumTopic postNewForumTopic(@RequestBody ForumTopic ft) {
+    if (ft == null)
+      return null;
+    if (ft.getTitle() == null)
+      return null;
+    if (ft.getTitle() == "")
+      return null;
+    System.out.println("Preconde test passed to post : " + ft.getTitle());
+    ForumTopic toSave = new ForumTopic(ft.getTitle());
+    return forumTopicRepository.save(toSave);
+  }
+
 }
