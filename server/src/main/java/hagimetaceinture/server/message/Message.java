@@ -3,10 +3,12 @@ package hagimetaceinture.server.message;
 import java.time.LocalDateTime;
 
 import hagimetaceinture.server.forumtopic.ForumTopic;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -19,6 +21,8 @@ public class Message {
     @ManyToOne
     private ForumTopic subject;
 
+    @Lob
+    @Column
     private String text;
 
     private LocalDateTime dateOfPublication;
