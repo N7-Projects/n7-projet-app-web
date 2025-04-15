@@ -1,16 +1,16 @@
 // @ts-types="react"
 import { FormEvent, SetStateAction, useRef, useState } from "react";
 import { Button, InputText } from "primereact";
-import { MessageType } from "../../types/messageType.ts";
 import { forumTopicType } from "../../types/forumTopicType.ts";
-import { title } from "node:process";
+import { Editor } from "primereact";
+import { EditorTextChangeEvent } from "primereact";
 
 function NewForum() {
   // State for the text input
   const [text, setText] = useState<string>("");
 
   // Create a ref to the input element
-  const textInputRef = useRef<InputText>(null);
+  const textInputRef = useRef<Editor>(null);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -54,19 +54,19 @@ function NewForum() {
   };
 
   return (
-    <div className="flex justify-content-center">
+    <>
       <form
         id="messageForm"
-        className="flex"
+        className="flex col-12 justify-content-center"
         onSubmit={handleSubmit}
       >
-        <InputText
+        <Editor
           id="text"
           name="text"
           placeholder="Saisir votre nouveau sujet de dicussion"
-          onChange={(e: { target: { value: SetStateAction<string> } }) => {
-            if (e.target) {
-              setText(e.target.value);
+          onTextChange={(e: EditorTextChangeEvent) => {
+            if (e.textValue) {
+              setText(e.textValue);
             }
           }}
           ref={textInputRef}
@@ -79,7 +79,7 @@ function NewForum() {
           disabled={text.trim() === ""}
         />
       </form>
-    </div>
+    </>
   );
 }
 

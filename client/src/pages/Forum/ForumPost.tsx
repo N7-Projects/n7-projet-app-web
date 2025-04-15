@@ -67,7 +67,7 @@ function ForumPost() {
   };
 
   return (
-    <div className="flex justify-content-center">
+    <>
       <form
         id="messageForm"
         className="flex"
@@ -89,17 +89,19 @@ function ForumPost() {
           severity="primary"
           icon="pi pi-send"
           type="submit"
+          className="send-button"
           disabled={text.trim() === ""}
         />
         <Button
           label="Effacer"
           severity="secondary"
           icon="pi pi-trash"
+          className="send-button"
           disabled={text.trim() === ""}
           onClick={handleErase}
         />
       </form>
-    </div>
+    </>
   );
 }
 

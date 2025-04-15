@@ -6,6 +6,61 @@ import ForumPost from "./ForumPost.tsx";
 import { Button } from "primereact";
 import "./ForumConsult.scss";
 
+type dataT = {
+  allMessageOnTopic: MessageType[];
+  title: string;
+};
+
+function titleF(data: dataT) {
+  if (data.title.length > 0) {
+    return (
+      <>
+        <div className="flex justify-content-center flex-column align-items-center">
+          <h1>{data.title}</h1>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className="flex justify-content-center col-12">
+          <h1>Erreur lors du chargement du Forum : Forum inconnue</h1>
+        </div>
+      </>
+    );
+  }
+}
+
+function handleMessage(data: dataT) {
+  if (data.allMessageOnTopic.length > 0) {
+    return (
+      <>
+        <section className="grid">
+          {data.allMessageOnTopic.map((message: MessageType) => {
+            // ...message --> destructure all of the props of MessageType inside the Component
+            // Message Card;
+
+            // console.log("messageid = ", message.idMessage);
+            return <MessageCard key={message.idMessage} {...message} />;
+          })}
+
+          {/* Transformer avec une boucle pour afficher avec chaque message (dinosaur en phase de test) */}
+        </section>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className="flex justify-content-center">
+          <h2>
+            Ce forum ne contient pas de messages.
+          </h2>
+        </div>
+      </>
+    );
+  }
+}
+
 function ForumConsult() {
   const url = useParams();
 
@@ -17,7 +72,7 @@ function ForumConsult() {
     queryKey: [{ messages: "all-message-on-topicId" }],
     queryFn: async () => {
       const routeTitle: string = "/api/forum/" + topicId + "/consult";
-      const title = await fetch(routeTitle);
+      const tite = await fetch(routeTitle);
 
       const route: string = "/api/forum/" + topicId;
       const response = await fetch(route);
@@ -25,12 +80,12 @@ function ForumConsult() {
       const allMessageOnTopic = await response.json() as MessageType[];
       console.log(response.status);
 
-      const tite = await title.text() as string;
-      console.log(title.status);
+      const title = await tite.text() as string;
+      console.log(tite.status);
 
       console.log("Both Getted ! ");
 
-      return { allMessageOnTopic, tite };
+      return { allMessageOnTopic, title };
     },
   });
 
@@ -42,49 +97,18 @@ function ForumConsult() {
     return <h3>{error.message}</h3>;
   }
 
-  if (data.allMessageOnTopic.length > 0 && data.tite.length > 0) {
+  if (data.title.length > 0) {
     return (
       <>
-        <div className="flex justify-content-center flex-column align-items-center">
-          <h1>{data.tite}</h1>
-        </div>
-        {
-          /* <section className="flex flex-row flex wrap align-items-center justify-content-center lg:gap-3">
-         */
-        }-
-        <section className="grid">
-          {data.allMessageOnTopic.map((message: MessageType) => {
-            // ...message --> destructure all of the props of MessageType inside the Component
-            // Message Card;
+        {titleF(data)}
 
-            // console.log("messageid = ", message.idMessage);
-            return (
-              <MessageCard key={message.idMessage} {...message}></MessageCard>
-            );
-          })}
-
-          {/* Transformer avec une boucle pour afficher avec chaque message (dinosaur en phase de test) */}
-        </section>
-        <div className="flex justify-content-center col-12 md:w-100rem">
-          <ForumPost />
-        </div>
-      </>
-    );
-  } else if (data.tite.length > 0) {
-    return (
-      <>
-        <div className="flex justify-content-center col-12">
-          <h1>{data.tite}</h1>
-        </div>
-        <div className="col-6">
-          <div className="flex justify-content-center col-12">
-            <h2>
-              Ce forum ne contient pas de messages.
-            </h2>
+        <div className="grid">
+          <div className="block justify-content-center col-6">
+            {handleMessage(data)}
           </div>
-        </div>
-        <div className="flex justify-content-center col-6">
-          <ForumPost />
+          <div className="flex justify-content-center col-6">
+            <ForumPost />
+          </div>
         </div>
       </>
     );
@@ -92,9 +116,7 @@ function ForumConsult() {
     return (
       <>
         <div className="bg-error">
-          <div className="flex justify-content-center col-12">
-            <h1>Erreur lors du chargement du Forum : Forum inconnue</h1>
-          </div>
+          {titleF(data)}
           <div className="flex justify-content-center col-12">
             <h2>
               Revenir vers l'ensemble des Forum
