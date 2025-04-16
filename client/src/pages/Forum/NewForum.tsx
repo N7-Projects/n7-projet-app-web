@@ -3,46 +3,44 @@ import { FormEvent, useRef, useState } from "react";
 import { Button } from "primereact";
 import { forumTopicType } from "../../types/forumTopicType.ts";
 import { InputText } from "primereact";
-import { InputTextarea } from "primereact/inputtextarea";
 
 function NewForum() {
   // State for the text input
   const [text, setText] = useState<string>("");
-  const [txt, setTxt] = useState<string>("");
 
   // Create a ref to the input element
   const textInputRef = useRef<InputText>(null);
 
-  function GetInputText() {
-    if (text.length > 255) {
-      return (
-        <InputText
-          id="text"
-          name="text"
-          style={{ width: "100rem" }}
-          placeholder="Saisir votre nouveau sujet de dicussion"
-          onChange={(e) => {
-            setText(e.target.value);
-          }}
-          ref={textInputRef}
-          invalid
-        />
-      );
-    } else {
-      return (
-        <InputText
-          id="text"
-          name="text"
-          style={{ width: "100rem" }}
-          placeholder="Saisir votre nouveau sujet de dicussion"
-          onChange={(e) => {
-            setText(e.target.value);
-          }}
-          ref={textInputRef}
-        />
-      );
-    }
-  }
+  //   function GetInputText() {
+  //     if (text.length > 255) {
+  //       return (
+  //         <InputText
+  //           id="text"
+  //           name="text"
+  //           style={{ width: "100rem" }}
+  //           placeholder="Saisir votre nouveau sujet de dicussion"
+  //           onChange={(e) => {
+  //             setText(e.target.value);
+  //           }}
+  //           ref={textInputRef}
+  //           invalid
+  //         />
+  //       );
+  //     } else {
+  //       return (
+  //         <InputText
+  //           id="text"
+  //           name="text"
+  //           style={{ width: "100rem" }}
+  //           placeholder="Saisir votre nouveau sujet de dicussion"
+  //           onChange={(e) => {
+  //             setText(e.target.value);
+  //           }}
+  //           ref={textInputRef}
+  //         />
+  //       );
+  //     }
+  //   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
