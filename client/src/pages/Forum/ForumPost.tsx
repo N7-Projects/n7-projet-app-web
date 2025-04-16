@@ -20,7 +20,7 @@ function ForumPost() {
   const url = useParams();
   const topicId = url.topicId;
 
-  const handleErase = async () => {
+  const handleErase = () => {
     const quill = editorRef.current?.getQuill();
     quill.deleteText(0, quill.getLength());
     setText("");
@@ -82,6 +82,7 @@ function ForumPost() {
               setText(e.htmlValue);
             }
           }}
+          style={{ maxWidth: "700px", maxHeight: "50rem" }}
           ref={editorRef}
         />
         <Button

@@ -18,7 +18,7 @@ function ForumTopicCard(forumTopic: forumTopicType) {
   );
 
   return (
-    <div className="card flex justify-content-center col-3">
+    <div className="card flex justify-content-center col-3  ">
       <Card
         title={forumTopic.title}
         footer={footer}
