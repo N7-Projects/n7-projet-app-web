@@ -45,9 +45,7 @@ function Forum() {
         <section className="grid">
           {data.map((forum: forumTopicType) => {
             // ...forum --> destructure all of the props of CircuitType inside the Component CorcuitCard
-            return (
-              <ForumTopicCard key={forum.idForumTopic} {...forum}></ForumTopicCard>
-            );
+            return <ForumTopicCard key={forum.idForumTopic} {...forum} />;
           })}
 
           {/* Transformer avec une boucle pour afficher avec chaque forum (dinosaur en phase de test) */}
