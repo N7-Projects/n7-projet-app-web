@@ -1,16 +1,48 @@
 // @ts-types="react"
-import { FormEvent, SetStateAction, useRef, useState } from "react";
-import { Button, InputText } from "primereact";
+import { FormEvent, useRef, useState } from "react";
+import { Button } from "primereact";
 import { forumTopicType } from "../../types/forumTopicType.ts";
-import { Editor } from "primereact";
-import { EditorTextChangeEvent } from "primereact";
+import { InputText } from "primereact";
+import { InputTextarea } from "primereact/inputtextarea";
 
 function NewForum() {
   // State for the text input
   const [text, setText] = useState<string>("");
+  const [txt, setTxt] = useState<string>("");
 
   // Create a ref to the input element
-  const textInputRef = useRef<Editor>(null);
+  const textInputRef = useRef<InputText>(null);
+
+  function GetInputText() {
+    if (text.length > 255) {
+      return (
+        <InputText
+          id="text"
+          name="text"
+          style={{ width: "100rem" }}
+          placeholder="Saisir votre nouveau sujet de dicussion"
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
+          ref={textInputRef}
+          invalid
+        />
+      );
+    } else {
+      return (
+        <InputText
+          id="text"
+          name="text"
+          style={{ width: "100rem" }}
+          placeholder="Saisir votre nouveau sujet de dicussion"
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
+          ref={textInputRef}
+        />
+      );
+    }
+  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -43,6 +75,8 @@ function NewForum() {
         console.log("Posted ! " + _mre.title);
 
         globalThis.location.reload();
+      } else if (text.length > 255) {
+        alert("Votre sujet est trop long, il doit être inférieur à 255.");
       } else {
         alert("Failed to post message.");
         console.log("Failed to Post !");
@@ -53,34 +87,94 @@ function NewForum() {
     }
   };
 
-  return (
-    <>
-      <form
-        id="messageForm"
-        className="flex col-12 justify-content-center"
-        onSubmit={handleSubmit}
-      >
-        <Editor
-          id="text"
-          name="text"
-          placeholder="Saisir votre nouveau sujet de dicussion"
-          onTextChange={(e: EditorTextChangeEvent) => {
-            if (e.textValue) {
-              setText(e.textValue);
-            }
-          }}
-          ref={textInputRef}
-        />
-        <Button
-          label="Envoyer"
-          severity="primary"
-          icon="pi pi-send"
-          type="submit"
-          disabled={text.trim() === ""}
-        />
-      </form>
-    </>
-  );
+  if (text.length > 255) {
+    return (
+      <>
+        <form
+          id="messageForm"
+          className="flex col-12 justify-content-center"
+          onSubmit={handleSubmit}
+        >
+          <InputText
+            id="text"
+            name="text"
+            style={{ width: "100rem" }}
+            placeholder="Saisir votre nouveau sujet de dicussion"
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
+            ref={textInputRef}
+            invalid
+          />
+
+          <div className="flex">
+            <Button
+              label="Envoyer"
+              className="send-button"
+              severity="primary"
+              icon="pi pi-send"
+              type="submit"
+              disabled={text.trim() === "" || text.trim().length > 255}
+            />
+            <Button
+              label="Supprimer"
+              className="send-button"
+              severity="secondary"
+              icon="pi pi-trash"
+              disabled={text.trim() === "" || text.trim().length > 255}
+              onClick={() => {
+                setText("");
+                textInputRef.current.value = "";
+              }}
+            />
+          </div>
+        </form>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <form
+          id="messageForm"
+          className="flex col-12 justify-content-center"
+          onSubmit={handleSubmit}
+        >
+          <InputText
+            id="text"
+            name="text"
+            style={{ width: "100rem" }}
+            placeholder="Saisir votre nouveau sujet de dicussion"
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
+            ref={textInputRef}
+          />
+
+          <div className="flex">
+            <Button
+              label="Envoyer"
+              className="send-button"
+              severity="primary"
+              icon="pi pi-send"
+              type="submit"
+              disabled={text.trim() === ""}
+            />
+            <Button
+              label="Supprimer"
+              className="send-button"
+              severity="secondary"
+              icon="pi pi-trash"
+              disabled={text.trim() === ""}
+              onClick={() => {
+                setText("");
+                textInputRef.current.value = "";
+              }}
+            />
+          </div>
+        </form>
+      </>
+    );
+  }
 }
 
 export default NewForum;
