@@ -46,7 +46,7 @@ function Forum() {
           {data.map((forum: forumTopicType) => {
             // ...forum --> destructure all of the props of CircuitType inside the Component CorcuitCard
             return (
-              <ForumTopicCard key={forum.title} {...forum}></ForumTopicCard>
+              <ForumTopicCard key={forum.idForumTopic} {...forum}></ForumTopicCard>
             );
           })}
 

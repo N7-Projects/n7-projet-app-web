@@ -11,37 +11,6 @@ function NewForum() {
   // Create a ref to the input element
   const textInputRef = useRef<InputText>(null);
 
-  //   function GetInputText() {
-  //     if (text.length > 255) {
-  //       return (
-  //         <InputText
-  //           id="text"
-  //           name="text"
-  //           style={{ width: "100rem" }}
-  //           placeholder="Saisir votre nouveau sujet de dicussion"
-  //           onChange={(e) => {
-  //             setText(e.target.value);
-  //           }}
-  //           ref={textInputRef}
-  //           invalid
-  //         />
-  //       );
-  //     } else {
-  //       return (
-  //         <InputText
-  //           id="text"
-  //           name="text"
-  //           style={{ width: "100rem" }}
-  //           placeholder="Saisir votre nouveau sujet de dicussion"
-  //           onChange={(e) => {
-  //             setText(e.target.value);
-  //           }}
-  //           ref={textInputRef}
-  //         />
-  //       );
-  //     }
-  //   }
-
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
