@@ -4,6 +4,9 @@ import Home from "./pages/Home.tsx";
 import Circuits from "./pages/Circuits.tsx";
 import Calendar from "./pages/Calendar.tsx";
 import Navbar from "./components/Navbar.tsx";
+import NewCircuit from "./pages/NewCircuit.tsx";
+import Forum from "./pages/Forum/Forum.tsx";
+import ForumConsult from "./pages/Forum/ForumConsult.tsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +23,7 @@ function App() {
 
           <Route path="/circuits">
             <Route index element={<Circuits />} />
+            <Route path="new" element={<NewCircuit />} />
             <Route path=":circuit" element={<Home />} />
             <Route path=":circuit/edit" element={<Circuits />} />
           </Route>
@@ -29,8 +33,8 @@ function App() {
           </Route>
 
           <Route path="/forum">
-            <Route index element={<Home />} />
-            <Route path=":topicId" element={<Home />} />
+            <Route index element={<Forum />} />
+            <Route path=":topicId" element={<ForumConsult />} />
           </Route>
         </Routes>
       </BrowserRouter>

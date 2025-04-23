@@ -27,9 +27,11 @@ class FacadeTest {
   @Autowired
   private MockMvc mockMvc;
 
+  @SuppressWarnings("removal")
   @MockBean
   private CircuitRepository circuitRepo;
 
+  @SuppressWarnings("removal")
   @MockBean
   private EventRepository eventRepo;
 
@@ -91,7 +93,7 @@ class FacadeTest {
   void testEditCircuit() throws Exception {
     when(circuitRepo.findById(1L)).thenReturn(Optional.of(circuit));
 
-    mockMvc.perform(post("/pi/circuits/1/edit"))
+    mockMvc.perform(post("/api/circuits/1/edit"))
         .andExpect(status().isOk());
   }
 }

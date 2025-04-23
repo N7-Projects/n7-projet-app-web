@@ -76,9 +76,4 @@ public class Sponsor extends Event {
         + ", fundationDate=" + getDate() + "]";
   }
 
-  @Override
-  public java.sql.Date getDate() {
-    return getFundationDate();
-  }
-
 }
