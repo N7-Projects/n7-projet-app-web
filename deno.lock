@@ -9,6 +9,7 @@
     "jsr:@std/internal@^1.0.5": "1.0.5",
     "jsr:@std/testing@*": "1.0.5",
     "npm:@deno/vite-plugin@^1.0.4": "1.0.4_vite@5.4.14",
+    "npm:@js-temporal/polyfill@~0.5.1": "0.5.1",
     "npm:@tanstack/react-query@^5.69.0": "5.69.0_react@19.0.0",
     "npm:@types/node@*": "22.12.0",
     "npm:@types/react@^18.3.19": "18.3.19",
@@ -301,6 +302,12 @@
       "dependencies": [
         "@jridgewell/resolve-uri",
         "@jridgewell/sourcemap-codec"
+      ]
+    },
+    "@js-temporal/polyfill@0.5.1": {
+      "integrity": "sha512-hloP58zRVCRSpgDxmqCWJNlizAlUgJFqG2ypq79DCvyv9tHjRYMDOcPFjzfl/A1/YxDvRCZz8wvZvmapQnKwFQ==",
+      "dependencies": [
+        "jsbi"
       ]
     },
     "@kurkle/color@0.3.4": {
@@ -661,6 +668,9 @@
     "js-tokens@4.0.0": {
       "integrity": "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="
     },
+    "jsbi@4.3.2": {
+      "integrity": "sha512-9fqMSQbhJykSeii05nxKl4m6Eqn2P6rOlYiS+C5Dr/HPIU/7yZxu5qzbs40tgaFORiw2Amd0mirjxatXYMkIew=="
+    },
     "jsesc@3.1.0": {
       "integrity": "sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA=="
     },
@@ -990,6 +1000,7 @@
     "dependencies": [
       "jsr:@std/assert@^1.0.11",
       "npm:@deno/vite-plugin@^1.0.4",
+      "npm:@js-temporal/polyfill@~0.5.1",
       "npm:@tanstack/react-query@^5.69.0",
       "npm:@types/react@^18.3.19",
       "npm:@vitejs/plugin-react@^4.3.4",

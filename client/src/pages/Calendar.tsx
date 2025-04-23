@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { EventType } from "../types/eventType.ts";
 import "./Calendar.scss";
 
+import { Temporal } from "@js-temporal/polyfill"; // L'objet Duration n'existe pas encore en plain JS
+
 import { Calendar as BigCalendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -21,6 +23,7 @@ function Calendar() {
       if (!Array.isArray(events)) {
         throw new Error("Invalid data format: Expected an array of events");
       }
+
       return events;
     },
   });
@@ -39,9 +42,16 @@ function Calendar() {
     id: event.id,
     title: event.name || "Événement",
     start: new Date(event.date),
+
+    // L'objet Temporal permet d'utiliser les méthodes de Duration de Java
+
     end: new Date(
       event.duration
-        ? new Date(event.date).getTime() + Number(event.duration) * 60000
+        ? new Date(event.date).getTime() + Number(
+          Temporal.Duration.from(event.duration).total({
+            unit: "millisecond",
+          }).toString(),
+        )
         : new Date(event.date).getTime(),
     ),
     allDay: Number(event.duration) === 0,
