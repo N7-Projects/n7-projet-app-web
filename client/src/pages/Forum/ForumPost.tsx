@@ -82,7 +82,11 @@ function ForumPost() {
               setText(e.htmlValue);
             }
           }}
-          style={{ maxWidth: "700px", maxHeight: "50rem" }}
+          style={{
+            maxWidth: "700px",
+            maxHeight: "50rem",
+            backgroundColor: "white",
+          }}
           ref={editorRef}
         />
         <Button
