@@ -36,7 +36,6 @@ import jakarta.persistence.TypedQuery;
 
 @RestController
 public class Facade {
-  
     @Autowired
     private EntityManager entityManager;
     @Autowired
@@ -59,14 +58,19 @@ public class Facade {
     VehiculeTypeRepository vehiculeTypeRepo;
     @Autowired
     EventRepository eventRepository;
+    @Autowired
+    ForumTopicRepository forumTopicRepository;
+    @Autowired
+    MessageRepository messageRepository;
 
     /**
      * Adds test circuits. TODO: Remove this code.
      */
     @PostConstruct
     public void populate() {
+        // ajout d'un circuit
         Circuit circuit = new Circuit("Monza");
-        circuit.setCreationDate(Date.valueOf("2025-04-04"));
+        circuit.setCreationDate(Date.valueOf("2025-04-20"));
         circuit.setDistance(5.793);
         circuit.setTurnNumber(11);
         circuit.setBestTime(1.20);
@@ -74,12 +78,17 @@ public class Facade {
         circuit.setSpectatorNumber(100000);
         circuitRepo.save(circuit);
 
+        // ajout d'un Forum Topic
+        ForumTopic ft = new ForumTopic();
+        ft.setTitle("Le circuit de la Monza est-"
+                + "il confortable pour les spectateurs ?");
+        forumTopicRepository.save(ft);
+
         // check if event has been added
         System.out.println("\nList of circuits:");
         circuitRepo.findAll().forEach(System.out::println);
         System.out.println("List of events:");
         eventRepository.findAll().forEach(System.out::println);
-
 
     }
 
@@ -95,17 +104,22 @@ public class Facade {
         return circuitRepo.findById(id).get();
     }
 
-    @PostMapping("/api/circuits/{circuitId}/edit")
+    @PostMapping("api/circuits/{circuitId}/edit")
     public void editCircuit(@PathVariable String circuitId) {
         // long id = Long.parseLong(circuitId);
         // Circuit c = circuitRepo.findById(id).get();
+    }
+
+    @PostMapping("api/circuits/new")
+    public Circuit newCircuit(@RequestBody Circuit newCircuit) {
+        System.out.println("Added new circuit " + newCircuit);
+        return circuitRepo.save(newCircuit);
     }
 
     @GetMapping("/api/calendar")
     public Collection<Event> getCalendar() {
         return eventRepository.findAll();
     }
-
 
     @GetMapping("/api/calendar/{date}")
     public Collection<Event> getDate(@PathVariable String date) {
@@ -116,109 +130,109 @@ public class Facade {
         return q.getResultList();
     }
 
-  @GetMapping("/api/forum")
-  public Collection<ForumTopic> getForumTopics() {
-    return forumTopicRepository.findAll();
-  }
-
-  @GetMapping("/api/forum/{idForumTopic}")
-  public Collection<Message> getMessageOnTopic(@PathVariable String idForumTopic) {
-
-    // handle id parsing
-    long id;
-    try {
-      id = Long.parseLong(idForumTopic);
-    } catch (NumberFormatException e) {
-      id = -1;
+    @GetMapping("/api/forum")
+    public Collection<ForumTopic> getForumTopics() {
+        return forumTopicRepository.findAll();
     }
-    Collection<Message> res = new ArrayList<>();
-    if (id != -1) {
-      List<Message> lms = messageRepository.findAll();
-      Optional<ForumTopic> oft = forumTopicRepository.findById(id);
-      // whether the subject exists
-      if (oft.isPresent()) {
-        for (Message message : lms) {
-          if (id == message.getSubject().getIdForumTopic()) {
-            res.add(message);
-            System.out.println("Id Message added = " + message.getIdMessage());
-          }
+
+    @GetMapping("/api/forum/{idForumTopic}")
+    public Collection<Message> getMessageOnTopic(@PathVariable String idForumTopic) {
+
+        // handle id parsing
+        long id;
+        try {
+            id = Long.parseLong(idForumTopic);
+        } catch (NumberFormatException e) {
+            id = -1;
         }
-      }
+        Collection<Message> res = new ArrayList<>();
+        if (id != -1) {
+            List<Message> lms = messageRepository.findAll();
+            Optional<ForumTopic> oft = forumTopicRepository.findById(id);
+            // whether the subject exists
+            if (oft.isPresent()) {
+                for (Message message : lms) {
+                    if (id == message.getSubject().getIdForumTopic()) {
+                        res.add(message);
+                        System.out.println("Id Message added = " + message.getIdMessage());
+                    }
+                }
+            }
+        }
+
+        return res;
     }
 
-    return res;
-  }
+    @PostMapping("/api/forum/{idForumTopic}/post")
+    public Message postMessageOnTopic(@RequestBody Message newMessage, @PathVariable String idForumTopic) {
+        Message res = new Message();
+        // precondition
+        if (newMessage == null) {
+            System.out.println("IGNORING: postMessageOnTopic(null)");
+            return res;
+        }
+        if (newMessage.getText() == null) {
+            System.out.println("IGNORING: postMessageOnTopic with a null text");
+            return res;
+        }
 
-  @PostMapping("/api/forum/{idForumTopic}/post")
-  public Message postMessageOnTopic(@RequestBody Message newMessage, @PathVariable String idForumTopic) {
-    Message res = new Message();
-    // precondition
-    if (newMessage == null) {
-      System.out.println("IGNORING: postMessageOnTopic(null)");
-      return res;
-    }
-    if (newMessage.getText() == null) {
-      System.out.println("IGNORING: postMessageOnTopic with a null text");
-      return res;
-    }
+        if (newMessage.getText().length() == 0) {
+            System.out.println("IGNORING: postMessageOnTopic with a empty text");
+            return res;
+        }
 
-    if (newMessage.getText().length() == 0) {
-      System.out.println("IGNORING: postMessageOnTopic with a empty text");
-      return res;
-    }
+        newMessage.setDateOfPublication(LocalDateTime.now());
 
-    newMessage.setDateOfPublication(LocalDateTime.now());
+        // handler of the pathvariable
+        long id;
+        try {
+            id = Long.parseLong(idForumTopic);
+        } catch (NumberFormatException e) {
+            id = -1;
+            return res;
+        }
 
-    // handler of the pathvariable
-    long id;
-    try {
-      id = Long.parseLong(idForumTopic);
-    } catch (NumberFormatException e) {
-      id = -1;
-      return res;
-    }
+        Optional<ForumTopic> ft = forumTopicRepository.findById(id);
+        if (ft.isPresent()) {
+            newMessage.setSubject(ft.get());
+            res = messageRepository.save(newMessage);
+        } else {
+            System.out.println("IGNORING: postMessageOnTopic on no topic");
+        }
 
-    Optional<ForumTopic> ft = forumTopicRepository.findById(id);
-    if (ft.isPresent()) {
-      newMessage.setSubject(ft.get());
-      res = messageRepository.save(newMessage);
-    } else {
-      System.out.println("IGNORING: postMessageOnTopic on no topic");
-    }
-
-    return res;
-  }
-
-  @GetMapping("/api/forum/{idForumTopic}/consult")
-  public String getTiteTopic(@PathVariable String idForumTopic) {
-    String res = "";
-    long id;
-    try {
-      id = Long.parseLong(idForumTopic);
-    } catch (NumberFormatException e) {
-      id = -1;
+        return res;
     }
 
-    if (id != -1) {
-      Optional<ForumTopic> ft = forumTopicRepository.findById(id);
-      if (ft.isPresent()) {
-        res = ft.get().getTitle();
-      }
-    }
-    return res;
-  }
+    @GetMapping("/api/forum/{idForumTopic}/consult")
+    public String getTiteTopic(@PathVariable String idForumTopic) {
+        String res = "";
+        long id;
+        try {
+            id = Long.parseLong(idForumTopic);
+        } catch (NumberFormatException e) {
+            id = -1;
+        }
 
-  @PostMapping("/api/forum/post")
-  public ForumTopic postNewForumTopic(@RequestBody ForumTopic ft) {
-    if (ft == null)
-      return null;
-    if (ft.getTitle() == null)
-      return null;
-    if (ft.getTitle() == "")
-      return null;
-    System.out.println("Preconde test passed to post : " + ft.getTitle());
-    ForumTopic toSave = new ForumTopic(ft.getTitle());
-    return forumTopicRepository.save(toSave);
-  }
+        if (id != -1) {
+            Optional<ForumTopic> ft = forumTopicRepository.findById(id);
+            if (ft.isPresent()) {
+                res = ft.get().getTitle();
+            }
+        }
+        return res;
+    }
+
+    @PostMapping("/api/forum/post")
+    public ForumTopic postNewForumTopic(@RequestBody ForumTopic ft) {
+        if (ft == null)
+            return null;
+        if (ft.getTitle() == null)
+            return null;
+        if (ft.getTitle() == "")
+            return null;
+        System.out.println("Preconde test passed to post : " + ft.getTitle());
+        ForumTopic toSave = new ForumTopic(ft.getTitle());
+        return forumTopicRepository.save(toSave);
+    }
 
 }
