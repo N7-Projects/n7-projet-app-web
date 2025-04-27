@@ -70,7 +70,7 @@ public class Facade {
   public void populate() {
     // ajout d'un circuit
     Circuit circuit = new Circuit("Monza");
-    circuit.setCreationDate(Date.valueOf("1980-01-01"));
+    circuit.setCreationDate(Date.valueOf("2025-04-20"));
     circuit.setDistance(5.793);
     circuit.setTurnNumber(11);
     circuit.setBestTime(1.20);
