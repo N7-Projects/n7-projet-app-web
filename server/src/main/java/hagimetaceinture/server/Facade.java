@@ -93,17 +93,21 @@ public class Facade {
         System.out.println("List of events:");
         eventRepository.findAll().forEach(System.out::println);
 
-        // ajout d'un équipe
-        RacingTeam racingTeam = new RacingTeam();
-        racingTeam.setNom("N7RT");
-        racingTeam.setClassement(1);
-        racingTeamRepo.save(racingTeam);
-
         // ajout d'un membre
         Member member = new Member();
         member.setFirstname("Guillaume");
         member.setName("Sablayrolles");
         memberRepo.save(member);
+
+        Collection<Member> colMemb = new ArrayList<Member>();
+        colMemb.add(member);
+
+        // ajout d'un équipe
+        RacingTeam racingTeam = new RacingTeam();
+        racingTeam.setNom("N7RT");
+        racingTeam.setClassement(1);
+        racingTeam.setMembres(colMemb);
+        racingTeamRepo.save(racingTeam);
 
     }
 
@@ -254,6 +258,11 @@ public class Facade {
     public Collection<RacingTeam> getTeams() {
         return racingTeamRepo.findAll();
 
+    }
+
+    @GetMapping("/api/members")
+    public Collection<Member> getMembers() {
+        return memberRepo.findAll();
     }
 
 }
