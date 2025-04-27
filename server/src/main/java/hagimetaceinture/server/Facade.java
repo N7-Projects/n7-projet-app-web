@@ -21,6 +21,7 @@ import hagimetaceinture.server.event.EventRepository;
 import hagimetaceinture.server.forumtopic.ForumTopic;
 import hagimetaceinture.server.forumtopic.ForumTopicRepository;
 import hagimetaceinture.server.meeting.MeetingRepository;
+import hagimetaceinture.server.member.Member;
 import hagimetaceinture.server.member.MemberRepository;
 import hagimetaceinture.server.message.Message;
 import hagimetaceinture.server.message.MessageRepository;
@@ -97,6 +98,12 @@ public class Facade {
         racingTeam.setNom("N7RT");
         racingTeam.setClassement(1);
         racingTeamRepo.save(racingTeam);
+
+        // ajout d'un membre
+        Member member = new Member();
+        member.setFirstname("Guillaume");
+        member.setName("Sablayrolles");
+        memberRepo.save(member);
 
     }
 
