@@ -30,6 +30,7 @@ import hagimetaceinture.server.racingteam.RacingTeam;
 import hagimetaceinture.server.racingteam.RacingTeamRepository;
 import hagimetaceinture.server.sponsor.SponsorRepository;
 import hagimetaceinture.server.sponsoring.SponsoringRepository;
+import hagimetaceinture.server.vehicule.Vehicule;
 import hagimetaceinture.server.vehicule.VehiculeRepository;
 import hagimetaceinture.server.vehiculetype.VehiculeTypeRepository;
 import jakarta.annotation.PostConstruct;
@@ -93,10 +94,16 @@ public class Facade {
         System.out.println("List of events:");
         eventRepository.findAll().forEach(System.out::println);
 
+        // ajout d'un véhicule
+        Vehicule vehicule = new Vehicule();
+        vehicule.setLicensePlate("WW-999-WW");
+        vehicule.setModel("Porsche");
+
         // ajout d'un membre
         Member member = new Member();
         member.setFirstname("Guillaume");
         member.setName("Sablayrolles");
+        member.addVehicule(vehicule);
         memberRepo.save(member);
 
         Collection<Member> colMemb = new ArrayList<Member>();
@@ -263,6 +270,11 @@ public class Facade {
     @GetMapping("/api/members")
     public Collection<Member> getMembers() {
         return memberRepo.findAll();
+    }
+
+    @GetMapping("/api/vehicules")
+    public Collection<Vehicule> getVehicules() {
+        return vehiculeRepo.findAll();
     }
 
 }
