@@ -28,6 +28,7 @@ import hagimetaceinture.server.message.MessageRepository;
 import hagimetaceinture.server.race.RaceRepository;
 import hagimetaceinture.server.racingteam.RacingTeam;
 import hagimetaceinture.server.racingteam.RacingTeamRepository;
+import hagimetaceinture.server.sponsor.Sponsor;
 import hagimetaceinture.server.sponsor.SponsorRepository;
 import hagimetaceinture.server.sponsoring.SponsoringRepository;
 import hagimetaceinture.server.vehicule.Vehicule;
@@ -36,7 +37,6 @@ import hagimetaceinture.server.vehiculetype.VehiculeTypeRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class Facade {
@@ -106,14 +106,24 @@ public class Facade {
         member.addVehicule(vehicule);
         memberRepo.save(member);
 
+        // ajout d'un sponsor
+        Sponsor sponsor = new Sponsor();
+        sponsor.setName("BlackRock");
+        sponsor.setInvestedCapital(5000);
+        sponsor.setFundationDate(Date.valueOf("2025-04-25"));
+        sponsorRepo.save(sponsor);
+
         Collection<Member> colMemb = new ArrayList<Member>();
         colMemb.add(member);
+        Collection<Sponsor> colSpons = new ArrayList<Sponsor>();
+        colSpons.add(sponsor);
 
         // ajout d'un équipe
         RacingTeam racingTeam = new RacingTeam();
         racingTeam.setNom("N7RT");
         racingTeam.setClassement(1);
         racingTeam.setMembres(colMemb);
+        racingTeam.setSponsors(colSpons);
         racingTeamRepo.save(racingTeam);
 
     }
@@ -278,6 +288,12 @@ public class Facade {
     @GetMapping("/api/vehicules")
     public Collection<Vehicule> getVehicules() {
         return vehiculeRepo.findAll();
+    }
+
+    // Sponsor CRUD
+    @GetMapping("/api/sponsors")
+    public Collection<Sponsor> getSponsors() {
+        return sponsorRepo.findAll();
     }
 
 }
