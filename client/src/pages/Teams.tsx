@@ -1,4 +1,3 @@
-import { CircuitCard } from "../components/CircuitCard.tsx";
 import { TeamCard } from "../components/TeamCard.tsx";
 import { TeamType } from "../types/teamType.ts";
 

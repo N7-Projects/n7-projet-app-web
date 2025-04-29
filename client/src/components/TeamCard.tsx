@@ -12,7 +12,7 @@ function TeamCard(team: TeamType) {
   const footer = (
     <>
       <Button
-        label="View Circuit"
+        label="View Team"
         severity="primary"
         icon="pi pi-search"
         // Use Link if its not what do we want
