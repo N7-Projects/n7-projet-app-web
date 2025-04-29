@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import hagimetaceinture.server.circuit.Circuit;
 import hagimetaceinture.server.circuit.CircuitRepository;
@@ -37,6 +39,7 @@ import hagimetaceinture.server.vehiculetype.VehiculeTypeRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class Facade {
@@ -275,6 +278,26 @@ public class Facade {
     @GetMapping("/api/teams")
     public Collection<RacingTeam> getTeams() {
         return racingTeamRepo.findAll();
+    }
+
+    @GetMapping("/api/teams/{teamId}")
+    public RacingTeam getMethodName(@PathVariable String teamId) {
+        // handle id parsing
+        long id;
+        try {
+            id = Long.parseLong(teamId);
+        } catch (NumberFormatException e) {
+            id = -1;
+        }
+        if (id != -1) {
+            Optional<RacingTeam> racingTeam = racingTeamRepo.findById(id);
+            // whether the team exists
+            if (racingTeam.isPresent()) {
+                return racingTeam.get();
+            }
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'équipe d'id : " + id + " n'existe pas");
 
     }
 
