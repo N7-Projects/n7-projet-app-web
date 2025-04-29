@@ -17,7 +17,7 @@ function TeamCard(team: TeamType) {
         icon="pi pi-search"
         // Use Link if its not what do we want
         onClick={() => {
-          globalThis.location.href = `/circuits/${team.idRacingTeam}`;
+          globalThis.location.href = `/teams/${team.idRacingTeam}`;
         }}
       />
       <Button

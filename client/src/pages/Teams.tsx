@@ -9,7 +9,7 @@ function Equipes() {
   const _queryClient = useQueryClient();
 
   const { data, isPending, isError, error } = useQuery({
-    queryKey: [{ circuits: "all-teams" }],
+    queryKey: [{ teams: "all-teams" }],
     queryFn: async () => {
       const route: string = "/api/teams";
       const response = await fetch(route);
