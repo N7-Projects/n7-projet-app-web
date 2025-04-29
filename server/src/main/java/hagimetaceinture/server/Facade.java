@@ -261,17 +261,20 @@ public class Facade {
         return forumTopicRepository.save(toSave);
     }
 
+    // Racing team CRUD
     @GetMapping("/api/teams")
     public Collection<RacingTeam> getTeams() {
         return racingTeamRepo.findAll();
 
     }
 
+    // Member CRUD
     @GetMapping("/api/members")
     public Collection<Member> getMembers() {
         return memberRepo.findAll();
     }
 
+    // Vehicule CRUD
     @GetMapping("/api/vehicules")
     public Collection<Vehicule> getVehicules() {
         return vehiculeRepo.findAll();

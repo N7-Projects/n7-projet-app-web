@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import hagimetaceinture.server.vehicule.Vehicule;
 import jakarta.persistence.CascadeType;

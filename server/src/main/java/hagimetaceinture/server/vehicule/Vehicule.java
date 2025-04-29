@@ -2,7 +2,6 @@ package hagimetaceinture.server.vehicule;
 
 import java.sql.Date;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import hagimetaceinture.server.event.Event;
@@ -24,7 +23,7 @@ public class Vehicule extends Event {
     private String licensePlate;
 
     @ManyToOne
-    @JsonIgnoreProperties("vehicules")
+    @JsonIgnoreProperties("vehicules") // empêche l'affichage récursif de Member.vehicules (ne sérialize pas vehicule)
     private Member owner;
 
     public Vehicule() {
