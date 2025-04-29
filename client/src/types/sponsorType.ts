@@ -1,4 +1,4 @@
-export type sponsorType = {
+export type SponsorType = {
   id: number;
   duration: string;
   name: string;

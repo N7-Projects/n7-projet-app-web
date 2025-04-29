@@ -29,6 +29,16 @@ export default function Navbar() {
             }}
           />
         </li>
+        <li key="Equipes">
+          <Button
+            label="Equipes"
+            size="large"
+            text
+            onClick={() => {
+              globalThis.location.href = "/teams";
+            }}
+          />
+        </li>
         <li key="Calendrier">
           <Button
             label="Calendrier"

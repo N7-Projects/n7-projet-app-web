@@ -1,6 +1,6 @@
 import { ownerType } from "./ownerType.ts";
 
-export type vehiculeType = {
+export type VehiculeType = {
   id: number;
   duration: string;
   vehiculeType: null;
