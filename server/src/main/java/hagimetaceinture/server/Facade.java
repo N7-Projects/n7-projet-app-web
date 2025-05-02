@@ -301,7 +301,7 @@ public class Facade {
 
     }
 
-    @PostMapping("api/teams/new")
+    @PostMapping("/api/teams/new")
     public RacingTeam newteam(@RequestBody RacingTeam newRacingTeam) {
         System.out.println("Added new team " + newRacingTeam);
         return racingTeamRepo.save(newRacingTeam);

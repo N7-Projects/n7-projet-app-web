@@ -63,7 +63,7 @@ function OneTeam() {
   );
 
   return (
-    <div className="circuit-new-card flex justify-content-center">
+    <div className="one-team-card flex justify-content-center">
       <Card
         title={racingTeam.nom}
         subTitle={`Classement : ${racingTeam.classement}`}
