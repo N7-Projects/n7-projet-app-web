@@ -43,7 +43,7 @@ function OneTeam() {
       src="/usercard.png"
     />
   );
-  const footer = (
+  const _footer = (
     <>
       <Button
         label="Créer"
