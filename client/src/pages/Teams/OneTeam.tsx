@@ -1,7 +1,7 @@
 import { Button, Card } from "primereact";
 import { useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import { TeamType } from "../types/teamType.ts";
+import { TeamType } from "../../types/teamType.ts";
 import { useParams } from "react-router-dom";
 
 import "./OneTeam.scss";
@@ -43,12 +43,12 @@ function OneTeam() {
       src="/usercard.png"
     />
   );
-  const _footer = (
+  const footer = (
     <>
       <Button
-        label="Créer"
+        label="Modifier"
         severity="primary"
-        icon="pi pi-send"
+        icon="pi pi-pencil"
         type="submit"
         form="circuitForm"
         // Use Link if its not what do we want
@@ -68,7 +68,7 @@ function OneTeam() {
         title={racingTeam.nom}
         subTitle={`Classement : ${racingTeam.classement}`}
         header={header}
-        // footer={footer}
+        footer={footer}
         className="w-8"
       >
         <div className="team-section">

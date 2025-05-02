@@ -1,5 +1,5 @@
-import { TeamCard } from "../components/TeamCard.tsx";
-import { TeamType } from "../types/teamType.ts";
+import { TeamCard } from "../../components/TeamCard.tsx";
+import { TeamType } from "../../types/teamType.ts";
 
 import "./Teams.scss";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
