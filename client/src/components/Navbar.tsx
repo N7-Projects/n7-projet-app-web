@@ -71,7 +71,7 @@ export default function Navbar() {
                 label: "Nouveau",
                 icon: "pi pi-plus",
                 command: () => {
-                  globalThis.location.href = "/circuits/new";
+                  globalThis.location.href = "/teams/new";
                 },
               },
             ]}
