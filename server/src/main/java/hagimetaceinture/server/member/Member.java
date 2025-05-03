@@ -16,75 +16,75 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Member {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idMembre;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long idMembre;
 
-    private String name;
+  private String name;
 
-    private String firstname;
+  private String firstname;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("owner") // empêche l'affichage récursif de Vehicue.vowner (ne sérialize pas owner)
-    private Collection<Vehicule> vehicules;
+  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnoreProperties("owner") // empêche l'affichage récursif de Vehicue.vowner (ne sérialize pas owner)
+  private Collection<Vehicule> vehicules;
 
-    private boolean subscriber;
+  private boolean subscriber;
 
-    public Member() {
+  public Member() {
+  }
+
+  public long getIdMembre() {
+    return idMembre;
+  }
+
+  public void setIdMembre(long idMembre) {
+    this.idMembre = idMembre;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getFirstname() {
+    return firstname;
+  }
+
+  public void setFirstname(String firstname) {
+    this.firstname = firstname;
+  }
+
+  public boolean isSubscriber() {
+    return subscriber;
+  }
+
+  public void setSubscriber(boolean subscriber) {
+    this.subscriber = subscriber;
+  }
+
+  public Collection<Vehicule> getVehicules() {
+    return vehicules;
+  }
+
+  public void setVehicules(Collection<Vehicule> vehicules) {
+    this.vehicules = vehicules;
+  }
+
+  public void addVehicule(Vehicule vehicule) {
+    if (vehicules == null) {
+      vehicules = new ArrayList<>();
     }
+    vehicules.add(vehicule);
+    vehicule.setOwner(this);
+  }
 
-    public long getIdMembre() {
-        return idMembre;
-    }
-
-    public void setIdMembre(long idMembre) {
-        this.idMembre = idMembre;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public boolean isSubscriber() {
-        return subscriber;
-    }
-
-    public void setSubscriber(boolean subscriber) {
-        this.subscriber = subscriber;
-    }
-
-    public Collection<Vehicule> getVehicules() {
-        return vehicules;
-    }
-
-    public void setVehicules(Collection<Vehicule> vehicules) {
-        this.vehicules = vehicules;
-    }
-
-    public void addVehicule(Vehicule vehicule) {
-        if (vehicules == null) {
-            vehicules = new ArrayList<>();
-        }
-        vehicules.add(vehicule);
-        vehicule.setOwner(this);
-    }
-
-    @Override
-    public String toString() {
-        return "Membre [idMembre=" + getIdMembre() + ", firstname=" + firstname + ", name=" + name
-                + ", vehicules=" + getVehicules() + ", subscriber=" + subscriber + "] \n";
-    }
+  @Override
+  public String toString() {
+    return "Membre [idMembre=" + getIdMembre() + ", firstname=" + firstname + ", name=" + name
+        + ", vehicules=" + getVehicules() + ", subscriber=" + subscriber + "] \n";
+  }
 
 }

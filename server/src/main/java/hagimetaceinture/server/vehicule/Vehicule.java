@@ -13,75 +13,75 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Vehicule extends Event {
 
-    @ManyToOne
-    private VehiculeType vehiculeType;
+  @ManyToOne
+  private VehiculeType vehiculeType;
 
-    private String branch;
+  private String branch;
 
-    private String model;
+  private String model;
 
-    private String licensePlate;
+  private String licensePlate;
 
-    @ManyToOne
-    @JsonIgnoreProperties("vehicules") // empêche l'affichage récursif de Member.vehicules (ne sérialize pas vehicule)
-    private Member owner;
+  @ManyToOne
+  @JsonIgnoreProperties("vehicules") // empêche l'affichage récursif de Member.vehicules (ne sérialize pas vehicule)
+  private Member owner;
 
-    public Vehicule() {
-    }
+  public Vehicule() {
+  }
 
-    public String getBranch() {
-        return branch;
-    }
+  public String getBranch() {
+    return branch;
+  }
 
-    public void setBranch(String branch) {
-        this.branch = branch;
-    }
+  public void setBranch(String branch) {
+    this.branch = branch;
+  }
 
-    public String getModel() {
-        return model;
-    }
+  public String getModel() {
+    return model;
+  }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
+  public void setModel(String model) {
+    this.model = model;
+  }
 
-    public String getLicensePlate() {
-        return licensePlate;
-    }
+  public String getLicensePlate() {
+    return licensePlate;
+  }
 
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
+  public void setLicensePlate(String licensePlate) {
+    this.licensePlate = licensePlate;
+  }
 
-    public Date getFirstLicensePlate() {
-        return getDate();
-    }
+  public Date getFirstLicensePlate() {
+    return getDate();
+  }
 
-    public void setFirstLicensePlate(Date firstLicensePlate) {
-        setDate(firstLicensePlate);
-    }
+  public void setFirstLicensePlate(Date firstLicensePlate) {
+    setDate(firstLicensePlate);
+  }
 
-    public VehiculeType getVehiculeType() {
-        return vehiculeType;
-    }
+  public VehiculeType getVehiculeType() {
+    return vehiculeType;
+  }
 
-    public void setVehiculeType(VehiculeType vehiculeType) {
-        this.vehiculeType = vehiculeType;
-    }
+  public void setVehiculeType(VehiculeType vehiculeType) {
+    this.vehiculeType = vehiculeType;
+  }
 
-    @Override
-    public String toString() {
-        return "Vehicule [idVehicule=" + getId() + ", vehiculeType=" + vehiculeType + ", branch=" + branch
-                + ", model=" + model + ", licensePlate=" + licensePlate + ", owner=" + owner + ", firstLicensePlate="
-                + getFirstLicensePlate() + "]";
-    }
+  @Override
+  public String toString() {
+    return "Vehicule [idVehicule=" + getId() + ", vehiculeType=" + vehiculeType + ", branch=" + branch
+        + ", model=" + model + ", licensePlate=" + licensePlate + ", owner=" + owner + ", firstLicensePlate="
+        + getFirstLicensePlate() + "]";
+  }
 
-    public Member getOwner() {
-        return owner;
-    }
+  public Member getOwner() {
+    return owner;
+  }
 
-    public void setOwner(Member owner) {
-        this.owner = owner;
-    }
+  public void setOwner(Member owner) {
+    this.owner = owner;
+  }
 
 }
