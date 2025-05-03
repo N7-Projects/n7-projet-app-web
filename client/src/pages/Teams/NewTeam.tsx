@@ -12,15 +12,11 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
 import { Calendar } from "primereact/calendar";
-import React from "react";
-import { InputSwitch } from "primereact/inputswitch";
 
 function NewTeam() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const [rowClick, setRowClick] = useState(true);
-  const [rowClickSponsors, setRowClickSponsors] = useState(true);
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddSponsorDialog, setShowAddSponsorDialog] = useState(false);
   const [newMemberFirstname, setNewMemberFirstname] = useState("");
@@ -117,7 +113,7 @@ function NewTeam() {
 
     setIsSubmitting(true);
 
-    var newSponsorDuration = newSponsorSponsorshipEnd?.getTime() -
+    const newSponsorDuration = newSponsorSponsorshipEnd?.getTime() -
       newSponsorSponsorshipStart?.getTime();
     try {
       const response = await fetch("/api/sponsors/new", {
@@ -289,19 +285,24 @@ function NewTeam() {
             Ajouter des membres
           </label>
           <div className="card">
+            <DataTable
+              value={data.membres}
+              selectionMode="multiple"
+              rows={10}
+              selection={selectedMembres}
+              onSelectionChange={(e: { value: MemberType[] }) => {
+                setSelectedMembres(e.value as MemberType[]);
+              }}
+              dataKey="idMembre"
+              tableStyle={{ minWidth: "50rem" }}
+            >
+              <Column selectionMode="multiple" headerStyle={{ width: "3rem" }}>
+              </Column>
+              <Column field="firstname" header="Prénom"></Column>
+              <Column field="name" header="Nom"></Column>
+            </DataTable>
+
             <div className="flex justify-content-between align-items-center mb-4">
-              <div className="flex align-items-center gap-2">
-                <InputSwitch
-                  inputId="input-rowclick"
-                  checked={rowClick}
-                  onChange={(
-                    e: { value: boolean | ((prevState: boolean) => boolean) },
-                  ) => setRowClick(e.value)}
-                />
-                <label htmlFor="input-rowclick">
-                  Selection en cliquant sur la ligne
-                </label>
-              </div>
               <Button
                 icon="pi pi-plus"
                 rounded
@@ -316,55 +317,12 @@ function NewTeam() {
                 type="button" // Explicitly specify it's not a submit button
               />
             </div>
-            <DataTable
-              value={data.membres}
-              selectionMode={rowClick ? null : "checkbox"}
-              rows={10}
-              selection={selectedMembres}
-              onSelectionChange={(e: { value: MemberType[] }) => {
-                setSelectedMembres(e.value as MemberType[]);
-              }}
-              dataKey="idMembre"
-              tableStyle={{ minWidth: "50rem" }}
-            >
-              <Column selectionMode="multiple" headerStyle={{ width: "3rem" }}>
-              </Column>
-              <Column field="firstname" header="Prénom"></Column>
-              <Column field="name" header="Nom"></Column>
-            </DataTable>
           </div>
 
           <label htmlFor="sponsors" className="font-bold block mb-2 mt-3">
             Ajouter des sponsors
           </label>
           <div className="card">
-            <div className="flex justify-content-between align-items-center mb-4">
-              <div className="flex align-items-center gap-2">
-                <InputSwitch
-                  inputId="input-rowclick-sponsors"
-                  checked={rowClickSponsors}
-                  onChange={(
-                    e: { value: boolean | ((prevState: boolean) => boolean) },
-                  ) => setRowClickSponsors(e.value)}
-                />
-                <label htmlFor="input-rowclick-sponsors">
-                  Selectionner en cliquant sur la ligne
-                </label>
-              </div>
-              <Button
-                icon="pi pi-plus"
-                rounded
-                outlined
-                aria-label="Ajouter un sponsor"
-                onClick={(e) => {
-                  e.preventDefault(); // Prevent form submission
-                  setShowAddSponsorDialog(true);
-                }}
-                tooltip="Ajouter un nouveau sponsor"
-                tooltipOptions={{ position: "top" }}
-                type="button" // Explicitly specify it's not a submit button
-              />
-            </div>
             <DataTable
               value={data.sponsors}
               selectionMode={rowClickSponsors ? null : "checkbox"}
@@ -380,6 +338,19 @@ function NewTeam() {
               </Column>
               <Column field="name" header="Nom"></Column>
             </DataTable>
+            <Button
+              icon="pi pi-plus"
+              rounded
+              outlined
+              aria-label="Ajouter un sponsor"
+              onClick={(e) => {
+                e.preventDefault(); // Prevent form submission
+                setShowAddSponsorDialog(true);
+              }}
+              tooltip="Ajouter un nouveau sponsor"
+              tooltipOptions={{ position: "top" }}
+              type="button" // Explicitly specify it's not a submit button
+            />
           </div>
         </form>
       </Card>
