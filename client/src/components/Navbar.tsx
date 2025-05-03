@@ -1,4 +1,8 @@
 import { Button } from "primereact/button";
+
+import { SplitButton } from "primereact/splitbutton";
+import { ButtonGroup } from "primereact/buttongroup";
+
 import "./Navbar.scss";
 
 /* Access path to the logo of Photo7 */
@@ -20,20 +24,37 @@ export default function Navbar() {
 
       <ul className="navbar-desktop">
         <li key="Circuits">
-          <Button
+          <SplitButton
             label="Circuits"
-            size="large"
-            text
+            icon="pi pi-car"
+            dropdownIcon="pi pi-caret-down"
+            outlined
             onClick={() => {
-              globalThis.location.href = "/circuits";
+              globalThis.location.href = "/";
             }}
+            model={[
+              {
+                label: "Tous",
+                icon: "pi pi-bars",
+                command: () => {
+                  globalThis.location.href = "/circuits";
+                },
+              },
+              {
+                label: "Nouveau",
+                icon: "pi pi-plus",
+                command: () => {
+                  globalThis.location.href = "/circuits/new";
+                },
+              },
+            ]}
           />
         </li>
+
         <li key="Equipes">
           <Button
             label="Equipes"
-            size="large"
-            text
+            outlined
             onClick={() => {
               globalThis.location.href = "/teams";
             }}
@@ -42,7 +63,7 @@ export default function Navbar() {
         <li key="Calendrier">
           <Button
             label="Calendrier"
-            text
+            outlined
             onClick={() => {
               globalThis.location.href = "/calendar";
             }}
@@ -51,7 +72,7 @@ export default function Navbar() {
         <li key="Forum">
           <Button
             label="Forum"
-            text
+            outlined
             onClick={() => {
               globalThis.location.href = "/forum";
             }}
