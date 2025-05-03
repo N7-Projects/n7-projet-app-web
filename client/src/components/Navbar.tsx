@@ -1,7 +1,6 @@
 import { Button } from "primereact/button";
 
 import { SplitButton } from "primereact/splitbutton";
-import { ButtonGroup } from "primereact/buttongroup";
 
 import "./Navbar.scss";
 
@@ -30,7 +29,7 @@ export default function Navbar() {
             dropdownIcon="pi pi-caret-down"
             outlined
             onClick={() => {
-              globalThis.location.href = "/";
+              globalThis.location.href = "/circuits";
             }}
             model={[
               {
@@ -52,17 +51,38 @@ export default function Navbar() {
         </li>
 
         <li key="Equipes">
-          <Button
+          <SplitButton
             label="Equipes"
+            icon="pi pi-users"
+            dropdownIcon="pi pi-caret-down"
             outlined
             onClick={() => {
               globalThis.location.href = "/teams";
             }}
+            model={[
+              {
+                label: "Tous",
+                icon: "pi pi-bars",
+                command: () => {
+                  globalThis.location.href = "/teams";
+                },
+              },
+              {
+                label: "Nouveau",
+                icon: "pi pi-plus",
+                command: () => {
+                  globalThis.location.href = "/circuits/new";
+                },
+              },
+            ]}
           />
         </li>
+
         <li key="Calendrier">
           <Button
+            className="nav-button"
             label="Calendrier"
+            icon="pi pi-calendar"
             outlined
             onClick={() => {
               globalThis.location.href = "/calendar";
@@ -71,7 +91,9 @@ export default function Navbar() {
         </li>
         <li key="Forum">
           <Button
+            className="nav-button"
             label="Forum"
+            icon="pi pi-comments"
             outlined
             onClick={() => {
               globalThis.location.href = "/forum";
@@ -80,7 +102,9 @@ export default function Navbar() {
         </li>
         <li key="Newsletter">
           <Button
+            className="nav-button"
             label="Newsletter"
+            icon="pi pi-send"
             outlined
             onClick={() => {
               globalThis.location.href = "/subscribe";
