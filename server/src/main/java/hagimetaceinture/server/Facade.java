@@ -313,6 +313,12 @@ public class Facade {
     return memberRepo.findAll();
   }
 
+  @PostMapping("/api/members/new")
+  public Member newMember(@RequestBody Member member) {
+    System.out.println("Added new member" + member);
+    return memberRepo.save(member);
+  }
+
   // Vehicule CRUD
   @GetMapping("/api/vehicules")
   public Collection<Vehicule> getVehicules() {
@@ -323,6 +329,12 @@ public class Facade {
   @GetMapping("/api/sponsors")
   public Collection<Sponsor> getSponsors() {
     return sponsorRepo.findAll();
+  }
+
+  @PostMapping("/api/sponsors/new")
+  public Sponsor newSponsor(@RequestBody Sponsor sponsor) {
+    System.out.println("Added new sponsor" + sponsor);
+    return sponsorRepo.save(sponsor);
   }
 
 }
