@@ -7,6 +7,9 @@ import Navbar from "./components/Navbar.tsx";
 import NewCircuit from "./pages/NewCircuit.tsx";
 import Forum from "./pages/Forum/Forum.tsx";
 import ForumConsult from "./pages/Forum/ForumConsult.tsx";
+import Equipes from "./pages/Teams/Teams.tsx";
+import OneTeam from "./pages/Teams/OneTeam.tsx";
+import NewTeam from "./pages/Teams/NewTeam.tsx";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +29,13 @@ function App() {
             <Route path="new" element={<NewCircuit />} />
             <Route path=":circuit" element={<Home />} />
             <Route path=":circuit/edit" element={<Circuits />} />
+          </Route>
+
+          <Route path="/teams">
+            <Route index element={<Equipes />} />
+            <Route path="new" element={<NewTeam />} />
+            <Route path=":teamId" element={<OneTeam />} />
+            {/* <Route path=":circuit/edit" element={<Circuits />} /> */}
           </Route>
 
           <Route path="/calendar">

@@ -27,6 +27,20 @@ function Home() {
               </h2>
             </Fieldset>
             <Fieldset
+              legend="Equipes"
+              toggleable
+              className="flex justify-content-center mb-3"
+            >
+              <h2
+                className="m-0 cursor-pointer"
+                onClick={() => {
+                  globalThis.location.href = "/teams";
+                }}
+              >
+                Pour afficher toutes les équipes et leur classement
+              </h2>
+            </Fieldset>
+            <Fieldset
               legend="Calendrier"
               toggleable
               className="flex justify-content-center mb-3"

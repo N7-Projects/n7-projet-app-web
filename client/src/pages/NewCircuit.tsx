@@ -75,7 +75,7 @@ function NewCircuit() {
         subTitle="Rentrer les informations pour créer le circuit"
         footer={footer}
         header={header}
-        className="w-6"
+        className="w-8"
       >
         <form
           id="circuitForm"

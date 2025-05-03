@@ -1,4 +1,7 @@
 import { Button } from "primereact/button";
+
+import { SplitButton } from "primereact/splitbutton";
+
 import "./Navbar.scss";
 
 /* Access path to the logo of Photo7 */
@@ -20,19 +23,67 @@ export default function Navbar() {
 
       <ul className="navbar-desktop">
         <li key="Circuits">
-          <Button
+          <SplitButton
             label="Circuits"
-            size="large"
-            text
+            icon="pi pi-car"
+            dropdownIcon="pi pi-caret-down"
+            outlined
             onClick={() => {
               globalThis.location.href = "/circuits";
             }}
+            model={[
+              {
+                label: "Tous",
+                icon: "pi pi-bars",
+                command: () => {
+                  globalThis.location.href = "/circuits";
+                },
+              },
+              {
+                label: "Nouveau",
+                icon: "pi pi-plus",
+                command: () => {
+                  globalThis.location.href = "/circuits/new";
+                },
+              },
+            ]}
           />
         </li>
+
+        <li key="Equipes">
+          <SplitButton
+            label="Equipes"
+            icon="pi pi-users"
+            dropdownIcon="pi pi-caret-down"
+            outlined
+            onClick={() => {
+              globalThis.location.href = "/teams";
+            }}
+            model={[
+              {
+                label: "Tous",
+                icon: "pi pi-bars",
+                command: () => {
+                  globalThis.location.href = "/teams";
+                },
+              },
+              {
+                label: "Nouveau",
+                icon: "pi pi-plus",
+                command: () => {
+                  globalThis.location.href = "/teams/new";
+                },
+              },
+            ]}
+          />
+        </li>
+
         <li key="Calendrier">
           <Button
+            className="nav-button"
             label="Calendrier"
-            text
+            icon="pi pi-calendar"
+            outlined
             onClick={() => {
               globalThis.location.href = "/calendar";
             }}
@@ -40,8 +91,10 @@ export default function Navbar() {
         </li>
         <li key="Forum">
           <Button
+            className="nav-button"
             label="Forum"
-            text
+            icon="pi pi-comments"
+            outlined
             onClick={() => {
               globalThis.location.href = "/forum";
             }}
@@ -49,7 +102,9 @@ export default function Navbar() {
         </li>
         <li key="Newsletter">
           <Button
+            className="nav-button"
             label="Newsletter"
+            icon="pi pi-send"
             outlined
             onClick={() => {
               globalThis.location.href = "/subscribe";
