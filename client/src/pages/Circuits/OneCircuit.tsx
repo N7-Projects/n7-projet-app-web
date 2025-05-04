@@ -83,8 +83,8 @@ function OneCircuit() {
           <p>
             Le circuit de {circuit.name} possède une capacité d'accueil de
             {` ${circuit.spectatorNumber}`} spectateurs. Ses{" "}
-            {circuit.turnNumber} virages ont été réalisé en {circuit.bestTime}
-            {" "}
+            {circuit.turnNumber} virages et{" "}
+            {circuit.distance}km ont été réalisé en {circuit.bestTime}{" "}
             minutes pour le record.
           </p>
         </div>
