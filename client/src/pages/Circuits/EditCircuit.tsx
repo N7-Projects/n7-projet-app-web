@@ -39,8 +39,6 @@ function EditCircuit() {
       setDistance(oneCircuit.distance.toString());
       setBestTime(oneCircuit.bestTime.toString());
 
-      console.log(date);
-
       return oneCircuit;
     },
   });
