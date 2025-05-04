@@ -109,6 +109,8 @@ public class Facade {
     Member member = new Member();
     member.setFirstname("Guillaume");
     member.setName("Sablayrolles");
+    member.setEmail("guigui@gmail.com");
+    member.setPassword(passwordEncoder.encode("pwd"));
     member.addVehicule(vehicule);
     memberRepo.save(member);
 
@@ -314,6 +316,12 @@ public class Facade {
   @GetMapping("/api/members")
   public Collection<Member> getMembers() {
     return memberRepo.findAll();
+  }
+
+  public void registerUser(Member member) {
+    String hashed = passwordEncoder.encode(member.getPassword());
+    member.setPassword(hashed);
+    memberRepo.save(member);
   }
 
   @PostMapping("/api/members/new")

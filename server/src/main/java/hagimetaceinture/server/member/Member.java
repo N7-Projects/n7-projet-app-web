@@ -3,6 +3,7 @@ package hagimetaceinture.server.member;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import hagimetaceinture.server.vehicule.Vehicule;
@@ -27,6 +28,12 @@ public class Member {
   @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnoreProperties("owner") // empêche l'affichage récursif de Vehicue.vowner (ne sérialize pas owner)
   private Collection<Vehicule> vehicules;
+
+  @JsonIgnore
+  private String email;
+
+  @JsonIgnore
+  private String password;
 
   private boolean subscriber;
 
@@ -79,6 +86,22 @@ public class Member {
     }
     vehicules.add(vehicule);
     vehicule.setOwner(this);
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   @Override
