@@ -11,4 +11,15 @@ public class RegisterRequest {
   public String getPassword() {
     return password;
   }
+
+  private String name;
+  private String firstName;
+
+  public String getName() {
+    return name;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
 }

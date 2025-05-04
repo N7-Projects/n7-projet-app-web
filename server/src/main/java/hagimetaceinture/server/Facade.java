@@ -7,9 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -319,7 +317,7 @@ public class Facade {
   }
 
   @PostMapping("/api/register")
-  public void registerUser(@RequestBody RegisterRequest request) {
+  public Member registerUser(@RequestBody RegisterRequest request) {
     if (memberRepo.findByEmail(request.getEmail()).isPresent()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
           "L'adresse email " + request.getEmail() + " est déjà liée à un compte");
@@ -328,11 +326,31 @@ public class Facade {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
           "L'adresse email " + request.getEmail() + " n'a pas la bonne forme");
     }
+
+    // Get members with this name
+    List<Member> members = memberRepo.findByName(request.getName());
+    members = members.stream().filter(
+        (m) -> m.getFirstname().equals(request.getFirstName()) && (m.getEmail() == null || m.getEmail().isEmpty()))
+        .toList();
+
+    // If we find a member that doesn't have an email associated yet, we associate
+    // it
+    // The limitation of doing this is that if multiple members exist in different
+    // teams and they didn't create an account yet, you won't be able to choose
+    // which one you want to create an account for
+    Member member;
+    if (members.isEmpty()) {
+      member = new Member();
+      member.setName(request.getName());
+      member.setFirstname(request.getFirstName());
+    } else {
+      member = members.getFirst();
+    }
+
     String hashed = passwordEncoder.encode(request.getPassword());
-    Member member = new Member();
     member.setEmail(request.getEmail());
     member.setPassword(hashed);
-    memberRepo.save(member);
+    return memberRepo.save(member);
   }
 
   @PostMapping("/api/login")

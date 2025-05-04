@@ -11,6 +11,7 @@ import Equipes from "./pages/Teams/Teams.tsx";
 import OneTeam from "./pages/Teams/OneTeam.tsx";
 import NewTeam from "./pages/Teams/NewTeam.tsx";
 import Login from "./pages/Login.tsx";
+import Register from "./pages/Register.tsx";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,9 @@ function App() {
           </Route>
           <Route path="/login">
             <Route index element={<Login />} />
+          </Route>
+          <Route path="/register">
+            <Route index element={<Register />} />
           </Route>
         </Routes>
       </BrowserRouter>
