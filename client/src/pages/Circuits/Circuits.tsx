@@ -1,4 +1,4 @@
-import { CircuitCard } from "../../components/CircuitCard.tsx";
+import { CircuitCard } from "../../components/circuit/CircuitCard.tsx";
 import { CircuitType } from "../../types/circuitType.ts";
 
 import "./Circuits.scss";

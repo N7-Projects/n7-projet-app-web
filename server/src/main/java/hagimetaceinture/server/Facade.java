@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -147,10 +148,21 @@ public class Facade {
         return circuitRepo.findById(id).get();
     }
 
-    @PostMapping("api/circuits/{circuitId}/edit")
-    public void editCircuit(@PathVariable String circuitId) {
-        // long id = Long.parseLong(circuitId);
-        // Circuit c = circuitRepo.findById(id).get();
+    @PutMapping("api/circuits/{circuitId}/edit")
+    public Circuit editCircuit(@PathVariable String circuitId, @RequestBody Circuit editCircuit) {
+        long id = Long.parseLong(circuitId);
+        Circuit c = circuitRepo.findById(id).get();
+        c.setBestTime(editCircuit.getBestTime());
+        c.setCreationDate(editCircuit.getCreationDate());
+        c.setDistance(editCircuit.getDistance());
+        c.setDuration(editCircuit.getDuration());
+        c.setName(editCircuit.getName());
+        c.setPlace(editCircuit.getPlace());
+        c.setSpectatorNumber(editCircuit.getSpectatorNumber());
+        c.setTurnNumber(editCircuit.getTurnNumber());
+        System.out.println("Editited circuit" + c);
+        return circuitRepo.save(c);
+
     }
 
     @PostMapping("api/circuits/new")

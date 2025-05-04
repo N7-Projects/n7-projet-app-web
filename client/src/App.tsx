@@ -13,6 +13,7 @@ import NewTeam from "./pages/Teams/NewTeam.tsx";
 import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
 import OneCircuit from "./pages/Circuits/OneCircuit.tsx";
+import EditCircuit from "./pages/Circuits/EditCircuit.tsx";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +32,7 @@ function App() {
             <Route index element={<Circuits />} />
             <Route path="new" element={<NewCircuit />} />
             <Route path=":circuitId" element={<OneCircuit />} />
-            <Route path=":circuitId/edit" element={<Circuits />} />
+            <Route path=":circuitId/edit" element={<EditCircuit />} />
           </Route>
 
           <Route path="/teams">
