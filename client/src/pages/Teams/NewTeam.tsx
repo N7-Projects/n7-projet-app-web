@@ -10,14 +10,32 @@ import { MemberType } from "../../types/memberType.ts";
 import { SponsorType } from "../../types/sponsorType.ts";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { InputSwitch } from "primereact";
+import { Dialog } from "primereact/dialog";
+import { Calendar } from "primereact/calendar";
 
 function NewTeam() {
   const navigate = useNavigate();
-  const _queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-  const [rowClick, setRowClick] = useState(true);
-  const [rowClickSponsors, setRowClickSponsors] = useState(true);
+  const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
+  const [showAddSponsorDialog, setShowAddSponsorDialog] = useState(false);
+  const [newMemberFirstname, setNewMemberFirstname] = useState("");
+  const [newMemberName, setNewMemberName] = useState("");
+  const [newSponsorName, setNewSponsorName] = useState("");
+
+  const [newSponsorInvestedCapital, setNewSponsorInvestedCapital] = useState<
+    number | null
+  >(null);
+  const [newSponsorFundationDate, setNewSponsorFundationDate] = useState<
+    Date | null
+  >(null);
+  const [newSponsorSponsorshipStart, setNewSponsorSponsorshipStart] = useState<
+    Date | null
+  >(null);
+  const [newSponsorSponsorshipEnd, setNewSponsorSponsorshipEnd] = useState<
+    Date | null
+  >(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [selectedMembres, setSelectedMembres] = useState<MemberType[]>([]);
   const [selectedSponsors, setSelectedSponsors] = useState<SponsorType[]>([]);
@@ -42,12 +60,101 @@ function NewTeam() {
     },
   });
 
-  const header = (
-    <img
-      alt="Card"
-      src="/usercard.png"
-    />
-  );
+  const handleAddMember = async () => {
+    if (!newMemberFirstname || !newMemberName) {
+      alert("Veuillez remplir tous les champs");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/members/new", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstname: newMemberFirstname,
+          name: newMemberName,
+        }),
+      });
+
+      if (response.ok) {
+        // Reset form fields
+        setNewMemberFirstname("");
+        setNewMemberName("");
+        setShowAddMemberDialog(false);
+
+        // Invalidate and refetch data to update the members list
+        queryClient.invalidateQueries({
+          queryKey: [{ membres: "all-membres" }],
+        });
+      } else {
+        alert("Échec de l'ajout du membre");
+      }
+    } catch (error) {
+      console.error("Erreur:", error);
+      alert("Une erreur est survenue lors de l'ajout du membre");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleAddSponsor = async () => {
+    if (
+      !newSponsorName || newSponsorInvestedCapital === null ||
+      newSponsorFundationDate === null || newSponsorSponsorshipEnd === null ||
+      newSponsorSponsorshipStart === null
+    ) {
+      alert("Veuillez remplir tous les champs");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const newSponsorDuration = newSponsorSponsorshipEnd?.getTime() -
+      newSponsorSponsorshipStart?.getTime();
+    try {
+      const response = await fetch("/api/sponsors/new", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: newSponsorName,
+          duration: newSponsorDuration,
+          investedCapital: newSponsorInvestedCapital,
+          fundationDate: newSponsorFundationDate.toISOString(),
+        }),
+      });
+
+      if (response.ok) {
+        // Reset form fields
+        setNewSponsorName("");
+        setNewSponsorSponsorshipStart(null);
+        setNewSponsorSponsorshipEnd(null);
+        setNewSponsorInvestedCapital(null);
+        setNewSponsorFundationDate(null);
+        setShowAddSponsorDialog(false);
+
+        // Invalidate and refetch data to update the sponsors list
+        queryClient.invalidateQueries({
+          queryKey: [{ membres: "all-membres" }],
+        });
+      } else {
+        alert("Échec de l'ajout du sponsor");
+      }
+    } catch (error) {
+      console.error("Erreur:", error);
+      alert("Une erreur est survenue lors de l'ajout du sponsor");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const header = <img alt="Card" src="/usercard.png" />;
+
   const footer = (
     <>
       <Button
@@ -56,7 +163,6 @@ function NewTeam() {
         icon="pi pi-send"
         type="submit"
         form="teamForm"
-        // Use Link if its not what do we want
       />
       <Button
         label="Effacer"
@@ -100,6 +206,42 @@ function NewTeam() {
       alert("An error occurred while creating the team.");
     }
   };
+
+  const addMemberDialogFooter = (
+    <>
+      <Button
+        label="Annuler"
+        icon="pi pi-times"
+        severity="danger"
+        onClick={() => setShowAddMemberDialog(false)}
+        className="p-button-text"
+      />
+      <Button
+        label="Ajouter"
+        icon="pi pi-check"
+        onClick={handleAddMember}
+        loading={isSubmitting}
+      />
+    </>
+  );
+
+  const addSponsorDialogFooter = (
+    <>
+      <Button
+        label="Annuler"
+        icon="pi pi-times"
+        severity="danger"
+        onClick={() => setShowAddSponsorDialog(false)}
+        className="p-button-text"
+      />
+      <Button
+        label="Ajouter"
+        icon="pi pi-check"
+        onClick={handleAddSponsor}
+        loading={isSubmitting}
+      />
+    </>
+  );
 
   if (isPending) {
     return <h3>Pending...</h3>;
@@ -145,21 +287,9 @@ function NewTeam() {
             Ajouter des membres
           </label>
           <div className="card">
-            <div className="flex justify-content-center align-items-center mb-4 gap-2">
-              <InputSwitch
-                inputId="input-rowclick"
-                checked={rowClick}
-                onChange={(
-                  e: { value: boolean | ((prevState: boolean) => boolean) },
-                ) => setRowClick(e.value)}
-              />
-              <label htmlFor="input-rowclick">
-                Selection en cliquant sur la ligne
-              </label>
-            </div>
             <DataTable
               value={data.membres}
-              selectionMode={rowClick ? null : "checkbox"}
+              selectionMode="multiple"
               rows={10}
               selection={selectedMembres}
               onSelectionChange={(e: { value: MemberType[] }) => {
@@ -173,27 +303,32 @@ function NewTeam() {
               <Column field="firstname" header="Prénom"></Column>
               <Column field="name" header="Nom"></Column>
             </DataTable>
+
+            <div className="flex justify-content-between align-items-center mb-4">
+              <Button
+                icon="pi pi-plus"
+                severity="info"
+                rounded
+                outlined
+                aria-label="Ajouter un membre"
+                onClick={(e: { preventDefault: () => void }) => {
+                  e.preventDefault(); // Prevent form submission
+                  setShowAddMemberDialog(true);
+                }}
+                tooltip="Ajouter un nouveau membre"
+                tooltipOptions={{ position: "top" }}
+                type="button" // Explicitly specify it's not a submit button
+              />
+            </div>
           </div>
 
           <label htmlFor="sponsors" className="font-bold block mb-2 mt-3">
             Ajouter des sponsors
           </label>
           <div className="card">
-            <div className="flex justify-content-center align-items-center mb-4 gap-2">
-              <InputSwitch
-                inputId="input-rowclick-sponsors"
-                checked={rowClickSponsors}
-                onChange={(
-                  e: { value: boolean | ((prevState: boolean) => boolean) },
-                ) => setRowClickSponsors(e.value)}
-              />
-              <label htmlFor="input-rowclick-sponsors">
-                Selectionner en cliquant sur la ligne
-              </label>
-            </div>
             <DataTable
               value={data.sponsors}
-              selectionMode={rowClickSponsors ? null : "checkbox"}
+              selectionMode="multiple"
               rows={10}
               selection={selectedSponsors}
               onSelectionChange={(e: { value: SponsorType[] }) => {
@@ -206,9 +341,125 @@ function NewTeam() {
               </Column>
               <Column field="name" header="Nom"></Column>
             </DataTable>
+            <Button
+              icon="pi pi-plus"
+              severity="info"
+              rounded
+              outlined
+              aria-label="Ajouter un sponsor"
+              onClick={(e: { preventDefault: () => void }) => {
+                e.preventDefault(); // Prevent form submission
+                setShowAddSponsorDialog(true);
+              }}
+              tooltip="Ajouter un nouveau sponsor"
+              tooltipOptions={{ position: "top" }}
+              type="button" // Explicitly specify it's not a submit button
+            />
           </div>
         </form>
       </Card>
+
+      <Dialog
+        header="Ajouter un nouveau membre"
+        visible={showAddMemberDialog}
+        style={{ width: "30rem" }}
+        footer={addMemberDialogFooter}
+        onHide={() => setShowAddMemberDialog(false)}
+      >
+        <div className="flex flex-column gap-3 mt-3">
+          <div className="flex flex-column gap-2">
+            <label htmlFor="firstname" className="font-bold">Prénom</label>
+            <InputText
+              id="firstname"
+              value={newMemberFirstname}
+              onChange={(e) => setNewMemberFirstname(e.target.value)}
+              placeholder="Entrez le prénom"
+            />
+          </div>
+
+          <div className="flex flex-column gap-2">
+            <label htmlFor="lastname" className="font-bold">Nom</label>
+            <InputText
+              id="lastname"
+              value={newMemberName}
+              onChange={(e) => setNewMemberName(e.target.value)}
+              placeholder="Entrez le nom"
+            />
+          </div>
+        </div>
+      </Dialog>
+
+      <Dialog
+        header="Ajouter un nouveau sponsor"
+        visible={showAddSponsorDialog}
+        style={{ width: "30rem" }}
+        footer={addSponsorDialogFooter}
+        onHide={() => setShowAddSponsorDialog(false)}
+      >
+        <div className="flex flex-column gap-3 mt-3">
+          <div className="flex flex-column gap-2">
+            <label htmlFor="sponsorName" className="font-bold">
+              Nom du sponsor
+            </label>
+            <InputText
+              id="sponsorName"
+              value={newSponsorName}
+              onChange={(e) => setNewSponsorName(e.target.value)}
+              placeholder="Entrez le nom du sponsor"
+            />
+          </div>
+
+          <div className="flex flex-column gap-2">
+            <label htmlFor="sponsorDuration" className="font-bold">Durée</label>
+            <Calendar
+              id="sponsorFundationDate"
+              value={newSponsorSponsorshipStart}
+              onChange={(e) => setNewSponsorSponsorshipStart(e.value as Date)}
+              dateFormat="dd/mm/yy"
+              placeholder="Sélectionnez une date de début"
+              showIcon
+            />
+            <Calendar
+              id="sponsorFundationDate"
+              value={newSponsorSponsorshipEnd}
+              onChange={(e) => setNewSponsorSponsorshipEnd(e.value as Date)}
+              dateFormat="dd/mm/yy"
+              placeholder="Sélectionnez une date de fin"
+              showIcon
+            />
+          </div>
+
+          <div className="flex flex-column gap-2">
+            <label htmlFor="sponsorInvestedCapital" className="font-bold">
+              Capital investi
+            </label>
+            <InputNumber
+              id="sponsorInvestedCapital"
+              value={newSponsorInvestedCapital}
+              onValueChange={(e) =>
+                setNewSponsorInvestedCapital(e.value ?? null)}
+              placeholder="Montant investi"
+              mode="currency"
+              currency="EUR"
+              locale="fr-FR"
+            />
+          </div>
+
+          <div className="flex flex-column gap-2">
+            <label htmlFor="sponsorFundationDate" className="font-bold">
+              Date de création
+            </label>
+            <Calendar
+              id="sponsorFundationDate"
+              value={newSponsorFundationDate}
+              onChange={(e) => setNewSponsorFundationDate(e.value as Date)}
+              dateFormat="dd/mm/yy"
+              placeholder="Sélectionnez une date"
+              showIcon
+            />
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }
