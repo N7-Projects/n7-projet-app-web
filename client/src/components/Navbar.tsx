@@ -1,13 +1,48 @@
 import { Button } from "primereact/button";
-
 import { SplitButton } from "primereact/splitbutton";
-
+import { useEffect, useState } from "react";
+import { MemberType } from "../types/memberType";
 import "./Navbar.scss";
 
-/* Access path to the logo of Photo7 */
 const logoFlagPath: string = "/racing-flags.svg";
 
+const useUser = () => {
+  const [user, setUser] = useState<MemberType | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+
+    if (token) {
+      fetch("/api/connected", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(async (res) => {
+          if (res.ok) {
+            const data: MemberType = await res.json();
+            setUser(data);
+          } else {
+            localStorage.removeItem("jwt");
+            setUser(null);
+          }
+        })
+        .catch((err) => {
+          console.error("API call failed:", err);
+          localStorage.removeItem("jwt");
+          setUser(null);
+        });
+    } else {
+      setUser(null);
+    }
+  }, []);
+
+  return { user };
+};
+
 export default function Navbar() {
+  const { user } = useUser();
+
   return (
     <section className="navbar">
       <Button
@@ -111,6 +146,52 @@ export default function Navbar() {
             }}
           />
         </li>
+
+        {user
+          ? (
+            <li key="Login">
+              <SplitButton
+                severity="info"
+                label={user.name}
+                icon="pi pi-user"
+                dropdownIcon="pi pi-caret-down"
+                outlined
+                onClick={() => {
+                  globalThis.location.href = "/members/" + user.idMembre;
+                }}
+                model={[
+                  {
+                    label: "Profile",
+                    icon: "pi pi-user",
+                    command: () => {
+                      globalThis.location.href = "/members/" + user.idMembre;
+                    },
+                  },
+                  {
+                    label: "Se déconnecter",
+                    icon: "pi pi-sign-out",
+                    command: () => {
+                      localStorage.removeItem("jwt");
+                      globalThis.location.reload();
+                    },
+                  },
+                ]}
+              />
+            </li>
+          )
+          : (
+            <li key="Login">
+              <Button
+                className="nav-button"
+                severity="info"
+                icon="pi pi-sign-in"
+                outlined
+                onClick={() => {
+                  globalThis.location.href = "/login";
+                }}
+              />
+            </li>
+          )}
       </ul>
     </section>
   );

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import hagimetaceinture.server.circuit.Circuit;
@@ -315,6 +316,26 @@ public class Facade {
   @GetMapping("/api/members")
   public Collection<Member> getMembers() {
     return memberRepo.findAll();
+  }
+
+  @GetMapping("/api/connected")
+  public Member isConnected(@RequestHeader("Authorization") String authorizationHeader) {
+    String token = authorizationHeader.startsWith("Bearer ") ? authorizationHeader.substring(7) : authorizationHeader;
+
+    if (!jwtService.isTokenValid(token)) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "Token invalide");
+    }
+    String email = jwtService.extractEmail(token);
+
+    Optional<Member> member = memberRepo.findByEmail(email);
+    if (member.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "L'adresse email " + email + " n'est liée à aucun compte. (Ne devrait jamais arriver)");
+
+    } else {
+      return member.get();
+    }
   }
 
   @PostMapping("/api/register")
