@@ -10,6 +10,7 @@ import ForumConsult from "./pages/Forum/ForumConsult.tsx";
 import Equipes from "./pages/Teams/Teams.tsx";
 import OneTeam from "./pages/Teams/OneTeam.tsx";
 import NewTeam from "./pages/Teams/NewTeam.tsx";
+import Login from "./pages/Login.tsx";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,9 @@ function App() {
           <Route path="/forum">
             <Route index element={<Forum />} />
             <Route path=":topicId" element={<ForumConsult />} />
+          </Route>
+          <Route path="/login">
+            <Route index element={<Login />} />
           </Route>
         </Routes>
       </BrowserRouter>
