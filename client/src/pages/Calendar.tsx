@@ -41,18 +41,18 @@ function Calendar() {
   const events = data?.map((event) => ({
     id: event.id,
     title: event.name || "Événement",
-    start: new Date(event.date),
+    start: new Date(event.creationDate),
 
     // L'objet Temporal permet d'utiliser les méthodes de Duration de Java
 
     end: new Date(
       event.duration
-        ? new Date(event.date).getTime() + Number(
+        ? new Date(event.creationDate).getTime() + Number(
           Temporal.Duration.from(event.duration).total({
             unit: "millisecond",
           }).toString(),
         )
-        : new Date(event.date).getTime(),
+        : new Date(event.creationDate).getTime(),
     ),
     allDay: Number(event.duration) === 0,
     type: event.type || "Général",
