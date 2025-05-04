@@ -1,19 +1,11 @@
 import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import { LoginInformation } from "../types/loginInformation.ts";
-import React from "react";
 
 function Register() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const header = <img alt="Card" src="/usercard.png" />;
 

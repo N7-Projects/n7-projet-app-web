@@ -2,7 +2,6 @@ import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
 import { useNavigate } from "react-router-dom";
 import { LoginInformation } from "../types/loginInformation.ts";
-import React, { FormEvent } from "react";
 
 function Login() {
   const navigate = useNavigate();
