@@ -318,10 +318,39 @@ public class Facade {
     return memberRepo.findAll();
   }
 
-  public void registerUser(Member member) {
-    String hashed = passwordEncoder.encode(member.getPassword());
+  @PostMapping("/api/register")
+  public void registerUser(@RequestBody RegisterRequest request) {
+    if (memberRepo.findByEmail(request.getEmail()).isPresent()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "L'adresse email " + request.getEmail() + " est déjà liée à un compte");
+    }
+    if (!request.getEmail().contains("@")) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "L'adresse email " + request.getEmail() + " n'a pas la bonne forme");
+    }
+    String hashed = passwordEncoder.encode(request.getPassword());
+    Member member = new Member();
+    member.setEmail(request.getEmail());
     member.setPassword(hashed);
     memberRepo.save(member);
+  }
+
+  @PostMapping("/api/login")
+  public Member loginUser(@RequestBody LoginRequest request) {
+    Optional<Member> member = memberRepo.findByEmail(request.getEmail());
+    if (member.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "L'adresse email " + request.getEmail() + " n'est liée à aucun compte");
+
+    } else {
+      if (passwordEncoder.matches(request.getPassword(), member.get().getPassword())) {
+        return member.get();
+      } else {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "Mot de passe incorrect pour " + request.getEmail());
+
+      }
+    }
   }
 
   @PostMapping("/api/members/new")
