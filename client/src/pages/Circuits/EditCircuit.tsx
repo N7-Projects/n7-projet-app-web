@@ -9,7 +9,13 @@ import { CircuitType } from "../../types/circuitType.ts";
 
 function EditCircuit() {
   const navigate = useNavigate();
+  const [name, setName] = useState<string | null>();
+  const [place, setPlace] = useState<string | null>();
   const [date, setDate] = useState<Date | null>();
+  const [spectatorNumber, setSpectatorNumber] = useState<string | null>();
+  const [turnNumber, setTurnNumber] = useState<string | null>();
+  const [distance, setDistance] = useState<string | null>();
+  const [bestTime, setBestTime] = useState<string | null>();
 
   const { circuitId } = useParams();
 
@@ -25,7 +31,15 @@ function EditCircuit() {
       console.log(response.status);
       const oneCircuit = await response.json() as CircuitType;
 
-      console.log(oneCircuit);
+      setName(oneCircuit.name);
+      setPlace(oneCircuit.place);
+      setDate(new Date(oneCircuit.creationDate));
+      setSpectatorNumber(oneCircuit.spectatorNumber.toString());
+      setTurnNumber(oneCircuit.turnNumber.toString());
+      setDistance(oneCircuit.distance.toString());
+      setBestTime(oneCircuit.bestTime.toString());
+
+      console.log(date);
 
       return oneCircuit;
     },
@@ -121,13 +135,19 @@ function EditCircuit() {
           <InputText
             id="name"
             name="name"
-            value={circuit.name}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
 
           <label htmlFor="place" className="font-bold block mb-2 mt-3">
             Pays du circuit
           </label>
-          <InputText id="place" name="place" value={circuit.place} />
+          <InputText
+            id="place"
+            name="place"
+            value={place}
+            onChange={(e) => setPlace(e.target.value)}
+          />
 
           <label htmlFor="creationDate" className="font-bold block mb-2 mt-3">
             Date de création
@@ -150,7 +170,8 @@ function EditCircuit() {
             id="spectatorNumber"
             name="spectatorNumber"
             keyfilter="pint"
-            value={circuit.spectatorNumber.toString()}
+            value={spectatorNumber}
+            onChange={(e) => setSpectatorNumber(e.target.value)}
           />
 
           <label htmlFor="turnNumber" className="font-bold block mb-2 mt-3">
@@ -160,7 +181,8 @@ function EditCircuit() {
             id="turnNumber"
             name="turnNumber"
             keyfilter="pint"
-            value={circuit.turnNumber.toString()}
+            value={turnNumber}
+            onChange={(e) => setTurnNumber(e.target.value)}
           />
 
           <label htmlFor="distance" className="font-bold block mb-2 mt-3">
@@ -170,7 +192,8 @@ function EditCircuit() {
             id="distance"
             name="distance"
             keyfilter="pnum"
-            value={circuit.distance.toString()}
+            value={distance}
+            onChange={(e) => setDistance(e.target.value)}
           />
 
           <label htmlFor="bestTime" className="font-bold block mb-2 mt-3">
@@ -180,7 +203,8 @@ function EditCircuit() {
             id="bestTime"
             name="bestTime"
             keyfilter="pnum"
-            value={circuit.bestTime.toString()}
+            value={bestTime}
+            onChange={(e) => setBestTime(e.target.value)}
           />
         </form>
       </Card>

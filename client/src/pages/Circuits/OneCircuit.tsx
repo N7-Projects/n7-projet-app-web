@@ -51,10 +51,12 @@ function OneCircuit() {
         icon="pi pi-pencil"
         type="submit"
         form="circuitForm"
-        // Use Link if its not what do we want
+        onClick={() => {
+          globalThis.location.href = `/circuits/${circuit.id}/edit`;
+        }}
       />
       <Button
-        label="Effacer"
+        label="Supprimer"
         severity="danger"
         icon="pi pi-eraser"
         style={{ marginLeft: "0.5em" }}
