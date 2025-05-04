@@ -3,7 +3,7 @@ import { InputText } from "primereact/inputtext";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { MemberType } from "../types/memberType.ts";
+import { LoginInformation } from "../types/loginInformation.ts";
 import React from "react";
 
 function Register() {
@@ -52,8 +52,9 @@ function Register() {
       });
 
       if (response.ok) {
-        const member: MemberType = await response.json();
-        navigate(`/members/${member.idMembre}`);
+        const data: LoginInformation = await response.json();
+        localStorage.setItem("jwt", data.token); // or sessionStorage
+        navigate(`/members/${data.memberId}`);
       } else {
         alert("Failed to register.");
       }

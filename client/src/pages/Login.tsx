@@ -1,19 +1,11 @@
 import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
-import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
-import { MemberType } from "../types/memberType.ts";
-import React from "react";
+import { LoginInformation } from "../types/loginInformation.ts";
+import React, { FormEvent } from "react";
 
 function Login() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const header = <img alt="Card" src="/usercard.png" />;
 
@@ -50,8 +42,9 @@ function Login() {
       });
 
       if (response.ok) {
-        const member: MemberType = await response.json();
-        navigate(`/members/${member.idMembre}`);
+        const data: LoginInformation = await response.json();
+        localStorage.setItem("jwt", data.token); // or sessionStorage
+        navigate(`/members/${data.memberId}`);
       } else {
         alert("Failed to login.");
       }

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
 import hagimetaceinture.server.circuit.Circuit;
 import hagimetaceinture.server.circuit.CircuitRepository;
 import hagimetaceinture.server.event.Event;
@@ -46,6 +45,8 @@ public class Facade {
   private EntityManager entityManager;
   @Autowired
   private PasswordEncoder passwordEncoder;
+  @Autowired
+  private JwtService jwtService;
   @Autowired
   RaceRepository raceRepo;
   @Autowired
@@ -317,7 +318,7 @@ public class Facade {
   }
 
   @PostMapping("/api/register")
-  public Member registerUser(@RequestBody RegisterRequest request) {
+  public LoginInformation registerUser(@RequestBody RegisterRequest request) {
     if (memberRepo.findByEmail(request.getEmail()).isPresent()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
           "L'adresse email " + request.getEmail() + " est déjà liée à un compte");
@@ -350,11 +351,14 @@ public class Facade {
     String hashed = passwordEncoder.encode(request.getPassword());
     member.setEmail(request.getEmail());
     member.setPassword(hashed);
-    return memberRepo.save(member);
+    memberRepo.save(member);
+
+    String token = jwtService.generateToken(member.getEmail());
+    return new LoginInformation(member.getIdMembre(), token);
   }
 
   @PostMapping("/api/login")
-  public Member loginUser(@RequestBody LoginRequest request) {
+  public LoginInformation loginUser(@RequestBody LoginRequest request) {
     Optional<Member> member = memberRepo.findByEmail(request.getEmail());
     if (member.isEmpty()) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -362,7 +366,8 @@ public class Facade {
 
     } else {
       if (passwordEncoder.matches(request.getPassword(), member.get().getPassword())) {
-        return member.get();
+        String token = jwtService.generateToken(member.get().getEmail());
+        return new LoginInformation(member.get().getIdMembre(), token);
       } else {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "Mot de passe incorrect pour " + request.getEmail());
