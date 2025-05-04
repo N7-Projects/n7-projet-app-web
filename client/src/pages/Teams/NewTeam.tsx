@@ -212,6 +212,7 @@ function NewTeam() {
       <Button
         label="Annuler"
         icon="pi pi-times"
+        severity="danger"
         onClick={() => setShowAddMemberDialog(false)}
         className="p-button-text"
       />
@@ -229,6 +230,7 @@ function NewTeam() {
       <Button
         label="Annuler"
         icon="pi pi-times"
+        severity="danger"
         onClick={() => setShowAddSponsorDialog(false)}
         className="p-button-text"
       />
@@ -305,10 +307,11 @@ function NewTeam() {
             <div className="flex justify-content-between align-items-center mb-4">
               <Button
                 icon="pi pi-plus"
+                severity="info"
                 rounded
                 outlined
                 aria-label="Ajouter un membre"
-                onClick={(e) => {
+                onClick={(e: { preventDefault: () => void }) => {
                   e.preventDefault(); // Prevent form submission
                   setShowAddMemberDialog(true);
                 }}
@@ -325,7 +328,7 @@ function NewTeam() {
           <div className="card">
             <DataTable
               value={data.sponsors}
-              selectionMode={rowClickSponsors ? null : "checkbox"}
+              selectionMode="multiple"
               rows={10}
               selection={selectedSponsors}
               onSelectionChange={(e: { value: SponsorType[] }) => {
@@ -340,10 +343,11 @@ function NewTeam() {
             </DataTable>
             <Button
               icon="pi pi-plus"
+              severity="info"
               rounded
               outlined
               aria-label="Ajouter un sponsor"
-              onClick={(e) => {
+              onClick={(e: { preventDefault: () => void }) => {
                 e.preventDefault(); // Prevent form submission
                 setShowAddSponsorDialog(true);
               }}
