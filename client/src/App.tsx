@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Home from "./pages/Home.tsx";
-import Circuits from "./pages/Circuits.tsx";
+import Circuits from "./pages/Circuits/Circuits.tsx";
 import Calendar from "./pages/Calendar.tsx";
 import Navbar from "./components/Navbar.tsx";
-import NewCircuit from "./pages/NewCircuit.tsx";
+import NewCircuit from "./pages/Circuits/NewCircuit.tsx";
 import Forum from "./pages/Forum/Forum.tsx";
 import ForumConsult from "./pages/Forum/ForumConsult.tsx";
 import Equipes from "./pages/Teams/Teams.tsx";
@@ -12,6 +12,7 @@ import OneTeam from "./pages/Teams/OneTeam.tsx";
 import NewTeam from "./pages/Teams/NewTeam.tsx";
 import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
+import OneCircuit from "./pages/Circuits/OneCircuit.tsx";
 
 const queryClient = new QueryClient();
 
@@ -29,8 +30,8 @@ function App() {
           <Route path="/circuits">
             <Route index element={<Circuits />} />
             <Route path="new" element={<NewCircuit />} />
-            <Route path=":circuit" element={<Home />} />
-            <Route path=":circuit/edit" element={<Circuits />} />
+            <Route path=":circuitId" element={<OneCircuit />} />
+            <Route path=":circuitId/edit" element={<Circuits />} />
           </Route>
 
           <Route path="/teams">
