@@ -114,7 +114,7 @@ function EditCircuit() {
   };
 
   return (
-    <div className="circuit-new-card flex justify-content-center">
+    <div className="circuit-edit-card flex justify-content-center">
       <Card
         title="Modifier le circuit"
         subTitle="Rentrer les informations pour modifier le circuit"

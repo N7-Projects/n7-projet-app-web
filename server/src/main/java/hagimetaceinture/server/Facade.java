@@ -317,6 +317,19 @@ public class Facade {
 
     }
 
+    @PutMapping("api/teams/{teamId}/edit")
+    public RacingTeam editCircuit(@PathVariable String teamid, @RequestBody RacingTeam editTeam) {
+        long id = Long.parseLong(teamid);
+        RacingTeam r = racingTeamRepo.findById(id).get();
+        r.setClassement(editTeam.getClassement());
+        r.setMembres(editTeam.getMembres());
+        r.setNom(editTeam.getNom());
+        r.setSponsors(editTeam.getSponsors());
+        System.out.println("Editited team" + r);
+        return racingTeamRepo.save(r);
+
+    }
+
     @PostMapping("/api/teams/new")
     public RacingTeam newteam(@RequestBody RacingTeam newRacingTeam) {
         System.out.println("Added new team " + newRacingTeam);
