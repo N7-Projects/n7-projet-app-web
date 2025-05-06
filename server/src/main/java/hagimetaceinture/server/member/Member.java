@@ -23,13 +23,13 @@ public class Member {
 
   private String name;
 
-  private String firstname;
+  private String firstName;
 
   @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnoreProperties("owner") // empêche l'affichage récursif de Vehicue.vowner (ne sérialize pas owner)
   private Collection<Vehicule> vehicules;
 
-  @JsonIgnore
+  // @JsonIgnore
   private String email;
 
   @JsonIgnore
@@ -56,12 +56,12 @@ public class Member {
     this.name = name;
   }
 
-  public String getFirstname() {
-    return firstname;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public void setFirstname(String firstname) {
-    this.firstname = firstname;
+  public void setFirstName(String firstname) {
+    this.firstName = firstname;
   }
 
   public boolean isSubscriber() {
@@ -106,7 +106,7 @@ public class Member {
 
   @Override
   public String toString() {
-    return "Membre [idMembre=" + getIdMembre() + ", firstname=" + firstname + ", name=" + name
+    return "Membre [idMembre=" + getIdMembre() + ", firstname=" + firstName + ", name=" + name
         + ", vehicules=" + getVehicules() + ", subscriber=" + subscriber + "] \n";
   }
 

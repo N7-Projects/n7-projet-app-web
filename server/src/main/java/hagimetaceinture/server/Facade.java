@@ -107,13 +107,12 @@ public class Facade {
 
     // ajout d'un membre
     Member member = new Member();
-    member.setFirstname("Guillaume");
+    member.setFirstName("Guillaume");
     member.setName("Sablayrolles");
     member.setEmail("guigui@gmail.com");
     member.setPassword(passwordEncoder.encode("pwd"));
     member.addVehicule(vehicule);
     memberRepo.save(member);
-
     // ajout d'un sponsor
     Sponsor sponsor = new Sponsor();
     sponsor.setName("BlackRock");
@@ -306,7 +305,7 @@ public class Facade {
 
   }
 
-  @PostMapping("/api/teams/new")
+  @GetMapping("/api/teams/new")
   public RacingTeam newteam(@RequestBody RacingTeam newRacingTeam) {
     System.out.println("Added new team " + newRacingTeam);
     return racingTeamRepo.save(newRacingTeam);
@@ -316,6 +315,18 @@ public class Facade {
   @GetMapping("/api/members")
   public Collection<Member> getMembers() {
     return memberRepo.findAll();
+  }
+
+  @GetMapping("/api/register/homonyms/{name}/{firstName}")
+  public Collection<Member> getFreeHomonyms(@PathVariable String name, @PathVariable String firstName) {
+
+    // Get members with this name
+    List<Member> members = memberRepo.findByName(name);
+    return members.stream().filter(
+        (m) -> m.getFirstName().equals(firstName))
+        .filter(
+            (m) -> m.getEmail() == null || m.getEmail().isEmpty())
+        .toList();
   }
 
   @GetMapping("/api/connected")
@@ -349,31 +360,26 @@ public class Facade {
           "L'adresse email " + request.getEmail() + " n'a pas la bonne forme");
     }
 
-    // Get members with this name
-    List<Member> members = memberRepo.findByName(request.getName());
-    members = members.stream().filter(
-        (m) -> m.getFirstname().equals(request.getFirstName()) && (m.getEmail() == null || m.getEmail().isEmpty()))
-        .toList();
-
-    // If we find a member that doesn't have an email associated yet, we associate
-    // it
-    // The limitation of doing this is that if multiple members exist in different
-    // teams and they didn't create an account yet, you won't be able to choose
-    // which one you want to create an account for
     Member member;
-    if (members.isEmpty()) {
+    // If an ID was provided or not
+    if (request.isHasId()) {
+      var memberOpt = memberRepo.findById(request.getIdMembre());
+
+      if (memberOpt.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "Ce membre n'existe pas");
+      }
+      member = memberOpt.get();
+    } else {
       member = new Member();
       member.setName(request.getName());
-      member.setFirstname(request.getFirstName());
-    } else {
-      member = members.getFirst();
-    }
+      member.setFirstName(request.getFirstName());
 
+    }
     String hashed = passwordEncoder.encode(request.getPassword());
     member.setEmail(request.getEmail());
     member.setPassword(hashed);
     memberRepo.save(member);
-
     String token = jwtService.generateToken(member.getEmail());
     return new LoginInformation(member.getIdMembre(), token);
   }

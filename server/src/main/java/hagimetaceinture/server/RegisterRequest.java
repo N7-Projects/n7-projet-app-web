@@ -21,5 +21,18 @@ public class RegisterRequest {
 
   public String getFirstName() {
     return firstName;
+
   }
+
+  private long idMembre;
+  private boolean hasId = false;
+
+  public boolean isHasId() {
+    return hasId;
+  }
+
+  public long getIdMembre() {
+    return idMembre;
+  }
+
 }
