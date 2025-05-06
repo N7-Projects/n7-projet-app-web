@@ -180,17 +180,32 @@ export default function Navbar() {
             </li>
           )
           : (
-            <li key="Login">
-              <Button
-                className="nav-button"
-                severity="info"
-                icon="pi pi-sign-in"
-                outlined
-                onClick={() => {
-                  globalThis.location.href = "/login";
-                }}
-              />
-            </li>
+            <>
+              <li key="Login">
+                <Button
+                  className="nav-button"
+                  severity="info"
+                  label="Se connecter"
+                  icon="pi pi-sign-in"
+                  outlined
+                  onClick={() => {
+                    globalThis.location.href = "/login";
+                  }}
+                />
+              </li>
+              <li key="Register">
+                <Button
+                  className="nav-button"
+                  severity="info"
+                  label="Créer un compte"
+                  icon="pi pi-user-plus"
+                  outlined
+                  onClick={() => {
+                    globalThis.location.href = "/register";
+                  }}
+                />
+              </li>
+            </>
           )}
       </ul>
     </section>
