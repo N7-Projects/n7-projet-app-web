@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
 import hagimetaceinture.server.circuit.Circuit;
 import hagimetaceinture.server.circuit.CircuitRepository;
 import hagimetaceinture.server.event.Event;
@@ -39,12 +39,15 @@ import hagimetaceinture.server.vehiculetype.VehiculeTypeRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class Facade {
   @Autowired
   private EntityManager entityManager;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+  @Autowired
+  private JwtService jwtService;
   @Autowired
   RaceRepository raceRepo;
   @Autowired
@@ -104,11 +107,12 @@ public class Facade {
 
     // ajout d'un membre
     Member member = new Member();
-    member.setFirstname("Guillaume");
+    member.setFirstName("Guillaume");
     member.setName("Sablayrolles");
+    member.setEmail("guigui@gmail.com");
+    member.setPassword(passwordEncoder.encode("pwd"));
     member.addVehicule(vehicule);
     memberRepo.save(member);
-
     // ajout d'un sponsor
     Sponsor sponsor = new Sponsor();
     sponsor.setName("BlackRock");
@@ -311,6 +315,92 @@ public class Facade {
   @GetMapping("/api/members")
   public Collection<Member> getMembers() {
     return memberRepo.findAll();
+  }
+
+  @GetMapping("/api/register/homonyms/{name}/{firstName}")
+  public Collection<Member> getFreeHomonyms(@PathVariable String name, @PathVariable String firstName) {
+
+    // Get members with this name
+    List<Member> members = memberRepo.findByName(name);
+    return members.stream().filter(
+        (m) -> m.getFirstName().equals(firstName))
+        .filter(
+            (m) -> m.getEmail() == null || m.getEmail().isEmpty())
+        .toList();
+  }
+
+  @GetMapping("/api/connected")
+  public Member isConnected(@RequestHeader("Authorization") String authorizationHeader) {
+    String token = authorizationHeader.startsWith("Bearer ") ? authorizationHeader.substring(7) : authorizationHeader;
+
+    if (!jwtService.isTokenValid(token)) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "Token invalide");
+    }
+    String email = jwtService.extractEmail(token);
+
+    Optional<Member> member = memberRepo.findByEmail(email);
+    if (member.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "L'adresse email " + email + " n'est liée à aucun compte. (Ne devrait jamais arriver)");
+
+    } else {
+      return member.get();
+    }
+  }
+
+  @PostMapping("/api/register")
+  public LoginInformation registerUser(@RequestBody RegisterRequest request) {
+    if (memberRepo.findByEmail(request.getEmail()).isPresent()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "L'adresse email " + request.getEmail() + " est déjà liée à un compte");
+    }
+    if (!request.getEmail().contains("@")) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "L'adresse email " + request.getEmail() + " n'a pas la bonne forme");
+    }
+
+    Member member;
+    // If an ID was provided or not
+    if (request.isHasId()) {
+      var memberOpt = memberRepo.findById(request.getIdMembre());
+
+      if (memberOpt.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "Ce membre n'existe pas");
+      }
+      member = memberOpt.get();
+    } else {
+      member = new Member();
+      member.setName(request.getName());
+      member.setFirstName(request.getFirstName());
+
+    }
+    String hashed = passwordEncoder.encode(request.getPassword());
+    member.setEmail(request.getEmail());
+    member.setPassword(hashed);
+    memberRepo.save(member);
+    String token = jwtService.generateToken(member.getEmail());
+    return new LoginInformation(member.getIdMembre(), token);
+  }
+
+  @PostMapping("/api/login")
+  public LoginInformation loginUser(@RequestBody LoginRequest request) {
+    Optional<Member> member = memberRepo.findByEmail(request.getEmail());
+    if (member.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "L'adresse email " + request.getEmail() + " n'est liée à aucun compte");
+
+    } else {
+      if (passwordEncoder.matches(request.getPassword(), member.get().getPassword())) {
+        String token = jwtService.generateToken(member.get().getEmail());
+        return new LoginInformation(member.get().getIdMembre(), token);
+      } else {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "Mot de passe incorrect pour " + request.getEmail());
+
+      }
+    }
   }
 
   @PostMapping("/api/members/new")
