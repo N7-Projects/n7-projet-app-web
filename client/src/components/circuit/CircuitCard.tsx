@@ -1,6 +1,6 @@
 import { Button } from "primereact";
 import { Card } from "primereact";
-import { CircuitType } from "../types/circuitType.ts";
+import { CircuitType } from "../../types/circuitType.ts";
 
 function CircuitCard(circuit: CircuitType) {
   const header = (

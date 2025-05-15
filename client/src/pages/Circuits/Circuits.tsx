@@ -1,5 +1,5 @@
-import { CircuitCard } from "../components/CircuitCard.tsx";
-import { CircuitType } from "../types/circuitType.ts";
+import { CircuitCard } from "../../components/circuit/CircuitCard.tsx";
+import { CircuitType } from "../../types/circuitType.ts";
 
 import "./Circuits.scss";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
