@@ -15,6 +15,7 @@ import Register from "./pages/Register.tsx";
 import OneCircuit from "./pages/Circuits/OneCircuit.tsx";
 import EditCircuit from "./pages/Circuits/EditCircuit.tsx";
 import EditTeam from "./pages/Teams/EditTeam.tsx";
+import MemberDashbord from "./pages/Members/MemberDashboard.tsx";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,8 @@ function App() {
           <Route path="/register">
             <Route index element={<Register />} />
           </Route>
+
+          <Route path="/members/:memberId" element={<MemberDashbord />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
