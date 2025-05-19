@@ -5,5 +5,6 @@ export type MemberType = {
   name: string;
   firstname: string;
   vehicules: memberVehiculeType[];
+  email: string;
   subscriber: boolean;
 };
