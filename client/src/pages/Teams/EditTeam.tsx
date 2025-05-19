@@ -1,22 +1,19 @@
 import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
-import { InputNumber } from "primereact/inputnumber";
+import { Calendar } from "primereact/calendar";
 import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { TeamType } from "../../types/teamType.ts";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import { MemberType } from "../../types/memberType.ts";
 import { SponsorType } from "../../types/sponsorType.ts";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import { Dialog } from "primereact/dialog";
-import { Calendar } from "primereact/calendar";
+import { MemberType } from "../../types/memberType.ts";
+import { TeamType } from "../../types/teamType.ts";
+import { InputNumber } from "primereact";
+import { Column } from "primereact";
+import { DataTable } from "primereact";
+import { Dialog } from "primereact";
 
-function NewTeam() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
+function EditTeam() {
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddSponsorDialog, setShowAddSponsorDialog] = useState(false);
   const [newMemberFirstname, setNewMemberFirstname] = useState("");
@@ -39,24 +36,45 @@ function NewTeam() {
 
   const [selectedMembres, setSelectedMembres] = useState<MemberType[]>([]);
   const [selectedSponsors, setSelectedSponsors] = useState<SponsorType[]>([]);
+  const [editClassement, setEditClassement] = useState<number>(0);
+  const [editName, setEditName] = useState<string>("");
+
+  const { teamId } = useParams();
+
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: [{ membres: "all-membres" }],
     queryFn: async () => {
-      const routes: string[] = ["/api/members", "/api/sponsors"];
+      const routes: string[] = [
+        "/api/members",
+        "/api/sponsors",
+        `/api/teams/${teamId}`,
+      ];
       const responseMembres = await fetch(routes[0]);
       const responseSponsors = await fetch(routes[1]);
+      const responseTeam = await fetch(routes[2]);
 
       console.log("Getted ! ");
       console.log("Membres status : ", responseMembres.status);
       console.log("Sponsors status : ", responseSponsors.status);
+      console.log("Team status : ", responseTeam.status);
+
       const allMembres = await responseMembres.json() as MemberType[];
       const allSponsors = await responseSponsors.json() as SponsorType[];
+      const team = await responseTeam.json() as TeamType;
 
       console.log(allMembres[0].name);
       console.log(allSponsors[0].name);
+      console.log(team);
 
-      return { membres: allMembres, sponsors: allSponsors };
+      setEditClassement(team.classement);
+      setSelectedMembres(team.membres);
+      setEditName(team.nom);
+      setSelectedSponsors(team.sponsors);
+
+      return { membres: allMembres, sponsors: allSponsors, team: team };
     },
   });
 
@@ -75,7 +93,7 @@ function NewTeam() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          firstname: newMemberFirstname,
+          firstName: newMemberFirstname,
           name: newMemberName,
         }),
       });
@@ -158,7 +176,7 @@ function NewTeam() {
   const footer = (
     <>
       <Button
-        label="Créer"
+        label="Modifier"
         severity="primary"
         icon="pi pi-send"
         type="submit"
@@ -187,8 +205,8 @@ function NewTeam() {
     console.log(teamData);
 
     try {
-      const response = await fetch("/api/teams/new", {
-        method: "POST",
+      const response = await fetch(`/api/teams/${teamId}/edit`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -199,11 +217,11 @@ function NewTeam() {
         const createdteam: TeamType = await response.json();
         navigate(`/teams/${createdteam.idRacingTeam}`);
       } else {
-        alert("Failed to create team.");
+        alert("Failed to edit team.");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred while creating the team.");
+      alert("An error occurred while editing the team.");
     }
   };
 
@@ -252,10 +270,10 @@ function NewTeam() {
   }
 
   return (
-    <div className="team-new-card flex justify-content-center">
+    <div className="team-edit-card flex justify-content-center">
       <Card
-        title="Créer l'équipe"
-        subTitle="Rentrer les informations pour créer l'équipe"
+        title="Modifier l'équipe"
+        subTitle="Rentrer les informations pour modifier l'équipe"
         footer={footer}
         header={header}
         className="w-8"
@@ -268,7 +286,12 @@ function NewTeam() {
           <label htmlFor="name" className="font-bold block mb-2">
             Nom de l'équipe
           </label>
-          <InputText id="name" name="name" placeholder="BrownFox Racing" />
+          <InputText
+            id="name"
+            name="name"
+            value={editName}
+            onChange={(e) => setEditName(e.target.value ?? null)}
+          />
 
           <label htmlFor="classement" className="font-bold block mb-2 mt-3">
             Classement de l'équipe
@@ -276,11 +299,12 @@ function NewTeam() {
           <InputNumber
             id="classement"
             name="classement"
-            placeholder="1"
             mode="decimal"
             roundingMode="trunc"
             showButtons
             min={0}
+            value={editClassement}
+            onValueChange={(e) => setEditClassement(e.value)}
           />
 
           <label htmlFor="membres" className="font-bold block mb-2 mt-3">
@@ -464,4 +488,4 @@ function NewTeam() {
   );
 }
 
-export default NewTeam;
+export default EditTeam;

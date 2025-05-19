@@ -1,8 +1,12 @@
 import { Button } from "primereact";
 import { Card } from "primereact";
 import { TeamType } from "../types/teamType.ts";
+import { ToggleButton } from "primereact";
+import { useState } from "react";
 
 function TeamCard(team: TeamType) {
+  const [checked, setChecked] = useState(false);
+
   const header = (
     <img
       alt="Card"
@@ -20,11 +24,15 @@ function TeamCard(team: TeamType) {
           globalThis.location.href = `/teams/${team.idRacingTeam}`;
         }}
       />
-      <Button
-        label="Like"
-        severity="secondary"
-        icon="pi pi-star"
-        style={{ marginLeft: "0.5em" }}
+
+      <ToggleButton
+        onLabel=""
+        offLabel=""
+        onIcon="pi pi-star-fill"
+        offIcon="pi pi-star"
+        checked={checked}
+        onChange={(e) => setChecked(e.value)}
+        className="ml-2"
       />
     </>
   );

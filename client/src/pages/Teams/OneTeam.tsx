@@ -51,6 +51,9 @@ function OneTeam() {
         icon="pi pi-pencil"
         type="submit"
         form="circuitForm"
+        onClick={() => {
+          globalThis.location.href = `/teams/${teamId}/edit`;
+        }}
         // Use Link if its not what do we want
       />
       <Button
