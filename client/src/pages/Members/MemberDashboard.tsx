@@ -115,6 +115,59 @@ function MemberDashbord() {
     return <div className="grid grid-nogutter">{list}</div>;
   };
 
+  const itemTeamTemplate = (
+    team: { idRacingTeam: number; nom: string },
+    index: number,
+  ) => {
+    return (
+      <div className="col-12" key={team.idRacingTeam}>
+        <div
+          className={classNames(
+            "flex flex-column xl:flex-row xl:align-items-start p-4 gap-4",
+            { "border-top-1 surface-border": index !== 0 },
+          )}
+        >
+          <img
+            className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+            src="/usercard.png"
+          />
+          <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+            <div className="flex flex-column align-items-center sm:align-items-start gap-3">
+              <div className="text-2xl font-bold text-900">
+                {team.nom}
+              </div>
+              <div className="flex align-items-center gap-3">
+                <span className="flex align-items-center gap-2">
+                  <span className="font-semibold">{team.nom}</span>
+                </span>
+              </div>
+            </div>
+            <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+              <Button
+                icon="pi pi-send"
+                className="p-button-rounded"
+                onClick={() => {
+                  globalThis.location.href = `/teams/${team.idRacingTeam}`;
+                }}
+              >
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const listTeamTemplate = (items: { idRacingTeam: number; nom: string }[]) => {
+    if (!items || items.length === 0) return null;
+
+    const list = items.map((team, index) => {
+      return itemTeamTemplate(team, index);
+    });
+
+    return <div className="grid grid-nogutter">{list}</div>;
+  };
+
   return (
     <div className="grid m-1">
       <div className="col-12 md:col-6 lg:col-4 ">
@@ -137,7 +190,14 @@ function MemberDashbord() {
         </Card>
       </div>
       <div className="col-12 lg:col-6">
-        <Card title="Teams"></Card>
+        <Card title="Teams">
+          <DataView
+            value={data.teams}
+            listTemplate={listTeamTemplate}
+            paginator
+            rows={3}
+          />
+        </Card>
       </div>
     </div>
   );
