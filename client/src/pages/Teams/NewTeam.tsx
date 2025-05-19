@@ -300,7 +300,7 @@ function NewTeam() {
             >
               <Column selectionMode="multiple" headerStyle={{ width: "3rem" }}>
               </Column>
-              <Column field="firstname" header="Prénom"></Column>
+              <Column field="firstName" header="Prénom"></Column>
               <Column field="name" header="Nom"></Column>
             </DataTable>
 
@@ -368,9 +368,9 @@ function NewTeam() {
       >
         <div className="flex flex-column gap-3 mt-3">
           <div className="flex flex-column gap-2">
-            <label htmlFor="firstname" className="font-bold">Prénom</label>
+            <label htmlFor="firstName" className="font-bold">Prénom</label>
             <InputText
-              id="firstname"
+              id="firstName"
               value={newMemberFirstname}
               onChange={(e) => setNewMemberFirstname(e.target.value)}
               placeholder="Entrez le prénom"
