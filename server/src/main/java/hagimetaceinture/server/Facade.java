@@ -40,6 +40,7 @@ import hagimetaceinture.server.vehiculetype.VehiculeTypeRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class Facade {
@@ -297,7 +298,7 @@ public class Facade {
     }
 
     @GetMapping("/api/teams/{teamId}")
-    public RacingTeam getMethodName(@PathVariable String teamId) {
+    public RacingTeam getOneTeam(@PathVariable String teamId) {
         // handle id parsing
         long id;
         try {
@@ -335,12 +336,6 @@ public class Facade {
     public RacingTeam newteam(@RequestBody RacingTeam newRacingTeam) {
         System.out.println("Added new team " + newRacingTeam);
         return racingTeamRepo.save(newRacingTeam);
-    }
-
-    // Member CRUD
-    @GetMapping("/api/members")
-    public Collection<Member> getMembers() {
-        return memberRepo.findAll();
     }
 
     @GetMapping("/api/register/homonyms/{name}/{firstName}")
@@ -428,6 +423,18 @@ public class Facade {
 
             }
         }
+    }
+
+    // Member CRUD
+    @GetMapping("/api/members")
+    public Collection<Member> getMembers() {
+        return memberRepo.findAll();
+    }
+
+    @GetMapping("/api/members/{memberId}")
+    public Member getOneMember(@PathVariable String memberId) {
+        long id = Long.parseLong(memberId);
+        return memberRepo.findById(id).get();
     }
 
     @PostMapping("/api/members/new")
