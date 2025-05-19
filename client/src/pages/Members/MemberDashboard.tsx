@@ -127,13 +127,14 @@ function MemberDashbord() {
         <Card title="Random info ?"></Card>
       </div>
       <div className="col-12 lg:col-6">
-        <Card title="Vehicules"></Card>
-        <DataView
-          value={data.vehicules}
-          listTemplate={listTemplate}
-          paginator
-          rows={3}
-        />
+        <Card title="Vehicules">
+          <DataView
+            value={data.vehicules}
+            listTemplate={listTemplate}
+            paginator
+            rows={3}
+          />
+        </Card>
       </div>
       <div className="col-12 lg:col-6">
         <Card title="Teams"></Card>
