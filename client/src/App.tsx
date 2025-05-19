@@ -59,7 +59,10 @@ function App() {
             <Route index element={<Register />} />
           </Route>
 
-          <Route path="/members/:memberId" element={<MemberDashbord />} />
+          <Route
+            path="/members/:memberId"
+            element={<MemberDashbord />}
+          />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

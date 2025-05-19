@@ -1,28 +1,31 @@
 import { Card } from "primereact";
 import { DataView } from "primereact/dataview";
-import { useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { MemberType } from "../../types/memberType.ts";
 import { classNames } from "primereact";
 import { Button } from "primereact";
 import { memberVehiculeType } from "../../types/memberVehiculeType.ts";
+import { useParams } from "react-router-dom";
 
 function MemberDashbord() {
-  const { memberId } = useParams();
-
   const _queryClient = useQueryClient();
+
+  const { memberId } = useParams();
 
   const token = localStorage.getItem("jwt");
 
   const { data, isPending, isError, error } = useQuery({
-    queryKey: [{ member: "one-member", memberId: memberId }],
+    queryKey: [{ member: "one-member", memberToken: token }],
     queryFn: async () => {
-      if (!token) {
-        return Promise.reject(
-          new Error("You must be connected to see this page"),
-        );
-      }
+      //   if (!token) {
+      //     return Promise.reject(
+      //       new Error("You must be connected to see this page"),
+      //     );
+      //   }
+
+      console.log(token);
+
       const route: string = `/api/members/${memberId}`;
       const response = await fetch(route);
 
@@ -33,6 +36,27 @@ function MemberDashbord() {
       console.log(member);
 
       return member;
+
+      //   if (token) {
+      //     const response = await fetch("/api/connected", {
+      //       headers: {
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //     });
+      //     if (response.ok) {
+      //       const data: MemberType = await response.json() as MemberType;
+      //       return data;
+      //     } else {
+      //       localStorage.removeItem("jwt");
+      //       return Promise.reject(
+      //         new Error("You must be connected to see this page"),
+      //       );
+      //     }
+      //   } else {
+      //     return Promise.reject(
+      //       new Error("You must be connected to see this page"),
+      //     );
+      //   }
     },
   });
 

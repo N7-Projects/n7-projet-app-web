@@ -350,27 +350,6 @@ public class Facade {
                 .toList();
     }
 
-    @GetMapping("/api/connected")
-    public Member isConnected(@RequestHeader("Authorization") String authorizationHeader) {
-        String token = authorizationHeader.startsWith("Bearer ") ? authorizationHeader.substring(7)
-                : authorizationHeader;
-
-        if (!jwtService.isTokenValid(token)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Token invalide");
-        }
-        String email = jwtService.extractEmail(token);
-
-        Optional<Member> member = memberRepo.findByEmail(email);
-        if (member.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "L'adresse email " + email + " n'est liée à aucun compte. (Ne devrait jamais arriver)");
-
-        } else {
-            return member.get();
-        }
-    }
-
     @PostMapping("/api/register")
     public LoginInformation registerUser(@RequestBody RegisterRequest request) {
         if (memberRepo.findByEmail(request.getEmail()).isPresent()) {
@@ -404,6 +383,27 @@ public class Facade {
         memberRepo.save(member);
         String token = jwtService.generateToken(member.getEmail());
         return new LoginInformation(member.getIdMembre(), token);
+    }
+
+    @GetMapping("/api/connected")
+    public Member isConnected(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.startsWith("Bearer ") ? authorizationHeader.substring(7)
+                : authorizationHeader;
+
+        if (!jwtService.isTokenValid(token)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Token invalide");
+        }
+        String email = jwtService.extractEmail(token);
+
+        Optional<Member> member = memberRepo.findByEmail(email);
+        if (member.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "L'adresse email " + email + " n'est liée à aucun compte. (Ne devrait jamais arriver)");
+
+        } else {
+            return member.get();
+        }
     }
 
     @PostMapping("/api/login")
