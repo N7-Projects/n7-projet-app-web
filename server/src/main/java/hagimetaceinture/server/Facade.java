@@ -40,6 +40,7 @@ import hagimetaceinture.server.vehiculetype.VehiculeTypeRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class Facade {
@@ -297,7 +298,7 @@ public class Facade {
     }
 
     @GetMapping("/api/teams/{teamId}")
-    public RacingTeam getMethodName(@PathVariable String teamId) {
+    public RacingTeam getOneTeam(@PathVariable String teamId) {
         // handle id parsing
         long id;
         try {
@@ -337,11 +338,14 @@ public class Facade {
         return racingTeamRepo.save(newRacingTeam);
     }
 
-    // Member CRUD
-    @GetMapping("/api/members")
-    public Collection<Member> getMembers() {
-        return memberRepo.findAll();
-    }
+    // @GetMapping(value = "/api/teams", params = "idMember")
+    // public Collection<RacingTeam> getMemberAllTeams(@RequestParam String
+    // idMember) {
+    // long id = Long.parseLong(idMember);
+    // Collection<RacingTeam> memberTeams = racingTeamRepo.getMemberTeams(id);
+
+    // return memberTeams;
+    // }
 
     @GetMapping("/api/register/homonyms/{name}/{firstName}")
     public Collection<Member> getFreeHomonyms(@PathVariable String name, @PathVariable String firstName) {
@@ -353,27 +357,6 @@ public class Facade {
                 .filter(
                         (m) -> m.getEmail() == null || m.getEmail().isEmpty())
                 .toList();
-    }
-
-    @GetMapping("/api/connected")
-    public Member isConnected(@RequestHeader("Authorization") String authorizationHeader) {
-        String token = authorizationHeader.startsWith("Bearer ") ? authorizationHeader.substring(7)
-                : authorizationHeader;
-
-        if (!jwtService.isTokenValid(token)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Token invalide");
-        }
-        String email = jwtService.extractEmail(token);
-
-        Optional<Member> member = memberRepo.findByEmail(email);
-        if (member.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "L'adresse email " + email + " n'est liée à aucun compte. (Ne devrait jamais arriver)");
-
-        } else {
-            return member.get();
-        }
     }
 
     @PostMapping("/api/register")
@@ -411,6 +394,27 @@ public class Facade {
         return new LoginInformation(member.getIdMembre(), token);
     }
 
+    @GetMapping("/api/connected")
+    public Member isConnected(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.startsWith("Bearer ") ? authorizationHeader.substring(7)
+                : authorizationHeader;
+
+        if (!jwtService.isTokenValid(token)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Token invalide");
+        }
+        String email = jwtService.extractEmail(token);
+
+        Optional<Member> member = memberRepo.findByEmail(email);
+        if (member.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "L'adresse email " + email + " n'est liée à aucun compte. (Ne devrait jamais arriver)");
+
+        } else {
+            return member.get();
+        }
+    }
+
     @PostMapping("/api/login")
     public LoginInformation loginUser(@RequestBody LoginRequest request) {
         Optional<Member> member = memberRepo.findByEmail(request.getEmail());
@@ -428,6 +432,18 @@ public class Facade {
 
             }
         }
+    }
+
+    // Member CRUD
+    @GetMapping("/api/members")
+    public Collection<Member> getMembers() {
+        return memberRepo.findAll();
+    }
+
+    @GetMapping("/api/members/{memberId}")
+    public Member getOneMember(@PathVariable String memberId) {
+        long id = Long.parseLong(memberId);
+        return memberRepo.findById(id).get();
     }
 
     @PostMapping("/api/members/new")

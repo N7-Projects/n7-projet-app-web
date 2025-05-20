@@ -1,7 +1,7 @@
 import { Button } from "primereact/button";
 import { SplitButton } from "primereact/splitbutton";
 import { useEffect, useState } from "react";
-import { MemberType } from "../types/memberType";
+import { MemberType } from "../types/memberType.ts";
 import "./Navbar.scss";
 
 const logoFlagPath: string = "/racing-flags.svg";
