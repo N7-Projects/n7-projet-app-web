@@ -18,45 +18,40 @@ function MemberDashbord() {
   const { data, isPending, isError, error } = useQuery({
     queryKey: [{ member: "one-member", memberToken: token }],
     queryFn: async () => {
-      //   if (!token) {
-      //     return Promise.reject(
-      //       new Error("You must be connected to see this page"),
-      //     );
-      //   }
+      if (token) {
+        const response = await fetch("/api/connected", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          console.log("Connected fetch");
+          const data: MemberType = await response.json() as MemberType;
+          return data;
+        } else {
+          localStorage.removeItem("jwt");
+          return Promise.reject(
+            new Error("Something went wrong while connected"),
+          );
+        }
+      } else {
+        const route: string = `/api/members/${memberId}`;
+        const response = await fetch(route);
 
-      console.log(token);
+        console.log(response.status);
+        if (response.ok) {
+          console.log("Not connected fetch");
 
-      const route: string = `/api/members/${memberId}`;
-      const response = await fetch(route);
-
-      console.log("member Getted ! ");
-      console.log(response.status);
-      const member = await response.json() as MemberType;
-
-      console.log(member);
-
-      return member;
-
-      //   if (token) {
-      //     const response = await fetch("/api/connected", {
-      //       headers: {
-      //         Authorization: `Bearer ${token}`,
-      //       },
-      //     });
-      //     if (response.ok) {
-      //       const data: MemberType = await response.json() as MemberType;
-      //       return data;
-      //     } else {
-      //       localStorage.removeItem("jwt");
-      //       return Promise.reject(
-      //         new Error("You must be connected to see this page"),
-      //       );
-      //     }
-      //   } else {
-      //     return Promise.reject(
-      //       new Error("You must be connected to see this page"),
-      //     );
-      //   }
+          const member = await response.json() as MemberType;
+          console.log(member);
+          return member;
+        } else {
+          localStorage.removeItem("jwt");
+          return Promise.reject(
+            new Error("Something went wrong while not connected"),
+          );
+        }
+      }
     },
   });
 
