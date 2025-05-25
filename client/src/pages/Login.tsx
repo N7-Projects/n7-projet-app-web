@@ -3,7 +3,6 @@ import { InputText } from "primereact/inputtext";
 import { useAuth } from "../middleware/AuthProvider.tsx";
 
 function Login() {
-
   const header = <img alt="Card" src="/usercard.png" />;
 
   const footer = (
@@ -20,7 +19,7 @@ function Login() {
 
   const auth = useAuth();
 
-  const handleSubmit =  (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
