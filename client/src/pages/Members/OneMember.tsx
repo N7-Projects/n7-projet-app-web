@@ -8,7 +8,7 @@ import { Button } from "primereact";
 import { memberVehiculeType } from "../../types/memberVehiculeType.ts";
 import { useParams } from "react-router-dom";
 
-function MemberDashbord() {
+function OneMember() {
   const _queryClient = useQueryClient();
 
   const { memberId } = useParams();
@@ -18,25 +18,20 @@ function MemberDashbord() {
   const { data, isPending, isError, error } = useQuery({
     queryKey: [{ member: "one-member", memberToken: token }],
     queryFn: async () => {
-      if (token) {
-        const response = await fetch("/api/connected", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          console.log("Connected fetch");
-          const data: MemberType = await response.json() as MemberType;
-          return data;
-        } else {
-          localStorage.removeItem("jwt");
-          return Promise.reject(
-            new Error("Something went wrong while connected"),
-          );
-        }
+      const route: string = `/api/members/${memberId}`;
+      const response = await fetch(route);
+
+      console.log(response.status);
+      if (response.ok) {
+        console.log("Not connected fetch");
+
+        const member = await response.json() as MemberType;
+        console.log(member);
+        return member;
       } else {
+        localStorage.removeItem("jwt");
         return Promise.reject(
-          new Error("You must be connected to see this page !"),
+          new Error("Something went wrong while not connected"),
         );
       }
     },
@@ -152,14 +147,12 @@ function MemberDashbord() {
 
   return (
     <div className="grid m-1">
-      <div className="col-12 md:col-6 lg:col-4 ">
-        <Card title={`${data.firstName} ${data.name}`}></Card>
-      </div>
-      <div className="col-12 md:col-6 lg:col-4">
-        <Card title={data.email}></Card>
-      </div>
-      <div className="col-12 md:col-6 lg:col-4">
-        <Card title="Random info ?"></Card>
+      <div className="col-12 ">
+        <Card
+          title={`${data.firstName} ${data.name}`}
+          className="flex justify-content-center"
+        >
+        </Card>
       </div>
       <div className="col-12 lg:col-6">
         <Card title="Vehicules">
@@ -185,4 +178,4 @@ function MemberDashbord() {
   );
 }
 
-export default MemberDashbord;
+export default OneMember;
