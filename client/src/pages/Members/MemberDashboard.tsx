@@ -6,46 +6,50 @@ import { MemberType } from "../../types/memberType.ts";
 import { classNames } from "primereact";
 import { Button } from "primereact";
 import { memberVehiculeType } from "../../types/memberVehiculeType.ts";
+import { useAuth } from "../../middleware/AuthProvider.tsx";
 
 function MemberDashbord() {
   const _queryClient = useQueryClient();
 
-  const token = localStorage.getItem("jwt");
+  const userAuthed = useAuth();
+  const userConnected = userAuthed?.connected();
 
-  const { data, isPending, isError, error } = useQuery({
-    queryKey: [{ member: "one-member", memberToken: token }],
-    queryFn: async () => {
-      if (token) {
-        const response = await fetch("/api/connected", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          console.log("Connected fetch");
-          const data: MemberType = await response.json() as MemberType;
-          return data;
-        } else {
-          localStorage.removeItem("jwt");
-          return Promise.reject(
-            new Error("Something went wrong while connected"),
-          );
-        }
-      } else {
-        return Promise.reject(
-          new Error("You must be connected to see this page !"),
-        );
-      }
-    },
-  });
+  //   const { data, isPending, isError, error } = useQuery({
+  //     queryKey: [{ member: "one-member", memberToken: userAuthed?.token }],
+  //     queryFn: async () => {
+  //       if (userAuthed?.token) {
+  //         const response = await fetch("/api/connected", {
+  //           headers: {
+  //             Authorization: `Bearer ${userAuthed.token}`,
+  //           },
+  //         });
+  //         if (response.ok) {
+  //           console.log("Connected fetch");
+  //           const data: MemberType = await response.json() as MemberType;
+  //           return data;
+  //         } else {
+  //           localStorage.removeItem("jwt");
+  //           return Promise.reject(
+  //             new Error("Something went wrong while connected"),
+  //           );
+  //         }
+  //       } else {
+  //         return Promise.reject(
+  //           new Error("You must be connected to see this page !"),
+  //         );
+  //       }
+  //     },
+  //   });
 
-  if (isPending) {
+  if (userConnected.isPending) {
     return <h3>Pending...</h3>;
   }
 
-  if (isError) {
+  if (userConnected.isError) {
     return <h3>{error.message}</h3>;
   }
+
+  const data = userConnected.data;
 
   const itemTemplate = (vehicule: memberVehiculeType, index: number) => {
     return (

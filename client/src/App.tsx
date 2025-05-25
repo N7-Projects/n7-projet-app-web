@@ -17,55 +17,61 @@ import EditCircuit from "./pages/Circuits/EditCircuit.tsx";
 import EditTeam from "./pages/Teams/EditTeam.tsx";
 import MemberDashbord from "./pages/Members/MemberDashboard.tsx";
 import OneMember from "./pages/Members/OneMember.tsx";
+import AuthProvider from "./middleware/AuthProvider.tsx";
+import PrivateRoute from "./middleware/PrivateRoute.tsx";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Navbar />
+    <BrowserRouter>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <Navbar />
 
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
+          <Routes>
+            <Route path="/" element={<Home />} />
 
-          <Route path="/subscribe" element={<Home />} />
+            <Route path="/subscribe" element={<Home />} />
 
-          <Route path="/circuits">
-            <Route index element={<Circuits />} />
-            <Route path="new" element={<NewCircuit />} />
-            <Route path=":circuitId" element={<OneCircuit />} />
-            <Route path=":circuitId/edit" element={<EditCircuit />} />
-          </Route>
+            <Route path="/circuits">
+              <Route index element={<Circuits />} />
+              <Route path="new" element={<NewCircuit />} />
+              <Route path=":circuitId" element={<OneCircuit />} />
+              <Route path=":circuitId/edit" element={<EditCircuit />} />
+            </Route>
 
-          <Route path="/teams">
-            <Route index element={<Equipes />} />
-            <Route path="new" element={<NewTeam />} />
-            <Route path=":teamId" element={<OneTeam />} />
-            <Route path=":teamId/edit" element={<EditTeam />} />
-          </Route>
+            <Route path="/teams">
+              <Route index element={<Equipes />} />
+              <Route path="new" element={<NewTeam />} />
+              <Route path=":teamId" element={<OneTeam />} />
+              <Route path=":teamId/edit" element={<EditTeam />} />
+            </Route>
 
-          <Route path="/calendar">
-            <Route index element={<Calendar />} />
-          </Route>
+            <Route path="/calendar">
+              <Route index element={<Calendar />} />
+            </Route>
 
-          <Route path="/forum">
-            <Route index element={<Forum />} />
-            <Route path=":topicId" element={<ForumConsult />} />
-          </Route>
-          <Route path="/login">
-            <Route index element={<Login />} />
-          </Route>
-          <Route path="/register">
-            <Route index element={<Register />} />
-          </Route>
-          <Route path="/members">
-            <Route index element={<MemberDashbord />} />
-            <Route path=":memberId" element={<OneMember />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
+            <Route path="/forum">
+              <Route index element={<Forum />} />
+              <Route path=":topicId" element={<ForumConsult />} />
+            </Route>
+            <Route path="/login">
+              <Route index element={<Login />} />
+            </Route>
+            <Route path="/register">
+              <Route index element={<Register />} />
+            </Route>
+            <Route path="/members">
+              <Route element={<PrivateRoute />}>
+                <Route index element={<MemberDashbord />} />
+              </Route>
+              <Route path=":memberId" element={<OneMember />} />
+            </Route>
+          </Routes>
+        </QueryClientProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

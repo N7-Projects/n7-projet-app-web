@@ -2,6 +2,7 @@ import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
 import { useNavigate } from "react-router-dom";
 import { LoginInformation } from "../types/loginInformation.ts";
+import { useAuth } from "../middleware/AuthProvider.tsx";
 
 function Login() {
   const navigate = useNavigate();
@@ -20,36 +21,45 @@ function Login() {
     </>
   );
 
+  const auth = useAuth();
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const teamData = {
+    const data = {
       email: formData.get("email"),
       password: formData.get("password"),
     };
 
-    console.log(teamData);
+    console.log(data);
 
-    try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(teamData),
-      });
+    // try {
+    //   const response = await fetch("/api/login", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(data),
+    //   });
 
-      if (response.ok) {
-        const data: LoginInformation = await response.json();
-        localStorage.setItem("jwt", data.token); // or sessionStorage
-        navigate(`/members`);
-      } else {
-        alert("Failed to login.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred while trying to log in.");
+    //   if (response.ok) {
+    //     const data: LoginInformation = await response.json();
+    //     localStorage.setItem("jwt", data.token); // or sessionStorage
+    //     navigate(`/members`);
+    //   } else {
+    //     alert("Failed to login.");
+    //   }
+    // } catch (error) {
+    //   console.error("Error:", error);
+    //   alert("An error occurred while trying to log in.");
+    // }
+
+    if (data.email !== "" && data.password !== "") {
+      auth?.loginAction(data);
+      return;
+    } else {
+      alert("Provide valid input");
     }
   };
 

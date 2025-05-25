@@ -6,16 +6,17 @@ import { MemberType } from "../../types/memberType.ts";
 import { classNames } from "primereact";
 import { memberVehiculeType } from "../../types/memberVehiculeType.ts";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../../middleware/AuthProvider.tsx";
 
 function OneMember() {
   const _queryClient = useQueryClient();
 
   const { memberId } = useParams();
 
-  const token = localStorage.getItem("jwt");
+  const userAuth = useAuth();
 
   const { data, isPending, isError, error } = useQuery({
-    queryKey: [{ member: "one-member", memberToken: token }],
+    queryKey: [{ member: "one-member", memberToken: userAuth?.token }],
     queryFn: async () => {
       const route: string = `/api/members/${memberId}`;
       const response = await fetch(route);
