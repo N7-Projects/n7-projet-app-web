@@ -1,8 +1,6 @@
 import { Card } from "primereact";
 import { DataView } from "primereact/dataview";
 import { useQueryClient } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-import { MemberType } from "../../types/memberType.ts";
 import { classNames } from "primereact";
 import { Button } from "primereact";
 import { memberVehiculeType } from "../../types/memberVehiculeType.ts";

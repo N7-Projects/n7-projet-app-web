@@ -1,11 +1,8 @@
 import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
-import { useNavigate } from "react-router-dom";
-import { LoginInformation } from "../types/loginInformation.ts";
 import { useAuth } from "../middleware/AuthProvider.tsx";
 
 function Login() {
-  const navigate = useNavigate();
 
   const header = <img alt="Card" src="/usercard.png" />;
 
@@ -23,7 +20,7 @@ function Login() {
 
   const auth = useAuth();
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit =  (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);

@@ -7,7 +7,7 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 interface AuthContextType {
   token: string;
   user: MemberType | null;
-  loginAction: (loginData: any) => Promise<void>;
+  loginAction: (loginData) => Promise<void>;
   logOut: () => void;
   connected: () => UseQueryResult<MemberType, Error>;
 }
@@ -19,7 +19,7 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("jwt") || "");
   const navigate = useNavigate();
 
-  const loginAction = async (loginData: any) => {
+  const loginAction = async (loginData) => {
     try {
       const response = await fetch("/api/login", {
         method: "POST",
