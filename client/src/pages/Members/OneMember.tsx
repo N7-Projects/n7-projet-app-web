@@ -4,7 +4,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { MemberType } from "../../types/memberType.ts";
 import { classNames } from "primereact";
-import { Button } from "primereact";
 import { memberVehiculeType } from "../../types/memberVehiculeType.ts";
 import { useParams } from "react-router-dom";
 
@@ -70,11 +69,6 @@ function OneMember() {
               </div>
             </div>
             <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-              <Button
-                icon="pi pi-pencil"
-                className="p-button-rounded"
-              >
-              </Button>
             </div>
           </div>
         </div>
@@ -110,7 +104,12 @@ function OneMember() {
           />
           <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
             <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-              <div className="text-2xl font-bold text-900">
+              <div
+                className="text-2xl font-bold text-900"
+                onClick={() => {
+                  globalThis.location.href = `/teams/${team.idRacingTeam}`;
+                }}
+              >
                 {team.nom}
               </div>
               <div className="flex align-items-center gap-3">
@@ -120,14 +119,6 @@ function OneMember() {
               </div>
             </div>
             <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-              <Button
-                icon="pi pi-send"
-                className="p-button-rounded"
-                onClick={() => {
-                  globalThis.location.href = `/teams/${team.idRacingTeam}`;
-                }}
-              >
-              </Button>
             </div>
           </div>
         </div>

@@ -43,7 +43,7 @@ function Login() {
       if (response.ok) {
         const data: LoginInformation = await response.json();
         localStorage.setItem("jwt", data.token); // or sessionStorage
-        navigate(`/members/${data.memberId}`);
+        navigate(`/members`);
       } else {
         alert("Failed to login.");
       }

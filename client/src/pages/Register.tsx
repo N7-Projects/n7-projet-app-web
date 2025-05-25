@@ -114,7 +114,7 @@ function Register() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem("jwt", data.token);
-        navigate(`/members/${data.memberId}`);
+        navigate(`/members`);
       } else {
         const errorData = await response.json();
         alert(errorData.message || "Échec de l'inscription.");

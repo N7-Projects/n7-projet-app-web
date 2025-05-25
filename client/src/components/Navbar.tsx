@@ -157,14 +157,14 @@ export default function Navbar() {
                 dropdownIcon="pi pi-caret-down"
                 outlined
                 onClick={() => {
-                  globalThis.location.href = "/members/" + user.idMembre;
+                  globalThis.location.href = "/members";
                 }}
                 model={[
                   {
                     label: "Profile",
                     icon: "pi pi-user",
                     command: () => {
-                      globalThis.location.href = "/members/" + user.idMembre;
+                      globalThis.location.href = "/members";
                     },
                   },
                   {
@@ -173,6 +173,7 @@ export default function Navbar() {
                     command: () => {
                       localStorage.removeItem("jwt");
                       globalThis.location.reload();
+                      globalThis.location.href = "/";
                     },
                   },
                 ]}

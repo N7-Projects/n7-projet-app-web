@@ -78,9 +78,15 @@ function OneTeam() {
           <h4>Membres</h4>
           <ul className="list-none p-0 m-0">
             {racingTeam.membres.map((member, idx) => (
-              <li key={idx} className="mb-2">
+              <li
+                key={idx}
+                className="mb-2"
+                onClick={() => {
+                  globalThis.location.href = `/members/${member.idMembre}`;
+                }}
+              >
                 <i className="pi pi-user mr-2"></i>
-                <strong>{member.firstname}</strong> — {member.name}
+                <strong>{member.firstName}</strong> — {member.name}
               </li>
             ))}
           </ul>

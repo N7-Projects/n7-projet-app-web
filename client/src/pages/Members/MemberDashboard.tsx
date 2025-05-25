@@ -6,12 +6,9 @@ import { MemberType } from "../../types/memberType.ts";
 import { classNames } from "primereact";
 import { Button } from "primereact";
 import { memberVehiculeType } from "../../types/memberVehiculeType.ts";
-import { useParams } from "react-router-dom";
 
 function MemberDashbord() {
   const _queryClient = useQueryClient();
-
-  const { memberId } = useParams();
 
   const token = localStorage.getItem("jwt");
 
@@ -152,14 +149,11 @@ function MemberDashbord() {
 
   return (
     <div className="grid m-1">
-      <div className="col-12 md:col-6 lg:col-4 ">
+      <div className="col-12 md:col-6">
         <Card title={`${data.firstName} ${data.name}`}></Card>
       </div>
-      <div className="col-12 md:col-6 lg:col-4">
+      <div className="col-12 md:col-6 ">
         <Card title={data.email}></Card>
-      </div>
-      <div className="col-12 md:col-6 lg:col-4">
-        <Card title="Random info ?"></Card>
       </div>
       <div className="col-12 lg:col-6">
         <Card title="Vehicules">
