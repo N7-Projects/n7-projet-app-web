@@ -7,9 +7,13 @@ const logoFlagPath: string = "/racing-flags.svg";
 
 export default function Navbar() {
   const userAuthed = useAuth();
-  const user = userAuthed?.connected().data;
-  console.log("AAAAA");
-  console.log(user);
+  const userConnected = userAuthed?.connected();
+
+  const user = userConnected?.data;
+
+  //   const user = userAuthed?.connected().data;
+  //   console.log("AAAAA");
+  //   console.log(user);c
 
   return (
     <section className="navbar">

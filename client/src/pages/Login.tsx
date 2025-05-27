@@ -28,8 +28,6 @@ function Login() {
       password: formData.get("password"),
     };
 
-    console.log(data);
-
     // try {
     //   const response = await fetch("/api/login", {
     //     method: "POST",

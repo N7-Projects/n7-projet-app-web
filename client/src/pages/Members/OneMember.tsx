@@ -29,6 +29,7 @@ function OneMember() {
         console.log(member);
         return member;
       } else {
+        console.log("ONE MEMBER REMOVE JWT");
         localStorage.removeItem("jwt");
         return Promise.reject(
           new Error("Something went wrong while not connected"),

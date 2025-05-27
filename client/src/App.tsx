@@ -24,9 +24,9 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProvider>
           <Navbar />
 
           <Routes>
@@ -69,9 +69,9 @@ function App() {
               <Route path=":memberId" element={<OneMember />} />
             </Route>
           </Routes>
-        </QueryClientProvider>
-      </AuthProvider>
-    </BrowserRouter>
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

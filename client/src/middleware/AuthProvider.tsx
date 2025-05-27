@@ -31,8 +31,12 @@ const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         const res: LoginInformation = await response.json();
+        localStorage.setItem("jwt", res.token);
         if (res) {
           setToken(res.token);
+
+          console.log("TOKEN");
+          console.log(localStorage.getItem("jwt"));
 
           fetch("/api/connected", {
             headers: {
@@ -42,15 +46,22 @@ const AuthProvider = ({ children }) => {
             .then(async (res) => {
               if (res.ok) {
                 const data: MemberType = await res.json();
+                console.log("USER");
+                console.log(data);
                 setUser(data);
+
                 navigate(`/members`);
               } else {
+                console.log("DECONNECTION LOGIN RESPONSE NOT OK");
+
                 localStorage.removeItem("jwt");
                 setUser(null);
               }
             })
             .catch((err) => {
               console.error("API connected call failed:", err);
+              console.log("DECONNECTION LOGIN API FAIL");
+
               localStorage.removeItem("jwt");
               setUser(null);
             });
@@ -66,6 +77,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const logOut = () => {
+    console.log("DECONNECTION LOGOUT");
     setUser(null);
     setToken("");
     localStorage.removeItem("jwt");
@@ -78,6 +90,7 @@ const AuthProvider = ({ children }) => {
       queryKey: [{ member: "one-member", memberToken: token }],
       queryFn: async () => {
         if (token) {
+          //   console.log(token);
           const response = await fetch("/api/connected", {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -86,6 +99,7 @@ const AuthProvider = ({ children }) => {
           if (response.ok) {
             console.log("Connected fetch");
             const data: MemberType = await response.json() as MemberType;
+            localStorage.setItem("jwt", token);
             return data;
           } else {
             localStorage.removeItem("jwt");
