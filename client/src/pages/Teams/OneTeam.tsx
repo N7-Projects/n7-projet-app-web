@@ -5,9 +5,14 @@ import { TeamType } from "../../types/teamType.ts";
 import { useParams } from "react-router-dom";
 
 import "./OneTeam.scss";
+import { useAuth } from "../../middleware/AuthProvider.tsx";
+import { MemberType } from "../../types/memberType.ts";
 
 function OneTeam() {
   const { teamId } = useParams();
+
+  const auth = useAuth();
+  const user = auth?.connected().data;
 
   const _queryClient = useQueryClient();
 
@@ -43,7 +48,7 @@ function OneTeam() {
       src="/usercard.png"
     />
   );
-  const footer = (
+  const footerEnabled = (
     <>
       <Button
         label="Modifier"
@@ -64,6 +69,38 @@ function OneTeam() {
       />
     </>
   );
+
+  const footerDisabled = (
+    <>
+      <Button
+        label="Modifier"
+        severity="primary"
+        icon="pi pi-pencil"
+        disabled
+        // Use Link if its not what do we want
+      />
+      <Button
+        label="Effacer"
+        severity="danger"
+        icon="pi pi-eraser"
+        style={{ marginLeft: "0.5em" }}
+        disabled
+      />
+    </>
+  );
+
+  const isUserInTeam = (user: MemberType): boolean => {
+    let ok = false;
+    user.teams.forEach((team) => {
+      if (team.idRacingTeam == racingTeam.idRacingTeam) {
+        ok = !ok;
+      }
+    });
+
+    return ok;
+  };
+
+  const footer = isUserInTeam(user) ? footerEnabled : footerDisabled;
 
   return (
     <div className="one-team-card flex justify-content-center">
