@@ -4,8 +4,11 @@ import { Editor } from "primereact/editor";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { Button } from "primereact";
 import { MessageType } from "../../types/messageType.ts";
+import { useAuth } from "../../middleware/AuthProvider.tsx";
 
 function ForumPost() {
+  const user = useAuth()?.connected().data;
+
   // State for the text input
   const [text, setText] = useState<string>("");
 
@@ -95,14 +98,14 @@ function ForumPost() {
           icon="pi pi-send"
           type="submit"
           className="send-button"
-          disabled={text.trim() === ""}
+          disabled={!user || text.trim() === ""}
         />
         <Button
           label="Effacer"
           severity="secondary"
           icon="pi pi-trash"
           className="send-button"
-          disabled={text.trim() === ""}
+          disabled={!user || text.trim() === ""}
           onClick={handleErase}
         />
       </form>

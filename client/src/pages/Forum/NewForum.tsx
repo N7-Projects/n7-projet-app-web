@@ -3,8 +3,11 @@ import { FormEvent, useRef, useState } from "react";
 import { Button } from "primereact";
 import { forumTopicType } from "../../types/forumTopicType.ts";
 import { InputText } from "primereact";
+import { useAuth } from "../../middleware/AuthProvider.tsx";
 
 function NewForum() {
+  const user = useAuth()?.connected().data;
+
   // State for the text input
   const [text, setText] = useState<string>("");
 
@@ -54,94 +57,49 @@ function NewForum() {
     }
   };
 
-  if (text.length > 255) {
-    return (
-      <>
-        <form
-          id="messageForm"
-          className="flex col-12 justify-content-center"
-          onSubmit={handleSubmit}
-        >
-          <InputText
-            id="text"
-            name="text"
-            style={{ width: "100rem" }}
-            placeholder="Saisir votre nouveau sujet de dicussion"
-            onChange={(e) => {
-              setText(e.target.value);
-            }}
-            ref={textInputRef}
-            invalid
-          />
+  return (
+    <>
+      <form
+        id="messageForm"
+        className="flex col-12 justify-content-center"
+        onSubmit={handleSubmit}
+      >
+        <InputText
+          id="text"
+          name="text"
+          style={{ width: "100rem" }}
+          placeholder="Saisir votre nouveau sujet de dicussion"
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
+          ref={textInputRef}
+          invalid={text.length > 255}
+        />
 
-          <div className="flex">
-            <Button
-              label="Envoyer"
-              className="send-button"
-              severity="primary"
-              icon="pi pi-send"
-              type="submit"
-              disabled={text.trim() === "" || text.trim().length > 255}
-            />
-            <Button
-              label="Supprimer"
-              className="send-button"
-              severity="secondary"
-              icon="pi pi-trash"
-              disabled={text.trim() === "" || text.trim().length > 255}
-              onClick={() => {
-                setText("");
-                textInputRef.current.value = "";
-              }}
-            />
-          </div>
-        </form>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <form
-          id="messageForm"
-          className="flex col-12 justify-content-center"
-          onSubmit={handleSubmit}
-        >
-          <InputText
-            id="text"
-            name="text"
-            style={{ width: "100rem" }}
-            placeholder="Saisir votre nouveau sujet de dicussion"
-            onChange={(e) => {
-              setText(e.target.value);
-            }}
-            ref={textInputRef}
+        <div className="flex">
+          <Button
+            label="Envoyer"
+            className="send-button"
+            severity="primary"
+            icon="pi pi-send"
+            type="submit"
+            disabled={!user || text.trim() === "" || text.trim().length > 255}
           />
-
-          <div className="flex">
-            <Button
-              label="Envoyer"
-              className="send-button"
-              severity="primary"
-              icon="pi pi-send"
-              type="submit"
-              disabled={text.trim() === ""}
-            />
-            <Button
-              label="Supprimer"
-              className="send-button"
-              severity="secondary"
-              icon="pi pi-trash"
-              disabled={text.trim() === ""}
-              onClick={() => {
-                setText("");
-                textInputRef.current.value = "";
-              }}
-            />
-          </div>
-        </form>
-      </>
-    );
-  }
+          <Button
+            label="Supprimer"
+            className="send-button"
+            severity="secondary"
+            icon="pi pi-trash"
+            disabled={!user || text.trim() === "" || text.trim().length > 255}
+            onClick={() => {
+              setText("");
+              textInputRef.current.value = "";
+            }}
+          />
+        </div>
+      </form>
+    </>
+  );
 }
 
 export default NewForum;
