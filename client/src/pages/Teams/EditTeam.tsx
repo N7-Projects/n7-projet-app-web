@@ -2,7 +2,7 @@ import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { FormEvent, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { SponsorType } from "../../types/sponsorType.ts";
@@ -12,8 +12,23 @@ import { InputNumber } from "primereact";
 import { Column } from "primereact";
 import { DataTable } from "primereact";
 import { Dialog } from "primereact";
+import { useAuth } from "../../middleware/AuthProvider.tsx";
+import { isUserInTeam } from "../../middleware/ChecksMiddleware.tsx";
 
 function EditTeam() {
+  const { teamId } = useParams();
+
+  const userAuth = useAuth();
+
+  if (
+    !userAuth ||
+    !userAuth.user ||
+    (userAuth && teamId && userAuth.user &&
+      !isUserInTeam(userAuth.user, teamId))
+  ) {
+    return <Navigate to="/" />;
+  }
+
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddSponsorDialog, setShowAddSponsorDialog] = useState(false);
   const [newMemberFirstname, setNewMemberFirstname] = useState("");
@@ -38,8 +53,6 @@ function EditTeam() {
   const [selectedSponsors, setSelectedSponsors] = useState<SponsorType[]>([]);
   const [editClassement, setEditClassement] = useState<number>(0);
   const [editName, setEditName] = useState<string>("");
-
-  const { teamId } = useParams();
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();

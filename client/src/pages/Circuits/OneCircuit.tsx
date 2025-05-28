@@ -5,9 +5,12 @@ import { useParams } from "react-router-dom";
 
 import "./OneCircuit.scss";
 import { CircuitType } from "../../types/circuitType.ts";
+import { useAuth } from "../../middleware/AuthProvider.tsx";
 
 function OneCircuit() {
   const { circuitId } = useParams();
+
+  const auth = useAuth();
 
   const _queryClient = useQueryClient();
 
@@ -43,7 +46,7 @@ function OneCircuit() {
       src="/usercard.png"
     />
   );
-  const footer = (
+  const footerEnabled = (
     <>
       <Button
         label="Modifier"
@@ -63,6 +66,26 @@ function OneCircuit() {
       />
     </>
   );
+
+  const footerDisabled = (
+    <>
+      <Button
+        label="Modifier"
+        severity="primary"
+        icon="pi pi-pencil"
+        disabled
+      />
+      <Button
+        label="Supprimer"
+        severity="danger"
+        icon="pi pi-eraser"
+        style={{ marginLeft: "0.5em" }}
+        disabled
+      />
+    </>
+  );
+
+  const footer = auth && auth.user ? footerEnabled : footerDisabled;
 
   return (
     <div className="one-team-card flex justify-content-center">
