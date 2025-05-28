@@ -6,7 +6,7 @@ import { InputText } from "primereact";
 import { useAuth } from "../../middleware/AuthProvider.tsx";
 
 function NewForum() {
-  const user = useAuth()?.connected().data;
+  const userAuth = useAuth();
 
   // State for the text input
   const [text, setText] = useState<string>("");
@@ -83,14 +83,16 @@ function NewForum() {
             severity="primary"
             icon="pi pi-send"
             type="submit"
-            disabled={!user || text.trim() === "" || text.trim().length > 255}
+            disabled={userAuth && !userAuth.user || text.trim() === "" ||
+              text.trim().length > 255}
           />
           <Button
             label="Supprimer"
             className="send-button"
             severity="secondary"
             icon="pi pi-trash"
-            disabled={!user || text.trim() === "" || text.trim().length > 255}
+            disabled={userAuth && !userAuth.user || text.trim() === "" ||
+              text.trim().length > 255}
             onClick={() => {
               setText("");
               textInputRef.current.value = "";

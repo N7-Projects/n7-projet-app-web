@@ -3,6 +3,8 @@ import { InputText } from "primereact/inputtext";
 import { useAuth } from "../middleware/AuthProvider.tsx";
 
 function Login() {
+  const auth = useAuth();
+
   const header = <img alt="Card" src="/usercard.png" />;
 
   const footer = (
@@ -16,8 +18,6 @@ function Login() {
       />
     </>
   );
-
-  const auth = useAuth();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -50,6 +50,7 @@ function Login() {
     // }
 
     if (data.email !== "" && data.password !== "") {
+      console.log("LOGIN OK");
       auth?.loginAction(data);
       return;
     } else {

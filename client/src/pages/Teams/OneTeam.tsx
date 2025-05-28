@@ -7,12 +7,12 @@ import { useParams } from "react-router-dom";
 import "./OneTeam.scss";
 import { useAuth } from "../../middleware/AuthProvider.tsx";
 import { MemberType } from "../../types/memberType.ts";
+import { isUserInTeam } from "../../middleware/ChecksMiddleware.tsx";
 
 function OneTeam() {
   const { teamId } = useParams();
 
   const auth = useAuth();
-  const user = auth?.connected().data;
 
   const _queryClient = useQueryClient();
 
@@ -89,18 +89,9 @@ function OneTeam() {
     </>
   );
 
-  const isUserInTeam = (user: MemberType): boolean => {
-    let ok = false;
-    user.teams.forEach((team) => {
-      if (team.idRacingTeam == racingTeam.idRacingTeam) {
-        ok = !ok;
-      }
-    });
-
-    return ok;
-  };
-
-  const footer = isUserInTeam(user) ? footerEnabled : footerDisabled;
+  const footer = auth && auth.user && teamId && isUserInTeam(auth.user, teamId)
+    ? footerEnabled
+    : footerDisabled;
 
   return (
     <div className="one-team-card flex justify-content-center">

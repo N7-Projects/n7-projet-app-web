@@ -11,7 +11,6 @@ function OneCircuit() {
   const { circuitId } = useParams();
 
   const auth = useAuth();
-  const user = auth?.connected().data;
 
   const _queryClient = useQueryClient();
 
@@ -86,7 +85,7 @@ function OneCircuit() {
     </>
   );
 
-  const footer = user ? footerEnabled : footerDisabled;
+  const footer = auth && auth.user ? footerEnabled : footerDisabled;
 
   return (
     <div className="one-team-card flex justify-content-center">

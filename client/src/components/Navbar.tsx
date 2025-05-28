@@ -7,9 +7,6 @@ const logoFlagPath: string = "/racing-flags.svg";
 
 export default function Navbar() {
   const userAuthed = useAuth();
-  const userConnected = userAuthed?.connected();
-
-  const user = userConnected?.data;
 
   //   const user = userAuthed?.connected().data;
   //   console.log("AAAAA");
@@ -119,12 +116,12 @@ export default function Navbar() {
           />
         </li>
 
-        {user
+        {userAuthed && userAuthed.user
           ? (
             <li key="Login">
               <SplitButton
                 severity="info"
-                label={user.name}
+                label={userAuthed.user.name}
                 icon="pi pi-user"
                 dropdownIcon="pi pi-caret-down"
                 outlined

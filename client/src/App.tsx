@@ -17,7 +17,7 @@ import EditCircuit from "./pages/Circuits/EditCircuit.tsx";
 import EditTeam from "./pages/Teams/EditTeam.tsx";
 import MemberDashbord from "./pages/Members/MemberDashboard.tsx";
 import OneMember from "./pages/Members/OneMember.tsx";
-import AuthProvider from "./middleware/AuthProvider.tsx";
+import AuthProvider, { useAuth } from "./middleware/AuthProvider.tsx";
 import PrivateRoute from "./middleware/PrivateRoute.tsx";
 import NotFound from "./components/NotFound.tsx";
 
@@ -37,17 +37,23 @@ function App() {
 
             <Route path="/circuits">
               <Route index element={<Circuits />} />
-              <Route path="new" element={<NewCircuit />} />
               <Route path=":circuitId" element={<OneCircuit />} />
-              <Route path=":circuitId/edit" element={<EditCircuit />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="new" element={<NewCircuit />} />
+                <Route path=":circuitId/edit" element={<EditCircuit />} />
+              </Route>
+
               <Route path="*" element={<NotFound />} />
             </Route>
 
             <Route path="/teams">
               <Route index element={<Equipes />} />
-              <Route path="new" element={<NewTeam />} />
               <Route path=":teamId" element={<OneTeam />} />
               <Route path=":teamId/edit" element={<EditTeam />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="new" element={<NewTeam />} />
+              </Route>
+
               <Route path="*" element={<NotFound />} />
             </Route>
 

@@ -10,7 +10,6 @@ function MemberDashbord() {
   const _queryClient = useQueryClient();
 
   const userAuthed = useAuth();
-  const userConnected = userAuthed?.connected();
 
   //   const { data, isPending, isError, error } = useQuery({
   //     queryKey: [{ member: "one-member", memberToken: userAuthed?.token }],
@@ -38,16 +37,6 @@ function MemberDashbord() {
   //       }
   //     },
   //   });
-
-  if (userConnected.isPending) {
-    return <h3>Pending...</h3>;
-  }
-
-  if (userConnected.isError) {
-    return <h3>{error.message}</h3>;
-  }
-
-  const data = userConnected.data;
 
   const itemTemplate = (vehicule: memberVehiculeType, index: number) => {
     return (
@@ -149,18 +138,20 @@ function MemberDashbord() {
     return <div className="grid grid-nogutter">{list}</div>;
   };
 
+  const user = userAuthed?.user;
+
   return (
     <div className="grid m-1">
       <div className="col-12 md:col-6">
-        <Card title={`${data.firstName} ${data.name}`}></Card>
+        <Card title={`${user.firstName} ${user.name}`}></Card>
       </div>
       <div className="col-12 md:col-6 ">
-        <Card title={data.email}></Card>
+        <Card title={user.email}></Card>
       </div>
       <div className="col-12 lg:col-6">
         <Card title="Vehicules">
           <DataView
-            value={data.vehicules}
+            value={user.vehicules}
             listTemplate={listTemplate}
             paginator
             rows={3}
@@ -170,7 +161,7 @@ function MemberDashbord() {
       <div className="col-12 lg:col-6">
         <Card title="Teams">
           <DataView
-            value={data.teams}
+            value={user.teams}
             listTemplate={listTeamTemplate}
             paginator
             rows={3}

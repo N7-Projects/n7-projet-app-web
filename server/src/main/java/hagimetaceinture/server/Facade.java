@@ -394,7 +394,7 @@ public class Facade {
         member.setPassword(hashed);
         memberRepo.save(member);
         String token = jwtService.generateToken(member.getEmail());
-        return new LoginInformation(member.getIdMembre(), token);
+        return new LoginInformation(member, token);
     }
 
     @GetMapping("/api/connected")
@@ -428,7 +428,7 @@ public class Facade {
         } else {
             if (passwordEncoder.matches(request.getPassword(), member.get().getPassword())) {
                 String token = jwtService.generateToken(member.get().getEmail());
-                return new LoginInformation(member.get().getIdMembre(), token);
+                return new LoginInformation(member.get(), token);
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Mot de passe incorrect pour " + request.getEmail());
