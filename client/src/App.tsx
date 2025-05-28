@@ -19,6 +19,7 @@ import MemberDashbord from "./pages/Members/MemberDashboard.tsx";
 import OneMember from "./pages/Members/OneMember.tsx";
 import AuthProvider from "./middleware/AuthProvider.tsx";
 import PrivateRoute from "./middleware/PrivateRoute.tsx";
+import NotFound from "./components/NotFound.tsx";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ function App() {
               <Route path="new" element={<NewCircuit />} />
               <Route path=":circuitId" element={<OneCircuit />} />
               <Route path=":circuitId/edit" element={<EditCircuit />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
 
             <Route path="/teams">
@@ -46,28 +48,39 @@ function App() {
               <Route path="new" element={<NewTeam />} />
               <Route path=":teamId" element={<OneTeam />} />
               <Route path=":teamId/edit" element={<EditTeam />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
 
             <Route path="/calendar">
               <Route index element={<Calendar />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
 
             <Route path="/forum">
               <Route index element={<Forum />} />
               <Route path=":topicId" element={<ForumConsult />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
+
             <Route path="/login">
               <Route index element={<Login />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
+
             <Route path="/register">
               <Route index element={<Register />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
+
             <Route path="/members">
               <Route element={<PrivateRoute />}>
                 <Route index element={<MemberDashbord />} />
               </Route>
               <Route path=":memberId" element={<OneMember />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
+
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>
