@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 
 import "./OneTeam.scss";
 import { useAuth } from "../../middleware/AuthProvider.tsx";
-import { MemberType } from "../../types/memberType.ts";
 import { isUserInTeam } from "../../middleware/ChecksMiddleware.tsx";
 
 function OneTeam() {

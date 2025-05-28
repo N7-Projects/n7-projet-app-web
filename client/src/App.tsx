@@ -17,7 +17,7 @@ import EditCircuit from "./pages/Circuits/EditCircuit.tsx";
 import EditTeam from "./pages/Teams/EditTeam.tsx";
 import MemberDashbord from "./pages/Members/MemberDashboard.tsx";
 import OneMember from "./pages/Members/OneMember.tsx";
-import AuthProvider, { useAuth } from "./middleware/AuthProvider.tsx";
+import AuthProvider from "./middleware/AuthProvider.tsx";
 import PrivateRoute from "./middleware/PrivateRoute.tsx";
 import NotFound from "./components/NotFound.tsx";
 
