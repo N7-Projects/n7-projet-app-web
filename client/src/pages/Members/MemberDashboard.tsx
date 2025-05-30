@@ -140,6 +140,12 @@ function MemberDashbord() {
 
   const user = userAuthed?.user;
 
+  if (user == null) {
+    return <p>ERROR</p>;
+  }
+
+  console.log("IN DASHBOARD");
+  console.log(userAuthed);
   return (
     <div className="grid m-1">
       <div className="col-12 md:col-6">

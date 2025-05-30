@@ -7,4 +7,8 @@ const PrivateRoute = () => {
   return <Outlet />;
 };
 
-export default PrivateRoute;
+const ProtectedEditTeam = () => {
+  return <Outlet />;
+};
+
+export { PrivateRoute, ProtectedEditTeam };

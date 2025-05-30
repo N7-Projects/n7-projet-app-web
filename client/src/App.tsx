@@ -18,7 +18,7 @@ import EditTeam from "./pages/Teams/EditTeam.tsx";
 import MemberDashbord from "./pages/Members/MemberDashboard.tsx";
 import OneMember from "./pages/Members/OneMember.tsx";
 import AuthProvider from "./middleware/AuthProvider.tsx";
-import PrivateRoute from "./middleware/PrivateRoute.tsx";
+import { PrivateRoute, ProtectedEditTeam } from "./middleware/PrivateRoute.tsx";
 import NotFound from "./components/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -49,7 +49,9 @@ function App() {
             <Route path="/teams">
               <Route index element={<Equipes />} />
               <Route path=":teamId" element={<OneTeam />} />
-              <Route path=":teamId/edit" element={<EditTeam />} />
+              <Route element={<ProtectedEditTeam />}>
+                <Route path=":teamId/edit" element={<EditTeam />} />
+              </Route>
               <Route element={<PrivateRoute />}>
                 <Route path="new" element={<NewTeam />} />
               </Route>

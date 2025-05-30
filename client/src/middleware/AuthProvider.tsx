@@ -22,9 +22,11 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedToken = localStorage.getItem("jwt");
     const storedUser = localStorage.getItem("user");
+    // console.log("In UseEffect");
     if (storedToken && storedUser) {
       setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+      setUser(JSON.parse(storedUser) as MemberType);
+      //   console.log(JSON.parse(storedUser) as MemberType);
     }
   }, []);
 
@@ -49,8 +51,6 @@ const AuthProvider = ({ children }) => {
           localStorage.setItem("user", JSON.stringify(res.member));
           setToken(res.token);
           setUser(res.member);
-          navigate(`/members`);
-
           navigate(`/members`);
 
           return;

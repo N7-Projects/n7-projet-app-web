@@ -14,20 +14,24 @@ import { DataTable } from "primereact";
 import { Dialog } from "primereact";
 import { useAuth } from "../../middleware/AuthProvider.tsx";
 import { isUserInTeam } from "../../middleware/ChecksMiddleware.tsx";
+// import { useAuth } from "../../middleware/AuthProvider.tsx";
+// import { isUserInTeam } from "../../middleware/ChecksMiddleware.tsx";
 
 function EditTeam() {
   const { teamId } = useParams();
 
-  const userAuth = useAuth();
+  const userAuthed = useAuth();
+  const user = userAuthed?.user;
+  //   const userAuth = useAuth();
 
-  if (
-    !userAuth ||
-    !userAuth.user ||
-    (userAuth && teamId && userAuth.user &&
-      !isUserInTeam(userAuth.user, teamId))
-  ) {
-    return <Navigate to="/" />;
-  }
+  //   if (
+  //     !userAuth ||
+  //     !userAuth.user ||
+  //     (userAuth && teamId && userAuth.user &&
+  //       !isUserInTeam(userAuth.user, teamId))
+  //   ) {
+  //     return <Navigate to="/" />;
+  //   }
 
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddSponsorDialog, setShowAddSponsorDialog] = useState(false);
@@ -281,6 +285,19 @@ function EditTeam() {
   if (isError) {
     return <h3>{error.message}</h3>;
   }
+
+  if (user == null) {
+    alert("You must be logged in !");
+    return <Navigate to="/login" />;
+  }
+
+  if (user && !isUserInTeam(user, Number(teamId))) {
+    alert("You must be part of the team to edit it !");
+    return <Navigate to="/teams" />;
+  }
+
+  console.log("IN EDIt");
+  console.log(userAuthed);
 
   return (
     <div className="team-edit-card flex justify-content-center">
