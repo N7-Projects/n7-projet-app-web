@@ -75,7 +75,7 @@ function NewTeam() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          firstname: newMemberFirstname,
+          firstName: newMemberFirstname,
           name: newMemberName,
         }),
       });
