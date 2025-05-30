@@ -28,29 +28,39 @@ de build.
 
 ## Les entités
 
-1. **Race**: <ins>idRace</ins>, _idCircuit_, date, _VehiculeType_,
-   _participant(member)_
-2. **Member** : <ins>idMember</ins>, Name, Firstname, _Vehicule_,
-   subscriber(boolean)
-3. **Vehicule**: <ins>idVehicule</ins>, _VehiculeType_, Marque, Model, Plaque,
-   Année, _owner_
-4. **RacingTeam**: <ins>idRacingTeam</ins>, name, ranking, _supporter(member)_,
-   _Sponsor_
-5. **Circuit**: <ins>idCircuit</ins>, place, distance, turnNumber, spectator
-6. **Meeting**: <ins>idMeeting</ins>, place, date, title, _Participant(Member)_
-7. **Sponsor**: <ins>idSponsor</ins>, investmentCapital, creationDate
-8. **Sponsoring**: <ins>idSponsoring</ins>, _RacingTeam_, _sponsor_,
-   StartingDate, EndingDate, investmentCapital
+- Race: _id_, **circuit**, date, **vehiculeType**, participants
+- Member: _idMembre_, name, firstName, vehicules, subscriber
+- Vehicule: _id_, **vehiculeType**, branch, model, licensePlate, date, **owner**
+- Circuit: _id_, place, distance, turnNumber, spectatorNumber, name, bestTime
+- Meeting: _id_, title, guests, date
+- Sponsoring: _id_, **racingTeam**, **sponsor**, date, duration, investment
+- RacingTeam: _idRacingTeam_, nom, classement, membres, sponsors
+- Sponsor: _id_, name, investedCapital, date
 
 ## Les routes
 
 - `/` : route index
-- `/circuits` : afficher un résumé tous les circuits
-  - `/circuits/new` : permet de créer un circuit
-  - `/circuits/:circuitId` : afficher les informations du circuit `circuitId`
-  - `/circuits/:circuitId/edit` : éditer le circuit `circuitId`
-- `/calendar` : afficher le calendrier des événements -`calendar/edit` : éditer
-  le calendrier
-- `/forum` : accéder au forum et afficher tous les sujets
-  - `/forum/:topucId` : accéder au sujet `sujetId`
-- `subscribe` : pouvoir s'inscrire à la newsletter
+- Circuits
+  - `GET /api/circuits` : afficher tous les circuits
+  - `POST /api/circuits/new` : créer un nouveau circuit
+  - `GET /api/circuits/{circuitId}` : afficher les informations du circuit `circuitId`
+  - `PUT /api/circuits/{circuitId}/edit` : modifier le circuit `circuitId`
+- Calendrier
+  - `GET /api/calendar` : afficher tous les événements
+  - `GET /api/calendar/{date}` : afficher les événements à une date donnée
+- Forum
+  - `GET /api/forum` : afficher tous les sujets du forum
+  - `POST /api/forum/post` : créer un nouveau sujet de forum
+  - `GET /api/forum/{idForumTopic}` : afficher tous les messages du sujet `idForumTopic`
+  - `POST /api/forum/{idForumTopic}/post` : publier un message dans le sujet `idForumTopic`
+  - `GET /api/forum/{idForumTopic}/consult` : afficher le titre du sujet `idForumTopic`
+- Équipes
+  - `GET /api/teams` : afficher toutes les équipes
+  - `POST /api/teams/new` : créer une nouvelle équipe
+  - `GET /api/teams/{teamId}` : afficher les informations de l’équipe `teamId`
+  - `PUT /api/teams/{teamId}/edit` : modifier l’équipe `teamId`
+- Inscription / Connexion
+  - `GET /api/register/homonyms/{name}/{firstName}` : vérifier les homonymes libres
+  - `POST /api/register` : enregistrer un nouveau membre
+  - `POST /api/login` : se connecter via email et mot de passe
+  - `GET /api/connected` : vérifier l’état de connexion via le token JWT
