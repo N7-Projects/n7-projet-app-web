@@ -140,9 +140,7 @@ export default function Navbar() {
                     label: "Se déconnecter",
                     icon: "pi pi-sign-out",
                     command: () => {
-                      localStorage.removeItem("jwt");
-                      globalThis.location.reload();
-                      globalThis.location.href = "/";
+                      userAuthed.logOut();
                     },
                   },
                 ]}

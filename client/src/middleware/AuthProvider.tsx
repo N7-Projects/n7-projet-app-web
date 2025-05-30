@@ -68,6 +68,7 @@ const AuthProvider = ({ children }) => {
     setUser(null);
     setToken("");
     localStorage.removeItem("jwt");
+    localStorage.removeItem("user");
     navigate("/");
     return;
   };
