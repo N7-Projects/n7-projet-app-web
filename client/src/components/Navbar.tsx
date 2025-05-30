@@ -126,14 +126,16 @@ export default function Navbar() {
                 dropdownIcon="pi pi-caret-down"
                 outlined
                 onClick={() => {
-                  globalThis.location.href = "/members";
+                  globalThis.location.href = "/members/" +
+                    userAuthed.user?.idMembre;
                 }}
                 model={[
                   {
                     label: "Profile",
                     icon: "pi pi-user",
                     command: () => {
-                      globalThis.location.href = "/members";
+                      globalThis.location.href = "/members/" +
+                        userAuthed.user?.idMembre;
                     },
                   },
                   {
