@@ -1,7 +1,7 @@
 import { Button, Card } from "primereact";
 import { useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import { Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import "./OneCircuit.scss";
 import { CircuitType } from "../../types/circuitType.ts";
@@ -16,9 +16,11 @@ function OneCircuit() {
 
   const auth = useAuth();
 
+  const navigate = useNavigate();
+
   const toast = useRef(null);
 
-  const _queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: [{ circuits: "one-circuit", circuitId: circuitId }],
@@ -35,7 +37,8 @@ function OneCircuit() {
         return oneCircuit;
       } else {
         console.error("Le circuit n'existe pas");
-        globalThis.location.href = "/circuits";
+
+        navigate("/circuits");
       }
     },
   });
@@ -83,6 +86,9 @@ function OneCircuit() {
 
       if (response.ok) {
         accept();
+        queryClient.invalidateQueries({
+          queryKey: [{ circuits: "one-circuit", circuitId: circuitId }],
+        });
         globalThis.location.href = "/circuits";
       } else {
         alert("Failed to delete circuit.");
