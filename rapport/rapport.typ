@@ -83,7 +83,7 @@ Les _Sponsorisations_ (`Sponsoring`) relient précisément une écurie et un spo
 Enfin, les _Réunions_ (`Meeting`) peuvent inviter plusieurs membres (*OneToMany*).
 Ces relations permettent de modéliser précisément les interactions et les dépendances entre les différents acteurs et objets du domaine.
 
-#figure(caption: [Exemple d'un équipe qui possède deux membres et deux sponsors])[#image(
+#figure(caption: [Exemple d'une équipe qui possède deux membres et deux sponsors])[#image(
     "./team_view.png",
   )]
 
