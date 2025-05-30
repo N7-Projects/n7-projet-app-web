@@ -5,10 +5,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -139,11 +141,12 @@ public class Facade {
 
   }
 
-  @GetMapping("/api/circuits")
-  public Collection<Circuit> getCircuits() {
+    // Circuits CRUD
+    @GetMapping("/api/circuits")
+    public Collection<Circuit> getCircuits() {
 
-    return circuitRepo.findAll();
-  }
+      return circuitRepo.findAll();
+    }
 
   @GetMapping("/api/circuits/{circuitId}")
   public Circuit getCircuit(@PathVariable String circuitId) {
@@ -183,10 +186,30 @@ public class Facade {
     return circuitRepo.save(newCircuit);
   }
 
-  @GetMapping("/api/calendar")
-  public Collection<Event> getCalendar() {
-    return eventRepository.findAll();
-  }
+    @DeleteMapping("/api/circuits/{circuitId}")
+    public void deleteCircuit(@PathVariable String circuitId) {
+        try {
+            long id = Long.parseLong(circuitId);
+            Circuit c = circuitRepo.findById(id).get();
+            System.out.println(c.getId());
+            circuitRepo.delete(c);
+        } catch (NumberFormatException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "L'id : " + circuitId + " ne peut être transformé en Long.");
+        } catch (NoSuchElementException e) {
+            System.out.println("Pas de circuit d'id : " + circuitId);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Le circuit d'id : + " + circuitId + " n'existe pas.");
+        }
+
+    }
+
+    // Calender CRUD
+
+    @GetMapping("/api/calendar")
+    public Collection<Event> getCalendar() {
+      return eventRepository.findAll();
+    }
 
   @GetMapping("/api/calendar/{date}")
   public Collection<Event> getDate(@PathVariable String date) {
@@ -302,11 +325,11 @@ public class Facade {
     return forumTopicRepository.save(toSave);
   }
 
-  // Racing team CRUD
-  @GetMapping("/api/teams")
-  public Collection<RacingTeam> getTeams() {
-    return racingTeamRepo.findAll();
-  }
+    // Racing team CRUD
+    @GetMapping("/api/teams")
+    public Collection<RacingTeam> getTeams() {
+      return racingTeamRepo.findAll();
+    }
 
   @GetMapping("/api/teams/{teamId}")
   public RacingTeam getOneTeam(@PathVariable String teamId) {
@@ -368,26 +391,26 @@ public class Facade {
     return racingTeamRepo.save(newRacingTeam);
   }
 
-  // @GetMapping(value = "/api/teams", params = "idMember")
-  // public Collection<RacingTeam> getMemberAllTeams(@RequestParam String
-  // idMember) {
-  // long id = Long.parseLong(idMember);
-  // Collection<RacingTeam> memberTeams = racingTeamRepo.getMemberTeams(id);
+    // @GetMapping(value = "/api/teams", params = "idMember")
+    // public Collection<RacingTeam> getMemberAllTeams(@RequestParam String
+    // idMember) {
+    // long id = Long.parseLong(idMember);
+    // Collection<RacingTeam> memberTeams = racingTeamRepo.getMemberTeams(id);
 
-  // return memberTeams;
-  // }
+    // return memberTeams;
+    // }
 
-  @GetMapping("/api/register/homonyms/{name}/{firstName}")
-  public Collection<Member> getFreeHomonyms(@PathVariable String name, @PathVariable String firstName) {
+    @GetMapping("/api/register/homonyms/{name}/{firstName}")
+    public Collection<Member> getFreeHomonyms(@PathVariable String name, @PathVariable String firstName) {
 
-    // Get members with this name
-    List<Member> members = memberRepo.findByName(name);
-    return members.stream().filter(
-        (m) -> m.getFirstName().equals(firstName))
-        .filter(
-            (m) -> m.getEmail() == null || m.getEmail().isEmpty())
-        .toList();
-  }
+      // Get members with this name
+      List<Member> members = memberRepo.findByName(name);
+      return members.stream().filter(
+          (m) -> m.getFirstName().equals(firstName))
+          .filter(
+              (m) -> m.getEmail() == null || m.getEmail().isEmpty())
+          .toList();
+    }
 
   @PostMapping("/api/register")
   public LoginInformation registerUser(@RequestBody RegisterRequest request) {
@@ -467,11 +490,11 @@ public class Facade {
     }
   }
 
-  // Member CRUD
-  @GetMapping("/api/members")
-  public Collection<Member> getMembers() {
-    return memberRepo.findAll();
-  }
+    // Member CRUD
+    @GetMapping("/api/members")
+    public Collection<Member> getMembers() {
+      return memberRepo.findAll();
+    }
 
   @GetMapping("/api/members/{memberId}")
   @JsonIgnoreProperties("email")
@@ -496,17 +519,17 @@ public class Facade {
     return memberRepo.save(member);
   }
 
-  // Vehicule CRUD
-  @GetMapping("/api/vehicules")
-  public Collection<Vehicule> getVehicules() {
-    return vehiculeRepo.findAll();
-  }
+    // Vehicule CRUD
+    @GetMapping("/api/vehicules")
+    public Collection<Vehicule> getVehicules() {
+      return vehiculeRepo.findAll();
+    }
 
-  // Sponsor CRUD
-  @GetMapping("/api/sponsors")
-  public Collection<Sponsor> getSponsors() {
-    return sponsorRepo.findAll();
-  }
+    // Sponsor CRUD
+    @GetMapping("/api/sponsors")
+    public Collection<Sponsor> getSponsors() {
+      return sponsorRepo.findAll();
+    }
 
   @PostMapping("/api/sponsors/new")
   public Sponsor newSponsor(@RequestBody Sponsor sponsor) {

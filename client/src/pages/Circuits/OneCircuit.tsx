@@ -1,16 +1,22 @@
 import { Button, Card } from "primereact";
 import { useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 import "./OneCircuit.scss";
 import { CircuitType } from "../../types/circuitType.ts";
 import { useAuth } from "../../middleware/AuthProvider.tsx";
+import { useRef } from "react";
+import { Toast } from "primereact";
+import { confirmDialog } from "primereact";
+import { ConfirmDialog } from "primereact";
 
 function OneCircuit() {
   const { circuitId } = useParams();
 
   const auth = useAuth();
+
+  const toast = useRef(null);
 
   const _queryClient = useQueryClient();
 
@@ -20,13 +26,17 @@ function OneCircuit() {
       const route: string = `/api/circuits/${circuitId}`;
       const response = await fetch(route);
 
-      console.log("Circuit Getted ! ");
       console.log(response.status);
-      const oneCircuit = await response.json() as CircuitType;
 
-      console.log(oneCircuit);
-
-      return oneCircuit;
+      if (response.ok) {
+        console.log("Circuit Getted ! ");
+        const oneCircuit = await response.json() as CircuitType;
+        console.log(oneCircuit);
+        return oneCircuit;
+      } else {
+        console.error("Le circuit n'existe pas");
+        globalThis.location.href = "/circuits";
+      }
     },
   });
 
@@ -38,7 +48,64 @@ function OneCircuit() {
     return <h3>{error.message}</h3>;
   }
 
+  if (auth == null) {
+    return <h1>AUTH IS NULL IN ONECIRCUIT</h1>;
+  }
+
   const circuit: CircuitType = data;
+
+  const accept = () => {
+    toast.current.show({
+      severity: "info",
+      summary: "Confirmed",
+      detail: "Circuit supprimé",
+      life: 3000,
+    });
+  };
+
+  const reject = () => {
+    toast.current.show({
+      severity: "warn",
+      summary: "Rejected",
+      detail: "Circuit non supprimé",
+      life: 3000,
+    });
+  };
+
+  const handleSuppress = async () => {
+    try {
+      const response = await fetch(`/api/circuits/${circuitId}`, {
+        method: "DELETE",
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
+      });
+
+      if (response.ok) {
+        accept();
+        globalThis.location.href = "/circuits";
+      } else {
+        alert("Failed to delete circuit.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while deleting the circuit : ");
+    }
+  };
+
+  const suppress = () => {
+    confirmDialog({
+      message:
+        "Vous êtes sûr de vouloir supprimer ce circuit et ses informations ?",
+      header: "Confirmation de Suppression",
+      icon: "pi pi-info-circle",
+      defaultFocus: "reject",
+      acceptClassName: "p-button-danger",
+
+      accept: () => handleSuppress(),
+      reject,
+    });
+  };
 
   const header = (
     <img
@@ -63,6 +130,7 @@ function OneCircuit() {
         severity="danger"
         icon="pi pi-eraser"
         style={{ marginLeft: "0.5em" }}
+        onClick={suppress}
       />
     </>
   );
@@ -89,6 +157,8 @@ function OneCircuit() {
 
   return (
     <div className="one-team-card flex justify-content-center">
+      <Toast ref={toast} />
+      <ConfirmDialog />
       <Card
         title={circuit.name}
         subTitle={circuit.place}
@@ -111,21 +181,6 @@ function OneCircuit() {
             minutes pour le record.
           </p>
         </div>
-
-        {
-          /* <div className="team-section mt-4">
-          <h4>Sponsors</h4>
-          <ul className="list-none p-0 m-0">
-            {racingTeam.sponsors.map((sponsor, idx) => (
-              <li key={idx} className="mb-2">
-                <i className="pi pi-star mr-2"></i>
-                <strong>{sponsor.name}</strong> —{" "}
-                {sponsor.investedCapital.toLocaleString()} €
-              </li>
-            ))}
-          </ul>
-        </div> */
-        }
       </Card>
     </div>
   );
