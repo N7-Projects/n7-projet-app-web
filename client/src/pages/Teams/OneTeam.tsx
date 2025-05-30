@@ -5,9 +5,13 @@ import { TeamType } from "../../types/teamType.ts";
 import { useParams } from "react-router-dom";
 
 import "./OneTeam.scss";
+import { useAuth } from "../../middleware/AuthProvider.tsx";
+import { isUserInTeam } from "../../middleware/ChecksMiddleware.tsx";
 
 function OneTeam() {
   const { teamId } = useParams();
+
+  const auth = useAuth();
 
   const _queryClient = useQueryClient();
 
@@ -43,7 +47,7 @@ function OneTeam() {
       src="/usercard.png"
     />
   );
-  const footer = (
+  const footerEnabled = (
     <>
       <Button
         label="Modifier"
@@ -65,6 +69,29 @@ function OneTeam() {
     </>
   );
 
+  const footerDisabled = (
+    <>
+      <Button
+        label="Modifier"
+        severity="primary"
+        icon="pi pi-pencil"
+        disabled
+        // Use Link if its not what do we want
+      />
+      <Button
+        label="Effacer"
+        severity="danger"
+        icon="pi pi-eraser"
+        style={{ marginLeft: "0.5em" }}
+        disabled
+      />
+    </>
+  );
+
+  const footer = auth && auth.user && teamId && isUserInTeam(auth.user, teamId)
+    ? footerEnabled
+    : footerDisabled;
+
   return (
     <div className="one-team-card flex justify-content-center">
       <Card
@@ -78,9 +105,15 @@ function OneTeam() {
           <h4>Membres</h4>
           <ul className="list-none p-0 m-0">
             {racingTeam.membres.map((member, idx) => (
-              <li key={idx} className="mb-2">
+              <li
+                key={idx}
+                className="mb-2"
+                onClick={() => {
+                  globalThis.location.href = `/members/${member.idMembre}`;
+                }}
+              >
                 <i className="pi pi-user mr-2"></i>
-                <strong>{member.firstname}</strong> — {member.name}
+                <strong>{member.firstName}</strong> — {member.name}
               </li>
             ))}
           </ul>

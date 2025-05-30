@@ -1,4 +1,5 @@
 import { CircuitCard } from "../../components/circuit/CircuitCard.tsx";
+import { useAuth } from "../../middleware/AuthProvider.tsx";
 import { CircuitType } from "../../types/circuitType.ts";
 
 import "./Circuits.scss";
@@ -7,6 +8,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 // Should be the page for displaying basic info of the association
 function Circuits() {
   const _queryClient = useQueryClient();
+  const _user = useAuth();
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: [{ circuits: "all-circuits" }],

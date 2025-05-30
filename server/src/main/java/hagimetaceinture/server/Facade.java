@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import hagimetaceinture.server.circuit.Circuit;
 import hagimetaceinture.server.circuit.CircuitRepository;
 import hagimetaceinture.server.event.Event;
@@ -40,7 +43,6 @@ import hagimetaceinture.server.vehiculetype.VehiculeTypeRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class Facade {
@@ -389,9 +391,12 @@ public class Facade {
         String hashed = passwordEncoder.encode(request.getPassword());
         member.setEmail(request.getEmail());
         member.setPassword(hashed);
+        member.setVehicules(new ArrayList<Vehicule>());
+        member.setTeams(new ArrayList<RacingTeam>());
+
         memberRepo.save(member);
         String token = jwtService.generateToken(member.getEmail());
-        return new LoginInformation(member.getIdMembre(), token);
+        return new LoginInformation(member, token);
     }
 
     @GetMapping("/api/connected")
@@ -425,7 +430,7 @@ public class Facade {
         } else {
             if (passwordEncoder.matches(request.getPassword(), member.get().getPassword())) {
                 String token = jwtService.generateToken(member.get().getEmail());
-                return new LoginInformation(member.get().getIdMembre(), token);
+                return new LoginInformation(member.get(), token);
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Mot de passe incorrect pour " + request.getEmail());
@@ -441,9 +446,20 @@ public class Facade {
     }
 
     @GetMapping("/api/members/{memberId}")
+    @JsonIgnoreProperties("email")
     public Member getOneMember(@PathVariable String memberId) {
         long id = Long.parseLong(memberId);
-        return memberRepo.findById(id).get();
+        Member m = null;
+        try {
+            m = memberRepo.findById(id).get();
+            // ! Not amrt but need to create serialization with ObjectMapper
+            // ! I guess to create diff serialization between routes
+            // ! Use interfaces or AbstarcClass to define new serialization
+            m.setEmail(null);
+        } catch (Error e) {
+            throw new Error("Error in fetching member without email : " + e.getMessage());
+        }
+        return m;
     }
 
     @PostMapping("/api/members/new")
