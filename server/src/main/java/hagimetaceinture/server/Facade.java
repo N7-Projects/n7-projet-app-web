@@ -339,8 +339,20 @@ public class Facade {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
           "Token invalide");
     }
+
     long id = Long.parseLong(teamId);
     RacingTeam r = racingTeamRepo.findById(id).get();
+    String email = jwtService.extractEmail(token);
+
+    Optional<Member> member = memberRepo.findByEmail(email);
+    if (member.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "L'adresse email " + email + " n'est liée à aucun compte");
+    } else if (!member.get().getTeams().contains(r)) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          email + " address does not have write access to team " + r.getNom());
+
+    }
     r.setClassement(editTeam.getClassement());
     r.setMembres(editTeam.getMembres());
     r.setNom(editTeam.getNom());
