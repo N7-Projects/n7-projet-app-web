@@ -12,10 +12,13 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
 import { Calendar } from "primereact/calendar";
+import { useAuth } from "../../middleware/AuthProvider.tsx";
 
 function NewTeam() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const auth = useAuth();
 
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddSponsorDialog, setShowAddSponsorDialog] = useState(false);
@@ -251,6 +254,17 @@ function NewTeam() {
     return <h3>{error.message}</h3>;
   }
 
+  if (!auth) {
+    return <h1>SHOULD NOT HAPPEN</h1>;
+  }
+
+  const isSelectable = (member: MemberType) =>
+    member.firstName != auth.user?.firstName;
+
+  const isRowSelectable = (
+    event,
+  ) => (event.data ? isSelectable(event.data) : true);
+
   return (
     <div className="team-new-card flex justify-content-center">
       <Card
@@ -297,8 +311,12 @@ function NewTeam() {
               }}
               dataKey="idMembre"
               tableStyle={{ minWidth: "50rem" }}
+              isDataSelectable={isRowSelectable}
             >
-              <Column selectionMode="multiple" headerStyle={{ width: "3rem" }}>
+              <Column
+                selectionMode="multiple"
+                headerStyle={{ width: "3rem" }}
+              >
               </Column>
               <Column field="firstName" header="Prénom"></Column>
               <Column field="name" header="Nom"></Column>
