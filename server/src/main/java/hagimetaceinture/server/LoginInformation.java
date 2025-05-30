@@ -1,30 +1,29 @@
 package hagimetaceinture.server;
 
-import hagimetaceinture.server.member.Member;
-
 public class LoginInformation {
-    private Member member;
-    private String token;
+  private long memberId;
 
-    public Member getMember() {
-        return member;
-    }
+  public long getMemberId() {
+    return memberId;
+  }
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
+  public void setMemberId(long memberId) {
+    this.memberId = memberId;
+  }
 
-    public String getToken() {
-        return token;
-    }
+  public String getToken() {
+    return token;
+  }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+  public void setToken(String token) {
+    this.token = token;
+  }
 
-    public LoginInformation(Member membre, String token) {
-        this.member = membre;
-        this.token = token;
-    }
+  private String token;
+
+  public LoginInformation(long idMembre, String token) {
+    this.memberId = idMembre;
+    this.token = token;
+  }
 
 }

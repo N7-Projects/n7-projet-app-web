@@ -1,42 +1,72 @@
 import { Card } from "primereact";
 import { DataView } from "primereact/dataview";
 import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { MemberType } from "../../types/memberType.ts";
 import { classNames } from "primereact";
 import { Button } from "primereact";
 import { memberVehiculeType } from "../../types/memberVehiculeType.ts";
-import { useAuth } from "../../middleware/AuthProvider.tsx";
+import { useParams } from "react-router-dom";
 
 function MemberDashbord() {
   const _queryClient = useQueryClient();
 
-  const userAuthed = useAuth();
+  const { memberId } = useParams();
 
-  //   const { data, isPending, isError, error } = useQuery({
-  //     queryKey: [{ member: "one-member", memberToken: userAuthed?.token }],
-  //     queryFn: async () => {
-  //       if (userAuthed?.token) {
-  //         const response = await fetch("/api/connected", {
-  //           headers: {
-  //             Authorization: `Bearer ${userAuthed.token}`,
-  //           },
-  //         });
-  //         if (response.ok) {
-  //           console.log("Connected fetch");
-  //           const data: MemberType = await response.json() as MemberType;
-  //           return data;
-  //         } else {
-  //           localStorage.removeItem("jwt");
-  //           return Promise.reject(
-  //             new Error("Something went wrong while connected"),
-  //           );
-  //         }
-  //       } else {
-  //         return Promise.reject(
-  //           new Error("You must be connected to see this page !"),
-  //         );
-  //       }
-  //     },
-  //   });
+  const token = localStorage.getItem("jwt");
+
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: [{ member: "one-member", memberToken: token }],
+    queryFn: async () => {
+      //   if (!token) {
+      //     return Promise.reject(
+      //       new Error("You must be connected to see this page"),
+      //     );
+      //   }
+
+      console.log(token);
+
+      const route: string = `/api/members/${memberId}`;
+      const response = await fetch(route);
+
+      console.log("member Getted ! ");
+      console.log(response.status);
+      const member = await response.json() as MemberType;
+
+      console.log(member);
+
+      return member;
+
+      //   if (token) {
+      //     const response = await fetch("/api/connected", {
+      //       headers: {
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //     });
+      //     if (response.ok) {
+      //       const data: MemberType = await response.json() as MemberType;
+      //       return data;
+      //     } else {
+      //       localStorage.removeItem("jwt");
+      //       return Promise.reject(
+      //         new Error("You must be connected to see this page"),
+      //       );
+      //     }
+      //   } else {
+      //     return Promise.reject(
+      //       new Error("You must be connected to see this page"),
+      //     );
+      //   }
+    },
+  });
+
+  if (isPending) {
+    return <h3>Pending...</h3>;
+  }
+
+  if (isError) {
+    return <h3>{error.message}</h3>;
+  }
 
   const itemTemplate = (vehicule: memberVehiculeType, index: number) => {
     return (
@@ -138,20 +168,21 @@ function MemberDashbord() {
     return <div className="grid grid-nogutter">{list}</div>;
   };
 
-  const user = userAuthed?.user;
-
   return (
     <div className="grid m-1">
-      <div className="col-12 md:col-6">
-        <Card title={`${user.firstName} ${user.name}`}></Card>
+      <div className="col-12 md:col-6 lg:col-4 ">
+        <Card title={`${data.firstName} ${data.name}`}></Card>
       </div>
-      <div className="col-12 md:col-6 ">
-        <Card title={user.email}></Card>
+      <div className="col-12 md:col-6 lg:col-4">
+        <Card title={data.email}></Card>
+      </div>
+      <div className="col-12 md:col-6 lg:col-4">
+        <Card title="Random info ?"></Card>
       </div>
       <div className="col-12 lg:col-6">
         <Card title="Vehicules">
           <DataView
-            value={user.vehicules}
+            value={data.vehicules}
             listTemplate={listTemplate}
             paginator
             rows={3}
@@ -161,7 +192,7 @@ function MemberDashbord() {
       <div className="col-12 lg:col-6">
         <Card title="Teams">
           <DataView
-            value={user.teams}
+            value={data.teams}
             listTemplate={listTeamTemplate}
             paginator
             rows={3}
