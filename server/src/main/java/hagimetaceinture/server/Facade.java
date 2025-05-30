@@ -43,7 +43,6 @@ import hagimetaceinture.server.vehiculetype.VehiculeTypeRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class Facade {
@@ -392,6 +391,9 @@ public class Facade {
         String hashed = passwordEncoder.encode(request.getPassword());
         member.setEmail(request.getEmail());
         member.setPassword(hashed);
+        member.setVehicules(new ArrayList<Vehicule>());
+        member.setTeams(new ArrayList<RacingTeam>());
+
         memberRepo.save(member);
         String token = jwtService.generateToken(member.getEmail());
         return new LoginInformation(member, token);
