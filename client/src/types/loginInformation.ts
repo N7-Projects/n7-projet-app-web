@@ -1,6 +1,4 @@
-import { MemberType } from "./memberType.ts";
-
 export type LoginInformation = {
-  member: MemberType;
+  memberId: number;
   token: string;
 };

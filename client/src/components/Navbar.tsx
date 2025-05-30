@@ -1,16 +1,47 @@
 import { Button } from "primereact/button";
 import { SplitButton } from "primereact/splitbutton";
+import { useEffect, useState } from "react";
+import { MemberType } from "../types/memberType.ts";
 import "./Navbar.scss";
-import { useAuth } from "../middleware/AuthProvider.tsx";
 
 const logoFlagPath: string = "/racing-flags.svg";
 
-export default function Navbar() {
-  const userAuthed = useAuth();
+const useUser = () => {
+  const [user, setUser] = useState<MemberType | null>(null);
 
-  //   const user = userAuthed?.connected().data;
-  //   console.log("AAAAA");
-  //   console.log(user);c
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+
+    if (token) {
+      fetch("/api/connected", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(async (res) => {
+          if (res.ok) {
+            const data: MemberType = await res.json();
+            setUser(data);
+          } else {
+            localStorage.removeItem("jwt");
+            setUser(null);
+          }
+        })
+        .catch((err) => {
+          console.error("API call failed:", err);
+          localStorage.removeItem("jwt");
+          setUser(null);
+        });
+    } else {
+      setUser(null);
+    }
+  }, []);
+
+  return { user };
+};
+
+export default function Navbar() {
+  const { user } = useUser();
 
   return (
     <section className="navbar">
@@ -116,24 +147,24 @@ export default function Navbar() {
           />
         </li>
 
-        {userAuthed && userAuthed.user
+        {user
           ? (
             <li key="Login">
               <SplitButton
                 severity="info"
-                label={userAuthed.user.name}
+                label={user.name}
                 icon="pi pi-user"
                 dropdownIcon="pi pi-caret-down"
                 outlined
                 onClick={() => {
-                  globalThis.location.href = "/members";
+                  globalThis.location.href = "/members/" + user.idMembre;
                 }}
                 model={[
                   {
                     label: "Profile",
                     icon: "pi pi-user",
                     command: () => {
-                      globalThis.location.href = "/members";
+                      globalThis.location.href = "/members/" + user.idMembre;
                     },
                   },
                   {
@@ -142,7 +173,6 @@ export default function Navbar() {
                     command: () => {
                       localStorage.removeItem("jwt");
                       globalThis.location.reload();
-                      globalThis.location.href = "/";
                     },
                   },
                 ]}
