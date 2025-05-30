@@ -15,11 +15,10 @@ import Register from "./pages/Register.tsx";
 import OneCircuit from "./pages/Circuits/OneCircuit.tsx";
 import EditCircuit from "./pages/Circuits/EditCircuit.tsx";
 import EditTeam from "./pages/Teams/EditTeam.tsx";
-import MemberDashbord from "./pages/Members/MemberDashboard.tsx";
-import OneMember from "./pages/Members/OneMember.tsx";
 import AuthProvider from "./middleware/AuthProvider.tsx";
 import { PrivateRoute, ProtectedEditTeam } from "./middleware/PrivateRoute.tsx";
 import NotFound from "./components/NotFound.tsx";
+import MemberDashboard from "./pages/Members/MemberDashboard.tsx";
 
 const queryClient = new QueryClient();
 
@@ -81,10 +80,7 @@ function App() {
             </Route>
 
             <Route path="/members">
-              <Route element={<PrivateRoute />}>
-                <Route index element={<MemberDashbord />} />
-              </Route>
-              <Route path=":memberId" element={<OneMember />} />
+              <Route path=":memberId" element={<MemberDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Route>
 

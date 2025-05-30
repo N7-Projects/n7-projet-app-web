@@ -52,14 +52,11 @@ const AuthProvider = ({ children }) => {
         const res: LoginInformation = await response.json();
 
         if (res) {
-          console.log("USER CREATED");
-          console.log(res);
-
           localStorage.setItem("jwt", res.token);
           localStorage.setItem("user", JSON.stringify(res.member));
           setToken(res.token);
           setUser(res.member);
-          navigate(`/members`);
+          navigate(`/members/` + res.member.idMembre);
 
           return;
         }
@@ -161,7 +158,7 @@ const AuthProvider = ({ children }) => {
         localStorage.setItem("user", JSON.stringify(data.member));
         setToken(data.token), setUser(data.member);
 
-        navigate(`/members`);
+        navigate(`/members/` + data.member.idMembre);
       } else {
         const errorData = await response.json();
         alert(errorData.message || "Échec de l'inscription.");

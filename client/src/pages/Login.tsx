@@ -27,28 +27,6 @@ function Login() {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-
-    // try {
-    //   const response = await fetch("/api/login", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
-
-    //   if (response.ok) {
-    //     const data: LoginInformation = await response.json();
-    //     localStorage.setItem("jwt", data.token); // or sessionStorage
-    //     navigate(`/members`);
-    //   } else {
-    //     alert("Failed to login.");
-    //   }
-    // } catch (error) {
-    //   console.error("Error:", error);
-    //   alert("An error occurred while trying to log in.");
-    // }
-
     if (data.email !== "" && data.password !== "") {
       console.log("LOGIN OK");
       auth?.loginAction(data);
