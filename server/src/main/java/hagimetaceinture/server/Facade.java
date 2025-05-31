@@ -141,12 +141,12 @@ public class Facade {
 
   }
 
-    // Circuits CRUD
-    @GetMapping("/api/circuits")
-    public Collection<Circuit> getCircuits() {
+  // Circuits CRUD
+  @GetMapping("/api/circuits")
+  public Collection<Circuit> getCircuits() {
 
-      return circuitRepo.findAll();
-    }
+    return circuitRepo.findAll();
+  }
 
   @GetMapping("/api/circuits/{circuitId}")
   public Circuit getCircuit(@PathVariable String circuitId) {
@@ -186,30 +186,30 @@ public class Facade {
     return circuitRepo.save(newCircuit);
   }
 
-    @DeleteMapping("/api/circuits/{circuitId}")
-    public void deleteCircuit(@PathVariable String circuitId) {
-        try {
-            long id = Long.parseLong(circuitId);
-            Circuit c = circuitRepo.findById(id).get();
-            System.out.println(c.getId());
-            circuitRepo.delete(c);
-        } catch (NumberFormatException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "L'id : " + circuitId + " ne peut être transformé en Long.");
-        } catch (NoSuchElementException e) {
-            System.out.println("Pas de circuit d'id : " + circuitId);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Le circuit d'id : + " + circuitId + " n'existe pas.");
-        }
-
+  @DeleteMapping("/api/circuits/{circuitId}")
+  public void deleteCircuit(@PathVariable String circuitId) {
+    try {
+      long id = Long.parseLong(circuitId);
+      Circuit c = circuitRepo.findById(id).get();
+      System.out.println(c.getId());
+      circuitRepo.delete(c);
+    } catch (NumberFormatException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "L'id : " + circuitId + " ne peut être transformé en Long.");
+    } catch (NoSuchElementException e) {
+      System.out.println("Pas de circuit d'id : " + circuitId);
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "Le circuit d'id : + " + circuitId + " n'existe pas.");
     }
 
-    // Calender CRUD
+  }
 
-    @GetMapping("/api/calendar")
-    public Collection<Event> getCalendar() {
-      return eventRepository.findAll();
-    }
+  // Calender CRUD
+
+  @GetMapping("/api/calendar")
+  public Collection<Event> getCalendar() {
+    return eventRepository.findAll();
+  }
 
   @GetMapping("/api/calendar/{date}")
   public Collection<Event> getDate(@PathVariable String date) {
@@ -325,11 +325,11 @@ public class Facade {
     return forumTopicRepository.save(toSave);
   }
 
-    // Racing team CRUD
-    @GetMapping("/api/teams")
-    public Collection<RacingTeam> getTeams() {
-      return racingTeamRepo.findAll();
-    }
+  // Racing team CRUD
+  @GetMapping("/api/teams")
+  public Collection<RacingTeam> getTeams() {
+    return racingTeamRepo.findAll();
+  }
 
   @GetMapping("/api/teams/{teamId}")
   public RacingTeam getOneTeam(@PathVariable String teamId) {
@@ -391,35 +391,35 @@ public class Facade {
     return racingTeamRepo.save(newRacingTeam);
   }
 
-    @DeleteMapping("/api/teams/{teamId}")
-    public void deleteTeam(@PathVariable String teamId) {
-        try {
-            long id = Long.parseLong(teamId);
-            RacingTeam r = racingTeamRepo.findById(id).get();
-            System.out.println(r.getIdRacingTeam());
-            racingTeamRepo.delete(r);
-        } catch (NumberFormatException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "L'id : " + teamId + " ne peut être transformé en Long.");
-        } catch (NoSuchElementException e) {
-            System.out.println("Pas de circuit d'id : " + teamId);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    "La team d'id : + " + teamId + " n'existe pas.");
-        }
-
+  @DeleteMapping("/api/teams/{teamId}")
+  public void deleteTeam(@PathVariable String teamId) {
+    try {
+      long id = Long.parseLong(teamId);
+      RacingTeam r = racingTeamRepo.findById(id).get();
+      System.out.println(r.getIdRacingTeam());
+      racingTeamRepo.delete(r);
+    } catch (NumberFormatException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "L'id : " + teamId + " ne peut être transformé en Long.");
+    } catch (NoSuchElementException e) {
+      System.out.println("Pas de circuit d'id : " + teamId);
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "La team d'id : + " + teamId + " n'existe pas.");
     }
 
-    @GetMapping("/api/register/homonyms/{name}/{firstName}")
-    public Collection<Member> getFreeHomonyms(@PathVariable String name, @PathVariable String firstName) {
+  }
 
-      // Get members with this name
-      List<Member> members = memberRepo.findByName(name);
-      return members.stream().filter(
-          (m) -> m.getFirstName().equals(firstName))
-          .filter(
-              (m) -> m.getEmail() == null || m.getEmail().isEmpty())
-          .toList();
-    }
+  @GetMapping("/api/register/homonyms/{name}/{firstName}")
+  public Collection<Member> getFreeHomonyms(@PathVariable String name, @PathVariable String firstName) {
+
+    // Get members with this name
+    List<Member> members = memberRepo.findByName(name);
+    return members.stream().filter(
+        (m) -> m.getFirstName().equals(firstName))
+        .filter(
+            (m) -> m.getEmail() == null || m.getEmail().isEmpty())
+        .toList();
+  }
 
   @PostMapping("/api/register")
   public LoginInformation registerUser(@RequestBody RegisterRequest request) {
@@ -499,11 +499,11 @@ public class Facade {
     }
   }
 
-    // Member CRUD
-    @GetMapping("/api/members")
-    public Collection<Member> getMembers() {
-      return memberRepo.findAll();
-    }
+  // Member CRUD
+  @GetMapping("/api/members")
+  public Collection<Member> getMembers() {
+    return memberRepo.findAll();
+  }
 
   @GetMapping("/api/members/{memberId}")
   @JsonIgnoreProperties("email")
@@ -528,17 +528,17 @@ public class Facade {
     return memberRepo.save(member);
   }
 
-    // Vehicule CRUD
-    @GetMapping("/api/vehicules")
-    public Collection<Vehicule> getVehicules() {
-      return vehiculeRepo.findAll();
-    }
+  // Vehicule CRUD
+  @GetMapping("/api/vehicules")
+  public Collection<Vehicule> getVehicules() {
+    return vehiculeRepo.findAll();
+  }
 
-    // Sponsor CRUD
-    @GetMapping("/api/sponsors")
-    public Collection<Sponsor> getSponsors() {
-      return sponsorRepo.findAll();
-    }
+  // Sponsor CRUD
+  @GetMapping("/api/sponsors")
+  public Collection<Sponsor> getSponsors() {
+    return sponsorRepo.findAll();
+  }
 
   @PostMapping("/api/sponsors/new")
   public Sponsor newSponsor(@RequestBody Sponsor sponsor) {
