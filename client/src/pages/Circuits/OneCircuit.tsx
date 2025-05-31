@@ -111,6 +111,7 @@ function OneCircuit() {
       icon: "pi pi-info-circle",
       defaultFocus: "reject",
       acceptClassName: "p-button-danger",
+      rejectClassName: "p-button-info p-button-outlined",
 
       accept: () => handleSuppress(),
       reject,
