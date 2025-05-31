@@ -5,6 +5,7 @@ import { MemberType } from "../../types/memberType.ts";
 import { classNames } from "primereact/utils";
 import { memberVehiculeType } from "../../types/memberVehiculeType.ts";
 import { useParams } from "react-router-dom";
+import { Button } from "primereact";
 
 function MemberDashboard() {
   const { memberId } = useParams();
@@ -121,6 +122,21 @@ function MemberDashboard() {
                     >
                       {team.nom}
                     </div>
+                  </div>
+                  <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+                    <Button
+                      icon="pi pi-send"
+                      className="p-button-rounded"
+                      tooltip="Voir l'équipe"
+                      tooltipOptions={{ position: "bottom" }}
+                      outlined
+                      severity="info"
+                      onClick={() => {
+                        globalThis.location.href =
+                          `/teams/${team.idRacingTeam}`;
+                      }}
+                    >
+                    </Button>
                   </div>
                 </div>
               </div>

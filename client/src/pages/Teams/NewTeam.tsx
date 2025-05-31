@@ -1,7 +1,7 @@
 import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TeamType } from "../../types/teamType.ts";
 import { useQueryClient } from "@tanstack/react-query";
@@ -12,10 +12,13 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
 import { Calendar } from "primereact/calendar";
+import { useAuth } from "../../middleware/AuthProvider.tsx";
 
 function NewTeam() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const auth = useAuth();
 
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddSponsorDialog, setShowAddSponsorDialog] = useState(false);
@@ -39,6 +42,11 @@ function NewTeam() {
 
   const [selectedMembres, setSelectedMembres] = useState<MemberType[]>([]);
   const [selectedSponsors, setSelectedSponsors] = useState<SponsorType[]>([]);
+
+  // Ensure auth.user is always selected
+  useEffect(() => {
+    setSelectedMembres([auth.user]); // Ensure the user is selected initially
+  }, [auth.user]);
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: [{ membres: "all-membres" }],
@@ -251,6 +259,36 @@ function NewTeam() {
     return <h3>{error.message}</h3>;
   }
 
+  if (!auth) {
+    return <h1>SHOULD NOT HAPPEN</h1>;
+  }
+
+  if (auth && auth.user == null) {
+    return <h1>SHOULD NOT HAPPEN 2</h1>;
+  }
+
+  // Check to disable the row corresponding to auth.user
+  const isSelectable = (member: MemberType) =>
+    member.idMembre != auth.user?.idMembre;
+
+  const isRowSelectable = (
+    event,
+  ) => (event.data ? isSelectable(event.data) : true);
+
+  // Ensure the user is always in the selection
+  const onSelectionChange = (e: { value: MemberType[] }) => {
+    const selection = [...e.value];
+    const isUserSelected = selection.some((m) =>
+      m.idMembre === auth.user.idMembre
+    );
+
+    if (!isUserSelected) {
+      selection.push(auth.user as MemberType); // Re-add user if removed
+    }
+
+    setSelectedMembres(selection);
+  };
+
   return (
     <div className="team-new-card flex justify-content-center">
       <Card
@@ -268,7 +306,12 @@ function NewTeam() {
           <label htmlFor="name" className="font-bold block mb-2">
             Nom de l'équipe
           </label>
-          <InputText id="name" name="name" placeholder="BrownFox Racing" />
+          <InputText
+            id="name"
+            name="name"
+            placeholder="BrownFox Racing"
+            required
+          />
 
           <label htmlFor="classement" className="font-bold block mb-2 mt-3">
             Classement de l'équipe
@@ -281,24 +324,27 @@ function NewTeam() {
             roundingMode="trunc"
             showButtons
             min={0}
+            required
           />
 
           <label htmlFor="membres" className="font-bold block mb-2 mt-3">
             Ajouter des membres
           </label>
-          <div className="card">
+          <div className="card" id="membres">
             <DataTable
               value={data.membres}
               selectionMode="multiple"
               rows={10}
               selection={selectedMembres}
-              onSelectionChange={(e: { value: MemberType[] }) => {
-                setSelectedMembres(e.value as MemberType[]);
-              }}
+              onSelectionChange={onSelectionChange}
               dataKey="idMembre"
               tableStyle={{ minWidth: "50rem" }}
+              isDataSelectable={isRowSelectable}
             >
-              <Column selectionMode="multiple" headerStyle={{ width: "3rem" }}>
+              <Column
+                selectionMode="multiple"
+                headerStyle={{ width: "3rem" }}
+              >
               </Column>
               <Column field="firstName" header="Prénom"></Column>
               <Column field="name" header="Nom"></Column>
@@ -325,7 +371,7 @@ function NewTeam() {
           <label htmlFor="sponsors" className="font-bold block mb-2 mt-3">
             Ajouter des sponsors
           </label>
-          <div className="card">
+          <div className="card" id="sponsors">
             <DataTable
               value={data.sponsors}
               selectionMode="multiple"

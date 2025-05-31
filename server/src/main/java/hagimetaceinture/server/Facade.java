@@ -5,10 +5,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -139,6 +141,7 @@ public class Facade {
 
   }
 
+  // Circuits CRUD
   @GetMapping("/api/circuits")
   public Collection<Circuit> getCircuits() {
 
@@ -182,6 +185,26 @@ public class Facade {
     System.out.println("Added new circuit " + newCircuit);
     return circuitRepo.save(newCircuit);
   }
+
+  @DeleteMapping("/api/circuits/{circuitId}")
+  public void deleteCircuit(@PathVariable String circuitId) {
+    try {
+      long id = Long.parseLong(circuitId);
+      Circuit c = circuitRepo.findById(id).get();
+      System.out.println(c.getId());
+      circuitRepo.delete(c);
+    } catch (NumberFormatException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "L'id : " + circuitId + " ne peut être transformé en Long.");
+    } catch (NoSuchElementException e) {
+      System.out.println("Pas de circuit d'id : " + circuitId);
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "Le circuit d'id : + " + circuitId + " n'existe pas.");
+    }
+
+  }
+
+  // Calender CRUD
 
   @GetMapping("/api/calendar")
   public Collection<Event> getCalendar() {
@@ -368,14 +391,23 @@ public class Facade {
     return racingTeamRepo.save(newRacingTeam);
   }
 
-  // @GetMapping(value = "/api/teams", params = "idMember")
-  // public Collection<RacingTeam> getMemberAllTeams(@RequestParam String
-  // idMember) {
-  // long id = Long.parseLong(idMember);
-  // Collection<RacingTeam> memberTeams = racingTeamRepo.getMemberTeams(id);
+  @DeleteMapping("/api/teams/{teamId}")
+  public void deleteTeam(@PathVariable String teamId) {
+    try {
+      long id = Long.parseLong(teamId);
+      RacingTeam r = racingTeamRepo.findById(id).get();
+      System.out.println(r.getIdRacingTeam());
+      racingTeamRepo.delete(r);
+    } catch (NumberFormatException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "L'id : " + teamId + " ne peut être transformé en Long.");
+    } catch (NoSuchElementException e) {
+      System.out.println("Pas de circuit d'id : " + teamId);
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+          "La team d'id : + " + teamId + " n'existe pas.");
+    }
 
-  // return memberTeams;
-  // }
+  }
 
   @GetMapping("/api/register/homonyms/{name}/{firstName}")
   public Collection<Member> getFreeHomonyms(@PathVariable String name, @PathVariable String firstName) {
