@@ -306,7 +306,12 @@ function NewTeam() {
           <label htmlFor="name" className="font-bold block mb-2">
             Nom de l'équipe
           </label>
-          <InputText id="name" name="name" placeholder="BrownFox Racing" />
+          <InputText
+            id="name"
+            name="name"
+            placeholder="BrownFox Racing"
+            required
+          />
 
           <label htmlFor="classement" className="font-bold block mb-2 mt-3">
             Classement de l'équipe
@@ -319,6 +324,7 @@ function NewTeam() {
             roundingMode="trunc"
             showButtons
             min={0}
+            required
           />
 
           <label htmlFor="membres" className="font-bold block mb-2 mt-3">

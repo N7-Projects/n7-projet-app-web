@@ -3,6 +3,7 @@ import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { z } from "zod/v4";
 
 function NewCircuit() {
   const [date, setDate] = useState<Date | null>();
@@ -33,6 +34,16 @@ function NewCircuit() {
     </>
   );
 
+  const Circuits = z.object({
+    name: z.string(),
+    place: z.string(),
+    creationDate: z.date(),
+    spectatorNumber: z.number(),
+    turnNumber: z.number(),
+    distance: z.number(),
+    bestTime: z.number(),
+  });
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -46,6 +57,13 @@ function NewCircuit() {
       distance: parseFloat(formData.get("distance") as string),
       bestTime: parseFloat(formData.get("bestTime") as string),
     };
+
+    const result = Circuits.safeParse(circuitData);
+    if (!result.success) {
+      alert(result.error); // ZodError instance
+    } else {
+      console.log("CIRCUIT VALIDATED");
+    }
 
     try {
       const response = await fetch("/api/circuits/new", {
@@ -85,12 +103,12 @@ function NewCircuit() {
           <label htmlFor="name" className="font-bold block mb-2">
             Nom du circuit
           </label>
-          <InputText id="name" name="name" placeholder="Paul Ricard" />
+          <InputText id="name" name="name" placeholder="Paul Ricard" required />
 
           <label htmlFor="place" className="font-bold block mb-2 mt-3">
             Pays du circuit
           </label>
-          <InputText id="place" name="place" placeholder="France" />
+          <InputText id="place" name="place" placeholder="France" required />
 
           <label htmlFor="creationDate" className="font-bold block mb-2 mt-3">
             Date de création
@@ -101,6 +119,7 @@ function NewCircuit() {
             dateFormat="yy-mm-dd"
             value={date}
             onChange={(e) => setDate(e.value)}
+            required
           />
 
           <label
@@ -114,6 +133,7 @@ function NewCircuit() {
             name="spectatorNumber"
             keyfilter="pint"
             placeholder="3000"
+            required
           />
 
           <label htmlFor="turnNumber" className="font-bold block mb-2 mt-3">
@@ -124,6 +144,7 @@ function NewCircuit() {
             name="turnNumber"
             keyfilter="pint"
             placeholder="15"
+            required
           />
 
           <label htmlFor="distance" className="font-bold block mb-2 mt-3">
@@ -134,6 +155,7 @@ function NewCircuit() {
             name="distance"
             keyfilter="pnum"
             placeholder="5.842"
+            required
           />
 
           <label htmlFor="bestTime" className="font-bold block mb-2 mt-3">
@@ -144,6 +166,7 @@ function NewCircuit() {
             name="bestTime"
             keyfilter="pnum"
             placeholder="99.99"
+            required
           />
         </form>
       </Card>

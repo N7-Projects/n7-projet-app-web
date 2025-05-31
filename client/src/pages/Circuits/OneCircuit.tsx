@@ -38,6 +38,10 @@ function OneCircuit() {
       } else {
         console.error("Le circuit n'existe pas");
 
+        queryClient.invalidateQueries({
+          queryKey: [{ circuits: "one-circuit", circuitId: circuitId }],
+        });
+
         navigate("/circuits");
       }
     },

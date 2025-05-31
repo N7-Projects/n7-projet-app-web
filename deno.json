@@ -24,7 +24,8 @@
     "react-dom": "https://esm.sh/react-dom@18.3.1",
     "react-router-dom": "npm:react-router-dom@^7.6.1",
     "sass": "npm:sass@^1.89.0",
-    "vite": "npm:vite@^6.3.5"
+    "vite": "npm:vite@^6.3.5",
+    "zod": "npm:zod@^3.25.42"
   },
   "compilerOptions": {
     "types": [

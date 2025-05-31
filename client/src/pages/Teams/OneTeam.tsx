@@ -2,18 +2,26 @@ import { Button, Card } from "primereact";
 import { useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { TeamType } from "../../types/teamType.ts";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import "./OneTeam.scss";
 import { useAuth } from "../../middleware/AuthProvider.tsx";
 import { isUserInTeam } from "../../middleware/ChecksMiddleware.tsx";
+import { confirmDialog } from "primereact";
+import { ConfirmDialog } from "primereact";
+import { Toast } from "primereact";
+import { useRef } from "react";
 
 function OneTeam() {
   const { teamId } = useParams();
 
   const auth = useAuth();
 
-  const _queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const toast = useRef(null);
+
+  const queryClient = useQueryClient();
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: [{ teams: "one-team", teamId: teamId }],
@@ -21,13 +29,21 @@ function OneTeam() {
       const route: string = `/api/teams/${teamId}`;
       const response = await fetch(route);
 
-      console.log("Team Getted ! ");
-      console.log(response.status);
-      const oneTeam = await response.json() as TeamType;
+      if (response.ok) {
+        console.log("Team Getted ! ");
+        console.log(response.status);
+        const oneTeam = await response.json() as TeamType;
 
-      console.log(oneTeam);
+        console.log(oneTeam);
 
-      return oneTeam;
+        return oneTeam;
+      } else {
+        console.error("L'équipe n'existe pas");
+        queryClient.invalidateQueries({
+          queryKey: [{ teams: "one-team", teamId: teamId }],
+        });
+        navigate("/teams");
+      }
     },
   });
 
@@ -40,6 +56,62 @@ function OneTeam() {
   }
 
   const racingTeam: TeamType = data;
+
+  const accept = () => {
+    toast.current.show({
+      severity: "info",
+      summary: "Confirmed",
+      detail: "Circuit supprimé",
+      life: 3000,
+    });
+  };
+
+  const reject = () => {
+    toast.current.show({
+      severity: "warn",
+      summary: "Rejected",
+      detail: "Circuit non supprimé",
+      life: 3000,
+    });
+  };
+
+  const handleSuppress = async () => {
+    try {
+      const response = await fetch(`/api/teams/${teamId}`, {
+        method: "DELETE",
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
+      });
+
+      if (response.ok) {
+        accept();
+        queryClient.invalidateQueries({
+          queryKey: [{ teams: "one-team", teamId: teamId }],
+        });
+        globalThis.location.href = "/teams";
+      } else {
+        alert("Failed to delete team.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while deleting the team ");
+    }
+  };
+
+  const suppress = () => {
+    confirmDialog({
+      message:
+        "Vous êtes sûr de vouloir supprimer cette équipe et ses informations ?",
+      header: "Confirmation de Suppression",
+      icon: "pi pi-info-circle",
+      defaultFocus: "reject",
+      acceptClassName: "p-button-danger",
+
+      accept: () => handleSuppress(),
+      reject,
+    });
+  };
 
   const header = (
     <img
@@ -65,6 +137,7 @@ function OneTeam() {
         severity="danger"
         icon="pi pi-eraser"
         style={{ marginLeft: "0.5em" }}
+        onClick={suppress}
       />
     </>
   );
@@ -94,6 +167,8 @@ function OneTeam() {
 
   return (
     <div className="one-team-card flex justify-content-center">
+      <Toast ref={toast} />
+      <ConfirmDialog />
       <Card
         title={racingTeam.nom}
         subTitle={`Classement : ${racingTeam.classement}`}

@@ -391,14 +391,23 @@ public class Facade {
     return racingTeamRepo.save(newRacingTeam);
   }
 
-    // @GetMapping(value = "/api/teams", params = "idMember")
-    // public Collection<RacingTeam> getMemberAllTeams(@RequestParam String
-    // idMember) {
-    // long id = Long.parseLong(idMember);
-    // Collection<RacingTeam> memberTeams = racingTeamRepo.getMemberTeams(id);
+    @DeleteMapping("/api/teams/{teamId}")
+    public void deleteTeam(@PathVariable String teamId) {
+        try {
+            long id = Long.parseLong(teamId);
+            RacingTeam r = racingTeamRepo.findById(id).get();
+            System.out.println(r.getIdRacingTeam());
+            racingTeamRepo.delete(r);
+        } catch (NumberFormatException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "L'id : " + teamId + " ne peut être transformé en Long.");
+        } catch (NoSuchElementException e) {
+            System.out.println("Pas de circuit d'id : " + teamId);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "La team d'id : + " + teamId + " n'existe pas.");
+        }
 
-    // return memberTeams;
-    // }
+    }
 
     @GetMapping("/api/register/homonyms/{name}/{firstName}")
     public Collection<Member> getFreeHomonyms(@PathVariable String name, @PathVariable String firstName) {

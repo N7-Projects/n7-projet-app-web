@@ -19,7 +19,8 @@
     "npm:react-router-dom@^7.6.1": "7.6.1_react@19.1.0_react-dom@19.1.0__react@19.1.0",
     "npm:sass@^1.89.0": "1.89.0",
     "npm:vite@*": "6.3.5_sass@1.89.0_picomatch@4.0.2",
-    "npm:vite@^6.3.5": "6.3.5_sass@1.89.0_picomatch@4.0.2"
+    "npm:vite@^6.3.5": "6.3.5_sass@1.89.0_picomatch@4.0.2",
+    "npm:zod@^3.25.42": "3.25.42"
   },
   "jsr": {
     "@std/assert@1.0.13": {
@@ -972,6 +973,9 @@
     },
     "yallist@3.1.1": {
       "integrity": "sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g=="
+    },
+    "zod@3.25.42": {
+      "integrity": "sha512-PcALTLskaucbeHc41tU/xfjfhcz8z0GdhhDcSgrCTmSazUuqnYqiXO63M0QUBVwpBlsLsNVn5qHSC5Dw3KZvaQ=="
     }
   },
   "redirects": {
@@ -1009,7 +1013,8 @@
       "npm:react-big-calendar@^1.18.0",
       "npm:react-router-dom@^7.6.1",
       "npm:sass@^1.89.0",
-      "npm:vite@^6.3.5"
+      "npm:vite@^6.3.5",
+      "npm:zod@^3.25.42"
     ]
   }
 }
