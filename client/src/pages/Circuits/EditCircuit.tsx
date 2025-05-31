@@ -70,10 +70,13 @@ function EditCircuit() {
         // Use Link if its not what do we want
       />
       <Button
-        label="Effacer"
-        severity="danger"
-        icon="pi pi-eraser"
+        label="Annuler"
+        severity="warning"
+        icon="pi pi-ban"
         style={{ marginLeft: "0.5em" }}
+        onClick={() => {
+          globalThis.location.href = `/circuits/${circuitId}`;
+        }}
       />
     </>
   );
@@ -138,6 +141,7 @@ function EditCircuit() {
             name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
 
           <label htmlFor="place" className="font-bold block mb-2 mt-3">
@@ -148,6 +152,7 @@ function EditCircuit() {
             name="place"
             value={place}
             onChange={(e) => setPlace(e.target.value)}
+            required
           />
 
           <label htmlFor="creationDate" className="font-bold block mb-2 mt-3">
@@ -159,6 +164,7 @@ function EditCircuit() {
             dateFormat="yy-mm-dd"
             value={date}
             onChange={(e) => setDate(e.value)}
+            required
           />
 
           <label
@@ -173,6 +179,7 @@ function EditCircuit() {
             keyfilter="pint"
             value={spectatorNumber}
             onChange={(e) => setSpectatorNumber(e.target.value)}
+            required
           />
 
           <label htmlFor="turnNumber" className="font-bold block mb-2 mt-3">
@@ -184,6 +191,7 @@ function EditCircuit() {
             keyfilter="pint"
             value={turnNumber}
             onChange={(e) => setTurnNumber(e.target.value)}
+            required
           />
 
           <label htmlFor="distance" className="font-bold block mb-2 mt-3">
@@ -195,6 +203,7 @@ function EditCircuit() {
             keyfilter="pnum"
             value={distance}
             onChange={(e) => setDistance(e.target.value)}
+            required
           />
 
           <label htmlFor="bestTime" className="font-bold block mb-2 mt-3">
@@ -206,6 +215,7 @@ function EditCircuit() {
             keyfilter="pnum"
             value={bestTime}
             onChange={(e) => setBestTime(e.target.value)}
+            required
           />
         </form>
       </Card>

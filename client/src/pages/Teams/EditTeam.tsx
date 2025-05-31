@@ -200,10 +200,13 @@ function EditTeam() {
         form="teamForm"
       />
       <Button
-        label="Effacer"
-        severity="danger"
-        icon="pi pi-eraser"
+        label="Annuler"
+        severity="warning"
+        icon="pi pi-ban"
         style={{ marginLeft: "0.5em" }}
+        onClick={() => {
+          globalThis.location.href = `/teams/${teamId}`;
+        }}
       />
     </>
   );
@@ -324,6 +327,7 @@ function EditTeam() {
             name="name"
             value={editName}
             onChange={(e) => setEditName(e.target.value ?? null)}
+            required
           />
 
           <label htmlFor="classement" className="font-bold block mb-2 mt-3">
@@ -338,6 +342,7 @@ function EditTeam() {
             min={0}
             value={editClassement}
             onValueChange={(e) => setEditClassement(e.value)}
+            required
           />
 
           <label htmlFor="membres" className="font-bold block mb-2 mt-3">
