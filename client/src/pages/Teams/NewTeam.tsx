@@ -1,7 +1,7 @@
 import { Button, Card } from "primereact";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TeamType } from "../../types/teamType.ts";
 import { useQueryClient } from "@tanstack/react-query";
@@ -42,6 +42,11 @@ function NewTeam() {
 
   const [selectedMembres, setSelectedMembres] = useState<MemberType[]>([]);
   const [selectedSponsors, setSelectedSponsors] = useState<SponsorType[]>([]);
+
+  // Ensure auth.user is always selected
+  useEffect(() => {
+    setSelectedMembres([auth.user]); // Ensure the user is selected initially
+  }, [auth.user]);
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: [{ membres: "all-membres" }],
@@ -258,12 +263,31 @@ function NewTeam() {
     return <h1>SHOULD NOT HAPPEN</h1>;
   }
 
+  if (auth && auth.user == null) {
+    return <h1>SHOULD NOT HAPPEN 2</h1>;
+  }
+
+  // Check to disable the row corresponding to auth.user
   const isSelectable = (member: MemberType) =>
-    member.firstName != auth.user?.firstName;
+    member.idMembre != auth.user?.idMembre;
 
   const isRowSelectable = (
     event,
   ) => (event.data ? isSelectable(event.data) : true);
+
+  // Ensure the user is always in the selection
+  const onSelectionChange = (e: { value: MemberType[] }) => {
+    const selection = [...e.value];
+    const isUserSelected = selection.some((m) =>
+      m.idMembre === auth.user.idMembre
+    );
+
+    if (!isUserSelected) {
+      selection.push(auth.user as MemberType); // Re-add user if removed
+    }
+
+    setSelectedMembres(selection);
+  };
 
   return (
     <div className="team-new-card flex justify-content-center">
@@ -300,15 +324,13 @@ function NewTeam() {
           <label htmlFor="membres" className="font-bold block mb-2 mt-3">
             Ajouter des membres
           </label>
-          <div className="card">
+          <div className="card" id="membres">
             <DataTable
               value={data.membres}
               selectionMode="multiple"
               rows={10}
               selection={selectedMembres}
-              onSelectionChange={(e: { value: MemberType[] }) => {
-                setSelectedMembres(e.value as MemberType[]);
-              }}
+              onSelectionChange={onSelectionChange}
               dataKey="idMembre"
               tableStyle={{ minWidth: "50rem" }}
               isDataSelectable={isRowSelectable}
@@ -343,7 +365,7 @@ function NewTeam() {
           <label htmlFor="sponsors" className="font-bold block mb-2 mt-3">
             Ajouter des sponsors
           </label>
-          <div className="card">
+          <div className="card" id="sponsors">
             <DataTable
               value={data.sponsors}
               selectionMode="multiple"
