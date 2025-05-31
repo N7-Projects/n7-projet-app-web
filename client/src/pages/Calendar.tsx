@@ -63,7 +63,7 @@ function Calendar() {
     };
   });
 
-  const eventStyleGetter = (event: any) => {
+  const eventStyleGetter = (event: EventType) => {
     const colors: Record<string, string> = {
       Race: "#f39c12",
       Vehicule: "#16a085",
