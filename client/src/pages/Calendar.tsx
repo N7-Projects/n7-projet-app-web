@@ -7,26 +7,49 @@ import { Temporal } from "@js-temporal/polyfill"; // L'objet Duration n'existe p
 import { Calendar as BigCalendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { useState } from "react";
+import { Button } from "primereact";
+import { Dialog } from "primereact";
+import { InputText } from "primereact";
+import { Column } from "primereact";
+import { DataTable } from "primereact";
+import { MemberType } from "../types/memberType.ts";
 
 const localizer = momentLocalizer(moment);
 
 function Calendar() {
+  const [visible, setVisible] = useState(false);
+  const [selectedMembres, setSelectedMembres] = useState<MemberType[]>([]);
+
   const { data, isLoading, isError, error } = useQuery<EventType[]>({
-    queryKey: ["events"],
+    queryKey: [{ members: "all-members", events: "all-events" }],
     queryFn: async () => {
-      const response = await fetch("/api/calendar");
-      if (!response.ok) {
-        throw new Error(`Failed to fetch events: ${response.statusText}`);
+      const routes = ["/api/calendar", "/api/members"];
+      const responseEvents = await fetch(routes[0]);
+      const responseMembers = await fetch(routes[1]);
+
+      if (!responseEvents.ok) {
+        throw new Error(`Failed to fetch events: ${responseEvents.statusText}`);
       }
-      const events = await response.json();
+      if (!responseMembers.ok) {
+        throw new Error(
+          `Failed to fetch members: ${responseMembers.statusText}`,
+        );
+      }
+
+      const events = await responseEvents.json();
+      const members = await responseMembers.json() as MemberType[];
       // Validation des données
       if (!Array.isArray(events)) {
         throw new Error("Invalid data format: Expected an array of events");
       }
 
-      return events;
+      console.log(events);
+      console.log(members);
+      return { events: events, membres: members };
     },
   });
+
   const getEndDate = (start: Date, duration: string): Date => {
     if (!duration) return start;
     try {
@@ -48,7 +71,7 @@ function Calendar() {
     );
   }
 
-  const events = data?.map((event) => {
+  const events = data?.events.map((event) => {
     const start = new Date(event.date);
     const end = getEndDate(start, event.duration);
 
@@ -86,6 +109,7 @@ function Calendar() {
       `Détails de l'événement:\n\nNom: ${event.name}\nType: ${event.type}`,
     );
   };
+
   const handleNavigate = (date: Date, view: string) => {
     console.log(`Navigated to date: ${date}, view: ${view}`);
   };
@@ -94,10 +118,92 @@ function Calendar() {
     console.log(`View changed to: ${view}`);
   };
 
+  const onSelectionChange = (e: { value: MemberType[] }) => {
+    const selection = [...e.value];
+    // const isUserSelected = selection.some((m) =>
+    //   m.idMembre === auth.user.idMembre
+    // );
+
+    // if (!isUserSelected) {
+    //   selection.push(auth.user as MemberType); // Re-add user if removed
+    // }
+
+    setSelectedMembres(selection);
+  };
+
   return (
     <>
       <section className="calendar">
-        <h1>Calendrier des Événements</h1>
+        <div className="card flex justify-content-center">
+          <Button
+            label="Créer un Meeting"
+            severity="help"
+            outlined
+            icon="pi pi-plus"
+            onClick={() => setVisible(true)}
+          />
+          <Dialog
+            header="Créer un nouvel événement"
+            visible={visible}
+            style={{ width: "50vw" }}
+            onHide={() => {
+              if (!visible) return;
+              setVisible(false);
+            }}
+          >
+            <div className="flex flex-column gap-3 mt-3">
+              <div className="flex flex-column gap-2">
+                <label htmlFor="titre" className="font-bold">Titre</label>
+                <InputText
+                  id="titre"
+                  placeholder="Entrez le prénom"
+                />
+              </div>
+
+              <div className="flex flex-column gap-2">
+                <label htmlFor="membres" className="font-bold block mb-2 mt-3">
+                  Ajouter des membres à l'événement
+                </label>
+                <div className="card" id="membres">
+                  <DataTable
+                    value={data.membres}
+                    selectionMode="multiple"
+                    rows={10}
+                    selection={selectedMembres}
+                    onSelectionChange={onSelectionChange}
+                    dataKey="idMembre"
+                    tableStyle={{ minWidth: "50rem" }}
+                  >
+                    <Column
+                      selectionMode="multiple"
+                      headerStyle={{ width: "3rem" }}
+                    >
+                    </Column>
+                    <Column field="firstName" header="Prénom"></Column>
+                    <Column field="name" header="Nom"></Column>
+                  </DataTable>
+
+                  <div className="flex justify-content-between align-items-center mb-4">
+                    <Button
+                      icon="pi pi-plus"
+                      severity="info"
+                      rounded
+                      outlined
+                      aria-label="Ajouter un membre"
+                      onClick={(e: { preventDefault: () => void }) => {
+                        e.preventDefault(); // Prevent form submission
+                        setShowAddMemberDialog(true);
+                      }}
+                      tooltip="Ajouter un nouveau membre"
+                      tooltipOptions={{ position: "top" }}
+                      type="button" // Explicitly specify it's not a submit button
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Dialog>
+        </div>
         <BigCalendar
           localizer={localizer}
           events={events || []}
