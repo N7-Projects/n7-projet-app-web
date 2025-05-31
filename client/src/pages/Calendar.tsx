@@ -27,6 +27,16 @@ function Calendar() {
       return events;
     },
   });
+  const getEndDate = (start: Date, duration: string): Date => {
+    if (!duration) return start;
+    try {
+      const dur = Temporal.Duration.from(duration);
+      const ms = dur.total({ unit: "millisecond" });
+      return new Date(start.getTime() + ms);
+    } catch (_) {
+      return start;
+    }
+  };
 
   if (isLoading) {
     return <h3>Loading...</h3>;
@@ -38,39 +48,34 @@ function Calendar() {
     );
   }
 
-  const events = data?.map((event) => ({
-    id: event.id,
-    title: event.name || "Événement",
-    start: new Date(event.creationDate),
+  const events = data?.map((event) => {
+    const start = new Date(event.date);
+    const end = getEndDate(start, event.duration);
 
-    // L'objet Temporal permet d'utiliser les méthodes de Duration de Java
+    return {
+      id: event.id,
+      title: `${event.type} - ${event.name}`,
+      name: event.name,
+      start,
+      end,
+      allDay: event.duration === "PT0S" || !event.duration,
+      type: event.type,
+    };
+  });
 
-    end: new Date(
-      event.duration
-        ? new Date(event.creationDate).getTime() + Number(
-          Temporal.Duration.from(event.duration).total({
-            unit: "millisecond",
-          }).toString(),
-        )
-        : new Date(event.creationDate).getTime(),
-    ),
-    allDay: Number(event.duration) === 0,
-    type: event.type || "Général",
-  }));
+  const eventStyleGetter = (event: any) => {
+    const colors: Record<string, string> = {
+      Race: "#f39c12",
+      Vehicule: "#16a085",
+      Circuit: "#2980b9",
+      Meeting: "#8e44ad",
+      Sponsoring: "#d35400",
+      Sponsor: "#7f8c8d",
+    };
 
-  const eventStyleGetter = (event: EventType) => {
-    if (event.allDay) {
-      return {
-        style: {
-          backgroundColor: "#ffcccb", // Light red for zero-duration events
-          color: "black",
-          border: "1px solid #ff0000",
-        },
-      };
-    }
     return {
       style: {
-        backgroundColor: "#3174ad", // Default blue for other events
+        backgroundColor: colors[event.type] || "#34495e",
         color: "white",
       },
     };
@@ -78,7 +83,7 @@ function Calendar() {
 
   const handleEventClick = (event: EventType) => {
     alert(
-      `Détails de l'événement:\n\nNom: ${event.name}\nType: ${event.type}\nLieu: ${event.location}`,
+      `Détails de l'événement:\n\nNom: ${event.name}\nType: ${event.type}`,
     );
   };
   const handleNavigate = (date: Date, view: string) => {

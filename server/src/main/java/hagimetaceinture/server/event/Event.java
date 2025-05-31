@@ -29,7 +29,7 @@ public abstract class Event {
     this.id = id;
   }
 
-  protected Date getDate() {
+  public Date getDate() {
     return date;
   }
 

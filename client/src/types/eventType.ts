@@ -1,11 +1,7 @@
-export type EventType = {
+export interface EventType {
   id: number;
   name: string;
-  date: Date;
-  duration: string;
   type: string;
-  location: string;
-  participantNumber: number;
-  creationDate: Date;
-  allDay?: boolean;
-};
+  date: string;
+  duration: string;
+}

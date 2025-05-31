@@ -4,8 +4,10 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -110,6 +112,7 @@ public class Facade {
     Vehicule vehicule = new Vehicule();
     vehicule.setLicensePlate("WW-999-WW");
     vehicule.setModel("Porsche");
+    vehicule.setFirstLicensePlate(Date.valueOf("2025-05-31"));
 
     // ajout d'un membre
     Member member = new Member();
@@ -207,8 +210,34 @@ public class Facade {
   // Calender CRUD
 
   @GetMapping("/api/calendar")
-  public Collection<Event> getCalendar() {
-    return eventRepository.findAll();
+  public List<Map<String, Object>> getAllEvents() {
+    List<Map<String, Object>> events = new ArrayList<>();
+
+    raceRepo.findAll().iterator()
+        .forEachRemaining((race -> events.add(mapEvent(race, "Race", race.getCircuit().getName()))));
+
+    circuitRepo.findAll().iterator()
+        .forEachRemaining(circuit -> events.add(mapEvent(circuit, "Circuit", circuit.getName())));
+    meetingRepo.findAll().iterator()
+        .forEachRemaining(meeting -> events.add(mapEvent(meeting, "Meeting", meeting.getTitle())));
+    sponsoringRepo.findAll().iterator()
+        .forEachRemaining(s -> events.add(mapEvent(s, "Sponsoring", s.getRacingTeam().getNom())));
+    sponsorRepo.findAll().iterator()
+        .forEachRemaining(sponsor -> events.add(mapEvent(sponsor, "Sponsor", sponsor.getName())));
+    vehiculeRepo.findAll().iterator()
+        .forEachRemaining(v -> events.add(mapEvent(v, "Vehicule", v.getModel())));
+
+    return events;
+  }
+
+  private Map<String, Object> mapEvent(Event event, String type, String name) {
+    Map<String, Object> map = new HashMap<>();
+    map.put("id", event.getId());
+    map.put("name", name);
+    map.put("type", type);
+    map.put("date", event.getDate());
+    map.put("duration", event.getDuration()); // make sure it's ISO-8601 format e.g. PT1H30M
+    return map;
   }
 
   @GetMapping("/api/calendar/{date}")
