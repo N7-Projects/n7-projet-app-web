@@ -92,10 +92,13 @@ function EditCircuit() {
       bestTime: parseFloat(formData.get("bestTime") as string),
     };
 
+    const token = localStorage.getItem("jwt");
+    if (!token) throw new Error("No token");
     try {
       const response = await fetch(`/api/circuits/${circuit.id}/edit`, {
         method: "PUT",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(circuitData),
