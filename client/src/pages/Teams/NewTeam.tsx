@@ -148,7 +148,7 @@ function NewTeam() {
 
         // Invalidate and refetch data to update the sponsors list
         queryClient.invalidateQueries({
-          queryKey: [{ membres: "all-membres" }],
+          queryKey: [{ membresAndSponsors: "all-membres-sponsors" }],
         });
       } else {
         alert("Échec de l'ajout du sponsor");
