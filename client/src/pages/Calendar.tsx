@@ -68,7 +68,13 @@ function Calendar() {
   };
 
   if (isLoading) {
-    return <h3>Loading...</h3>;
+    return (
+      <h3>
+        <i className="pi pi-spin pi-spinner">
+        </i>
+        Loading...
+      </h3>
+    );
   }
 
   if (isError) {
