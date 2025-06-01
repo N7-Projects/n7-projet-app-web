@@ -86,7 +86,7 @@ public class Facade {
     /**
      * Adds test circuits. TODO: Remove this code.
      */
-    @PostConstruct
+    // @PostConstruct
     public void populate() {
         // ajout d'un circuit
         Circuit circuit = new Circuit("Monza");

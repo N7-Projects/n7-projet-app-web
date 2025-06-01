@@ -2,6 +2,7 @@ package hagimetaceinture.server.member;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,6 +11,7 @@ import hagimetaceinture.server.racingteam.RacingTeam;
 import hagimetaceinture.server.vehicule.Vehicule;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +29,7 @@ public class Member {
 
     private String firstName;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("owner") // empêche l'affichage récursif de Vehicule.vowner (ne sérialize pas owner)
     private Collection<Vehicule> vehicules;
 
@@ -120,8 +122,18 @@ public class Member {
 
     @Override
     public String toString() {
+        String vehiculeImage = "[";
+        Iterator<Vehicule> vIterator = vehicules.iterator();
+        while (vIterator.hasNext()) {
+            Vehicule vehicule = vIterator.next();
+            vehiculeImage += vehicule.getLicensePlate();
+            if (vIterator.hasNext())
+                vehiculeImage += ", ";
+        }
+        vehiculeImage += "]";
+
         return "Membre [idMembre=" + getIdMembre() + ", firstname=" + firstName + ", name=" + name
-                + ", vehicules=" + getVehicules() + ", subscriber=" + subscriber + "] \n";
+                + ", vehicules=" + vehiculeImage + ", subscriber=" + subscriber + "] \n";
     }
 
 }
