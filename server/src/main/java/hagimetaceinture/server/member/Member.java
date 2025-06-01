@@ -3,8 +3,6 @@ package hagimetaceinture.server.member;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hibernate.annotations.ManyToAny;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

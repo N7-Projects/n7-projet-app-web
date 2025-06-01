@@ -49,7 +49,7 @@ function NewTeam() {
   }, [auth.user]);
 
   const { data, isPending, isError, error } = useQuery({
-    queryKey: [{ membres: "all-membres" }],
+    queryKey: [{ membresAndSponsors: "all-membres-sponsors" }],
     queryFn: async () => {
       const routes: string[] = ["/api/members", "/api/sponsors"];
       const responseMembres = await fetch(routes[0]);
