@@ -3,7 +3,7 @@ import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { z } from "zod/v4";
+// import { z } from "zod/v4";
 
 function NewCircuit() {
   const [date, setDate] = useState<Date | null>();
@@ -34,15 +34,15 @@ function NewCircuit() {
     </>
   );
 
-  const Circuits = z.object({
-    name: z.string(),
-    place: z.string(),
-    creationDate: z.date(),
-    spectatorNumber: z.number(),
-    turnNumber: z.number(),
-    distance: z.number(),
-    bestTime: z.number(),
-  });
+  //   const Circuits = z.object({
+  //     name: z.string(),
+  //     place: z.string(),
+  //     creationDate: z.date(),
+  //     spectatorNumber: z.number(),
+  //     turnNumber: z.number(),
+  //     distance: z.number(),
+  //     bestTime: z.number(),
+  //   });
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -58,12 +58,12 @@ function NewCircuit() {
       bestTime: parseFloat(formData.get("bestTime") as string),
     };
 
-    const result = Circuits.safeParse(circuitData);
-    if (!result.success) {
-      alert(result.error); // ZodError instance
-    } else {
-      console.log("CIRCUIT VALIDATED");
-    }
+    // const result = Circuits.safeParse(circuitData);
+    // if (!result.success) {
+    //   alert(result.error); // ZodError instance
+    // } else {
+    //   console.log("CIRCUIT VALIDATED");
+    // }
 
     try {
       const response = await fetch("/api/circuits/new", {

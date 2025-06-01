@@ -1,14 +1,15 @@
 import { MemberType } from "../types/memberType.ts";
+import { TeamType } from "../types/teamType.ts";
 
 const isUserInTeam = (
-  user: MemberType,
-  teamId: number | string,
+  userId: number | string,
+  team: TeamType,
 ): boolean => {
-  const id = Number(teamId);
+  const id = Number(userId);
 
   let ok = false;
-  user.teams.forEach((team) => {
-    if (team.idRacingTeam == id) {
+  team.membres.forEach((membre: MemberType) => {
+    if (membre.idMembre == id) {
       ok = !ok;
       return;
     }

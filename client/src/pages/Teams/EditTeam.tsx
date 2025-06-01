@@ -14,24 +14,12 @@ import { DataTable } from "primereact";
 import { Dialog } from "primereact";
 import { useAuth } from "../../middleware/AuthProvider.tsx";
 import { isUserInTeam } from "../../middleware/ChecksMiddleware.tsx";
-// import { useAuth } from "../../middleware/AuthProvider.tsx";
-// import { isUserInTeam } from "../../middleware/ChecksMiddleware.tsx";
 
 function EditTeam() {
   const { teamId } = useParams();
 
   const userAuthed = useAuth();
   const user = userAuthed?.user;
-  //   const userAuth = useAuth();
-
-  //   if (
-  //     !userAuth ||
-  //     !userAuth.user ||
-  //     (userAuth && teamId && userAuth.user &&
-  //       !isUserInTeam(userAuth.user, teamId))
-  //   ) {
-  //     return <Navigate to="/" />;
-  //   }
 
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddSponsorDialog, setShowAddSponsorDialog] = useState(false);
@@ -297,7 +285,7 @@ function EditTeam() {
     return <Navigate to="/login" />;
   }
 
-  if (user && !isUserInTeam(user, Number(teamId))) {
+  if (user && !isUserInTeam(user.idMembre, data.team)) {
     alert("You must be part of the team to edit it !");
     return <Navigate to="/teams" />;
   }
