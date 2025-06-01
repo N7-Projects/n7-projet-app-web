@@ -192,7 +192,7 @@ public class Facade {
 
     }
 
-    @PostMapping("api/circuits/new")
+    @PostMapping("/api/circuits/new")
     public Circuit newCircuit(@RequestBody Circuit newCircuit) {
         System.out.println("Added new circuit " + newCircuit);
         return circuitRepo.save(newCircuit);
@@ -257,6 +257,22 @@ public class Facade {
         q.setParameter("date", dateD);
         return q.getResultList();
     }
+
+    @PostMapping("/api/calendar/meeting")
+    public void createMeeting(@RequestBody Meeting meeting,
+            @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.startsWith("Bearer ") ? authorizationHeader.substring(7)
+                : authorizationHeader;
+
+        if (!jwtService.isTokenValid(token)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Token invalide");
+        }
+        System.out.println("Add Meeting");
+        meetingRepo.save(meeting);
+    }
+
+    // Forum CRUD
 
     @GetMapping("/api/forum")
     public Collection<ForumTopic> getForumTopics() {

@@ -13,13 +13,19 @@ import { Dialog } from "primereact";
 import { InputText } from "primereact";
 import { Column } from "primereact";
 import { DataTable } from "primereact";
+import { Calendar as PrimeCalendar } from "primereact/calendar";
+
 import { MemberType } from "../types/memberType.ts";
 
 const localizer = momentLocalizer(moment);
 
 function Calendar() {
   const [visible, setVisible] = useState(false);
+
+  const [titre, setTitre] = useState("");
   const [selectedMembres, setSelectedMembres] = useState<MemberType[]>([]);
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date | null>();
 
   const { data, isLoading, isError, error } = useQuery<EventType[]>({
     queryKey: [{ members: "all-members", events: "all-events" }],
@@ -37,15 +43,15 @@ function Calendar() {
         );
       }
 
-      const events = await responseEvents.json();
+      const events = await responseEvents.json() as EventType[];
       const members = await responseMembers.json() as MemberType[];
       // Validation des données
       if (!Array.isArray(events)) {
         throw new Error("Invalid data format: Expected an array of events");
       }
 
-      console.log(events);
-      console.log(members);
+      //   console.log(events);
+      //   console.log(members);
       return { events: events, membres: members };
     },
   });
@@ -71,7 +77,10 @@ function Calendar() {
     );
   }
 
-  const events = data?.events.map((event) => {
+  const dictMemsEvts = data as { events: EventType[]; membres: MemberType[] };
+  const eventsOut = dictMemsEvts.events;
+
+  const events = eventsOut.map((event) => {
     const start = new Date(event.date);
     const end = getEndDate(start, event.duration);
 
@@ -131,6 +140,66 @@ function Calendar() {
     setSelectedMembres(selection);
   };
 
+  const handleSubmit = async () => {
+    if (!titre || !startDate) {
+      alert("Remplissez titre et date de début");
+      return;
+    }
+
+    const meetingData = {
+      title: titre,
+      guests: selectedMembres,
+      meetingDate: startDate.toISOString(),
+      duration: startDate.toISOString() === endDate?.toISOString()
+        ? "PT0S"
+        : `PT${(endDate - startDate) / (1000 * 3600)}H`,
+    };
+
+    console.log(meetingData);
+
+    const token = localStorage.getItem("jwt");
+    if (!token) throw new Error("No token in creation meeting");
+
+    try {
+      const response = await fetch("/api/calendar/meeting", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(meetingData),
+      });
+
+      if (response.ok) {
+        alert("Meeting successfully created !");
+        globalThis.location.reload();
+      } else {
+        alert("Failed to create meeting.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while creating the meeting.");
+    }
+  };
+
+  const createMeetingFooter = (
+    <>
+      <Button
+        label="Annuler"
+        icon="pi pi-times"
+        severity="danger"
+        onClick={() => setVisible(false)}
+        className="p-button-text"
+      />
+      <Button
+        label="Ajouter"
+        type="submit"
+        icon="pi pi-check"
+        onClick={handleSubmit}
+      />
+    </>
+  );
+
   return (
     <>
       <section className="calendar">
@@ -145,7 +214,9 @@ function Calendar() {
           <Dialog
             header="Créer un nouvel événement"
             visible={visible}
-            style={{ width: "50vw" }}
+            footer={createMeetingFooter}
+            style={{ width: "70vw" }}
+            contentStyle={{ overflow: "visible" }}
             onHide={() => {
               if (!visible) return;
               setVisible(false);
@@ -156,17 +227,57 @@ function Calendar() {
                 <label htmlFor="titre" className="font-bold">Titre</label>
                 <InputText
                   id="titre"
-                  placeholder="Entrez le prénom"
+                  placeholder="Entrez le titre du meeting"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setTitre(e.target.value);
+                  }}
+                  required
                 />
               </div>
 
               <div className="flex flex-column gap-2">
-                <label htmlFor="membres" className="font-bold block mb-2 mt-3">
+                <label
+                  htmlFor="creationDate"
+                  className="font-bold block mb-2 mt-3"
+                >
+                  Date de début
+                </label>
+                <PrimeCalendar
+                  id="creationDate"
+                  name="creationDate"
+                  dateFormat="yy-mm-dd"
+                  appendTo="self"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.value)}
+                  required
+                />
+
+                <label
+                  htmlFor="duration"
+                  className="font-bold block mb-2 mt-3"
+                >
+                  Date de fin
+                </label>
+                <PrimeCalendar
+                  id="duration"
+                  name="duration"
+                  dateFormat="yy-mm-dd"
+                  appendTo="self"
+                  value={endDate}
+                  minDate={startDate}
+                  onChange={(e) => setEndDate(e.value)}
+                />
+
+                <label
+                  htmlFor="membres"
+                  className="font-bold block mb-2 mt-3"
+                >
                   Ajouter des membres à l'événement
                 </label>
+
                 <div className="card" id="membres">
                   <DataTable
-                    value={data.membres}
+                    value={dictMemsEvts.membres}
                     selectionMode="multiple"
                     rows={10}
                     selection={selectedMembres}
@@ -182,28 +293,12 @@ function Calendar() {
                     <Column field="firstName" header="Prénom"></Column>
                     <Column field="name" header="Nom"></Column>
                   </DataTable>
-
-                  <div className="flex justify-content-between align-items-center mb-4">
-                    <Button
-                      icon="pi pi-plus"
-                      severity="info"
-                      rounded
-                      outlined
-                      aria-label="Ajouter un membre"
-                      onClick={(e: { preventDefault: () => void }) => {
-                        e.preventDefault(); // Prevent form submission
-                        setShowAddMemberDialog(true);
-                      }}
-                      tooltip="Ajouter un nouveau membre"
-                      tooltipOptions={{ position: "top" }}
-                      type="button" // Explicitly specify it's not a submit button
-                    />
-                  </div>
                 </div>
               </div>
             </div>
           </Dialog>
         </div>
+
         <BigCalendar
           localizer={localizer}
           events={events || []}
