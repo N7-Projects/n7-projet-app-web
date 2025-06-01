@@ -162,9 +162,10 @@ function OneTeam() {
     </>
   );
 
-  const footer = auth && auth.user && teamId && isUserInTeam(auth.user, teamId)
-    ? footerEnabled
-    : footerDisabled;
+  const footer =
+    auth && auth.user && teamId && isUserInTeam(auth.user.idMembre, racingTeam)
+      ? footerEnabled
+      : footerDisabled;
 
   return (
     <div className="one-team-card flex justify-content-center">
