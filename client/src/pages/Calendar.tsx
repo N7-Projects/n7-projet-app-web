@@ -146,11 +146,13 @@ function Calendar() {
       return;
     }
 
+    console.log(startDate.toISOString() === endDate?.toISOString());
+
     const meetingData = {
       title: titre,
       guests: selectedMembres,
       meetingDate: startDate.toISOString(),
-      duration: startDate.toISOString() === endDate?.toISOString()
+      duration: !endDate || startDate.toISOString() === endDate?.toISOString()
         ? "PT0S"
         : `PT${(endDate - startDate) / (1000 * 3600)}H`,
     };
