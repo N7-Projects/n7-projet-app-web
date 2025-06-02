@@ -1,15 +1,26 @@
 import "./Home.scss";
 import { Fieldset } from "primereact/fieldset";
+import { useQuery } from "@tanstack/react-query";
+import { CircuitCard } from "../components/circuit/CircuitCard";
+import { CircuitType } from "../types/circuitType";
 
-// Should be the page for displaying basic info of the association
 function Home() {
+  const { data: circuits, isPending, isError, error } = useQuery({
+    queryKey: ["circuits"],
+    queryFn: async () => {
+      const response = await fetch("/api/circuits");
+      if (!response.ok) {
+        throw new Error("Erreur lors de la récupération des circuits");
+      }
+      return (await response.json()) as CircuitType[];
+    },
+  });
+
   return (
     <>
       <main>
         <div className="flex justify-content-center flex-column align-items-center">
-          <h1 className="hagi-title lg:text-8xl">
-            HAGI MET TA CEINTURE
-          </h1>
+          <h1 className="hagi-title lg:text-8xl">HAGI MET TA CEINTURE</h1>
 
           <div className="flex flex-column">
             <Fieldset
@@ -17,14 +28,19 @@ function Home() {
               toggleable
               className="flex justify-content-center mb-3"
             >
-              <h2
-                className="m-0 cursor-pointer"
-                onClick={() => {
-                  globalThis.location.href = "/circuits";
-                }}
-              >
-                Pour afficher tous les circuits
-              </h2>
+              {isPending && (
+                <h3>
+                  <i className="pi pi-spin pi-spinner"></i> Chargement...
+                </h3>
+              )}
+              {isError && <h3>{error.message}</h3>}
+              {!isPending && circuits && (
+                <section className="grid">
+                  {circuits.map((circuit: CircuitType) => (
+                    <CircuitCard key={circuit.id} {...circuit} />
+                  ))}
+                </section>
+              )}
             </Fieldset>
             <Fieldset
               legend="Equipes"

@@ -12,3 +12,10 @@ main {
 .hagi-title {
   color: index.$clr-background;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
