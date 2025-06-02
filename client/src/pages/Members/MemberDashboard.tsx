@@ -49,7 +49,13 @@ function MemberDashboard() {
     enabled: !!memberId && !connectedMemberQuery.isPending,
   });
   if (memberQuery.isPending || connectedMemberQuery.isPending) {
-    return <h3>Chargement...</h3>;
+    return (
+      <h3>
+        <i className="pi pi-spin pi-spinner">
+        </i>
+        Chargement...
+      </h3>
+    );
   }
 
   if (memberQuery.isError) {

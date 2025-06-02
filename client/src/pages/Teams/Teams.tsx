@@ -25,7 +25,13 @@ function Equipes() {
   });
 
   if (isPending) {
-    return <h3>Pending...</h3>;
+    return (
+      <h3>
+        <i className="pi pi-spin pi-spinner">
+        </i>
+        Pending...
+      </h3>
+    );
   }
 
   if (isError) {
