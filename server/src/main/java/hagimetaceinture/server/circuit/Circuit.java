@@ -20,6 +20,10 @@ public class Circuit extends Event {
 
     private int spectatorNumber;
 
+    private String imageUrl;
+
+    private String description;
+
     public Circuit() {
     }
 
@@ -88,6 +92,22 @@ public class Circuit extends Event {
 
     public void setCreationDate(Date date) {
         setDate(date);
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

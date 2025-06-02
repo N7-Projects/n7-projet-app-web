@@ -6,7 +6,7 @@ function CircuitCard(circuit: CircuitType) {
   const header = (
     <img
       alt="Card"
-      src="/usercard.png"
+      src={circuit.imageUrl || "/usercard.png"} // Utilise l'image du circuit ou une image par défaut
     />
   );
   const footer = (
@@ -39,10 +39,7 @@ function CircuitCard(circuit: CircuitType) {
         className="md:w-25rem"
       >
         <p className="m-0">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore
-          sed consequuntur error repudiandae numquam deserunt quisquam repellat
-          libero asperiores earum nam nobis, culpa ratione quam perferendis
-          esse, cupiditate neque quas!
+          {circuit.description}
         </p>
       </Card>
     </div>
