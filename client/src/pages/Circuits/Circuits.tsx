@@ -20,7 +20,7 @@ function Circuits() {
       console.log(response.status);
       const allCircuits = await response.json() as CircuitType[];
 
-      console.log(allCircuits[0].name);
+      console.log(allCircuits[0]);
 
       return allCircuits;
     },
