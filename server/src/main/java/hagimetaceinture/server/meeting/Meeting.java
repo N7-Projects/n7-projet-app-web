@@ -5,6 +5,7 @@ import java.util.Collection;
 import hagimetaceinture.server.event.Event;
 import hagimetaceinture.server.member.Member;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,7 +21,7 @@ public class Meeting extends Event {
     private String title;
 
     /** Les membres conviés à la réunion. */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Member> guests;
 
     public Meeting() {

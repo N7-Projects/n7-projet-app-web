@@ -17,3 +17,7 @@ back:
 [working-directory : 'server']
 test-back:
     mvn test
+
+[working-directory : 'db']
+db:
+    sh ./start.sh 
