@@ -12,9 +12,6 @@ dist
 dist-ssr
 *.local
 
-# Base de Donnees
-db/
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -29,3 +26,27 @@ db/
 client/.vite
 .direnv/
 /cov
+
+# DB
+# Ignore raw SQL dumps
+db/db.sql
+
+# Ignore HSQLDB runtime and build data
+db/hsqldb/bin/
+db/hsqldb/build/
+db/hsqldb/data/
+db/hsqldb/testrun/
+
+# Ignore documentation or samples if not needed
+db/hsqldb/doc/
+db/hsqldb/doc-src/
+db/hsqldb/sample/
+db/hsqldb/stylesheets/
+db/hsqldb/integration/
+
+# Ignore database runtime files
+db/mydb.lck
+db/mydb.log
+db/mydb.properties
+db/mydb.script
+db/mydb.tmp/

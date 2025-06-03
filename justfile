@@ -18,6 +18,6 @@ back:
 test-back:
     mvn test
 
-
+[working-directory : 'db']
 db:
-    cd db && ./start.sh 
+    sh ./start.sh 
