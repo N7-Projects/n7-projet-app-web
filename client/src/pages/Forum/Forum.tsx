@@ -18,7 +18,7 @@ function Forum() {
       console.log(response.status);
       const allForum = await response.json() as forumTopicType[];
 
-      console.log(allForum[0].title);
+      console.log(allForum[0]);
 
       return allForum;
     },
