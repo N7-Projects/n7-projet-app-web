@@ -16,6 +16,7 @@ import { DataTable } from "primereact";
 import { Calendar as PrimeCalendar } from "primereact/calendar";
 
 import { MemberType } from "../types/memberType.ts";
+import { useAuth } from "../middleware/AuthProvider.tsx";
 
 const localizer = momentLocalizer(moment);
 
@@ -26,6 +27,8 @@ function Calendar() {
   const [selectedMembres, setSelectedMembres] = useState<MemberType[]>([]);
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date | null>();
+
+  const auth = useAuth();
 
   const { data, isLoading, isError, error } = useQuery<EventType[]>({
     queryKey: [{ members: "all-members", events: "all-events" }],
@@ -217,6 +220,7 @@ function Calendar() {
             severity="help"
             outlined
             icon="pi pi-plus"
+            disabled={!auth?.token || auth?.token == ""}
             onClick={() => setVisible(true)}
           />
           <Dialog
