@@ -90,6 +90,9 @@ public class Facade {
     public void populate() {
         // ajout d'un circuit
         Circuit circuit = new Circuit("Monza");
+        circuit.setImageUrl("/Circuit_Monza.svg");
+        circuit.setDescription("Le circuit de Monza est un circuit de course automobile situé en Italie, "
+                + "connu pour sa vitesse et son histoire riche dans le monde de la Formule 1.");
         circuit.setCreationDate(Date.valueOf("2025-04-20"));
         circuit.setDistance(5.793);
         circuit.setTurnNumber(11);

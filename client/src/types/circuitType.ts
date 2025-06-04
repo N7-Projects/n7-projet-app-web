@@ -9,4 +9,6 @@ export type CircuitType = {
   place: string;
   spectatorNumber: number;
   creationDate: Date;
+  imageUrl?: string;
+  description: string;
 };
