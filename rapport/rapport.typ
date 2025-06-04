@@ -23,11 +23,25 @@
 )
 
 
-= Projet Application Web
+= Hagimettaceinture
 
-== Architecture
+Le projet est une application de centralisation de circuits et d'équipes pour passionnés de courses, on peut y retrouvé un ensemble de circuits renseignés par les usagers du site. Les usagers peuvent discuter au travers d'un forum de discussion et se tenir informé en s'inscrivant à une newsletter (non opérationnel).
+Les utilisateurs peuvent aussi communiquer les prochains événements au travers d'un calendrier et de la création de Meeting (courses, réunion, ...)
 
-=== Les entités
+
+= Architecture
+== Strucutre
+
+Le projet se sépare en deux parties :
+ - Dossier `client` : pour les sources du front-end (réalisé en React sur un server Deno)
+ - Dossier `server` : le backend avec les entités et controller
+ - Dossier db : la base de données du server
+
+Pour lancer le projet il suffit d'installer #link("https://docs.deno.com/runtime/getting_started/installation/")[Deno] et #link("https://github.com/casey/just")[Just] pour lancer le server frontend et back.
+
+Utiliser les commandes : `just db`, `just back` et `just db` dans des terminals différents pour lancer les différentes parties du projet.
+
+== Entités
 
 
 / Race: #underline[id], _circuit_, date, _vehiculeType_, participants
@@ -51,85 +65,29 @@ Voici les classes qui en héritent :
 
 Ceci nous permet de traiter toutes ces entités comme des évènements pour les afficher sur notre page calendrier.
 
-#figure(caption: [Exemple de deux créations de circuits apparaissant sur le calendrier])[#image(
-    "./calendar_view.png",
-  )]
+= Blog de l'avancement
 
-=== Relations
+== 21 mars 2025
+  - Thème de l'application : gestionnaire de sport automobile
+  - Création des entités 
+  - Création des premières routes importantes (back et front)
 
-- Race
-  - ManyToOne: Circuit
-  - OneToOne: VehiculeType
-  - ManyToMany: Member
-- Member
-  - OneToMany: Vehicule
-  - ManyToMany: RacingTeam
-- Vehicule
-  - ManyToOne: VehiculeType
-  - ManyToOne: Member
-- Meeting
-  - OneToMany: Member
-- Sponsoring
-  - OneToOne: RacingTeam
-  - OneToOne: Sponsor
-- RacingTeam
-  - ManyToMany: Member
-  - ManyToMany: Sponsor
+== 1 avril 2025
+  - UI du site web et design
+  - Création des premières requêtes pour récupérer les circuits et équipe
+  - Implémentation de l'entité `Event` pour créer différents informations sur le calendrier
+  - Ajout du forum et la possibilité de poster des nouveaux topics et message dans ces topics
 
-Les entités du systèmes sont fortement liées entre-elles, par exemple, une _Course_ (`Race`) est organisée sur un _Circuit_ donné et concerne un certain _Type de Véhicule_, elle rassemble plusieurs _Membres_ participants, ce qui justifie l’utilisation d’une relation *ManyToMany* entre `Race` et `Member`.
-Chaque _Membre_ peut posséder plusieurs _Véhicules_ (*OneToMany*), et chaque véhicule appartient à un seul membre (*ManyToOne*).
-Les _Écuries_ (`RacingTeam`) regroupent plusieurs membres et sont soutenues par plusieurs sponsors, d’où des relations *ManyToMany* avec `Member` et `Sponsor`.
-Les _Sponsorisations_ (`Sponsoring`) relient précisément une écurie et un sponsor sur une période donnée (*OneToOne*).
-Enfin, les _Réunions_ (`Meeting`) peuvent inviter plusieurs membres (*OneToMany*).
-Ces relations permettent de modéliser précisément les interactions et les dépendances entre les différents acteurs et objets du domaine.
+== 20 mai 2025
+  - Ajout de l'authentification avec JWT
+  - Edition des équipes et circuits
+  - Ajout (et création) de membres et sponsors lors de l'ajout d'une nouvelle équipe
+  - Liaison d'un membre avec son nom prénom lors de la création d'un compte s'il avait était ajouté à une équipe
+  - Dashboard d'un membre pour afficher ses informations
 
-#figure(caption: [Exemple d'une équipe qui possède deux membres et deux sponsors])[#image(
-    "./team_view.png",
-  )]
-
-=== Les routes
-
-/ Index:
-  - `GET` _`/`_ : route index
-/ Circuits:
-  - `GET` _`/api/circuits`_ : afficher tous les circuits
-  - `GET` _`/api/circuits/{circuitId}`_ : afficher les informations du circuit `circuitId`
-  - `PUT` _`/api/circuits/{circuitId}/edit`_ : modifier le circuit `circuitId`
-  - `POST` _`/api/circuits/new`_ : créer un nouveau circuit
-  - `DELETE` _`/api/circuits/{circuitId}`_ : supprimer le circuit `circuitId`
-
-/ Calendar:
-  - `GET` _`/api/calendar`_ : afficher tous les événements
-  - `GET` _`/api/calendar/{date}`_ : afficher les événements à une date donnée
-
-/ Forum:
-  - `GET` _`/api/forum`_ : afficher tous les sujets du forum
-  - `GET` _`/api/forum/{idForumTopic}`_ : afficher tous les messages du sujet `idForumTopic`
-  - `GET` _`/api/forum/{idForumTopic}/consult`_ : afficher le titre du sujet `idForumTopic`
-  - `POST` _`/api/forum/{idForumTopic}/post`_ : publier un message dans le sujet `idForumTopic`
-  - `POST` _`/api/forum/post`_ : créer un nouveau sujet de forum
-
-/ Teams:
-  - `GET` _`/api/teams`_ : afficher toutes les équipes
-  - `GET` _`/api/teams/{teamId}`_ : afficher les informations de l’équipe `teamId`
-  - `PUT` _`/api/teams/{teamId}/edit`_: modifier l’équipe `teamId`
-  - `POST` _`/api/teams/new`_  : créer une nouvelle équipe
-  - `DELETE` _`/api/teams/{teamId}`_ : supprimer l'équipe `teamId`
-
-/ Members:
-  - `GET` _`/api/members`_ : afficher tous les membres
-  - `GET` _`/api/members/{memberId}`_ : afficher les informations du membre `memberId`
-  - `POST` _`/api/members/new`_ : créer un nouveau membre
-
-/ Inscription/connexion:
-  - `GET` _`/api/register/homonyms/{name}/{firstName}`_ : vérifier les homonymes libres
-  - `POST` _`/api/register`_ : enregistrer un nouveau membre
-  - `POST` _`/api/login`_ : se connecter via email et mot de passe
-  - `GET` _`/api/connected`_ : vérifier l’état de connexion via le token JWT
-
-/ Vehicules:
-  - `GET` _`/api/vehicules`_ : récupérer tous les véhicules
-
-/ Sponsors:
-  - `GET` _`/api/sponsors`_ : récupérer tous les sponsors
-  - `POST` _`/api/sponsors/new`_ : créer un nouveau sponsor
+== 25 mai 2025
+  - Ajout de l'autorisation : 
+    - Circuit : création et édition uniquement si l'utilisateur est connecté
+    - Equipe : création d'un équipe si l'utilisateur et connecté, modification uniquement si le membre fait partie de l'équipe
+    - Forum : ajout de topic et message si l'utilisateur est connecté
+    - Calendar : ajout d'événements si l'utilisateur et connecté
