@@ -449,6 +449,7 @@ function EditTeam() {
         header="Ajouter un nouveau sponsor"
         visible={showAddSponsorDialog}
         style={{ width: "30rem" }}
+        contentStyle={{ overflow: "visible" }}
         footer={addSponsorDialogFooter}
         onHide={() => setShowAddSponsorDialog(false)}
       >
@@ -473,6 +474,7 @@ function EditTeam() {
               onChange={(e) => setNewSponsorSponsorshipStart(e.value as Date)}
               dateFormat="dd/mm/yy"
               placeholder="Sélectionnez une date de début"
+              appendTo="self"
               showIcon
             />
             <Calendar
@@ -481,6 +483,7 @@ function EditTeam() {
               onChange={(e) => setNewSponsorSponsorshipEnd(e.value as Date)}
               dateFormat="dd/mm/yy"
               placeholder="Sélectionnez une date de fin"
+              appendTo="self"
               showIcon
             />
           </div>
@@ -511,6 +514,7 @@ function EditTeam() {
               onChange={(e) => setNewSponsorFundationDate(e.value as Date)}
               dateFormat="dd/mm/yy"
               placeholder="Sélectionnez une date"
+              appendTo="self"
               showIcon
             />
           </div>
