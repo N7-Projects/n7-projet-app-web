@@ -118,8 +118,9 @@ function NewTeam() {
 
     setIsSubmitting(true);
 
-    const newSponsorDuration = newSponsorSponsorshipEnd?.getTime() -
-      newSponsorSponsorshipStart?.getTime();
+    const newSponsorDuration = `PT${
+      (newSponsorSponsorshipEnd - newSponsorSponsorshipStart) / (1000 * 3600)
+    }H`;
     try {
       const response = await fetch("/api/sponsors/new", {
         method: "POST",
