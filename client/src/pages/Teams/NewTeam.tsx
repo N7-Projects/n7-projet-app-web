@@ -471,7 +471,7 @@ function NewTeam() {
               showIcon
             />
             <Calendar
-              id="sponsorFundationDate"
+              id="sponsorFundationDateEnd"
               value={newSponsorSponsorshipEnd}
               onChange={(e) => setNewSponsorSponsorshipEnd(e.value as Date)}
               dateFormat="dd/mm/yy"
