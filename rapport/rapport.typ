@@ -33,13 +33,13 @@ Les utilisateurs peuvent aussi communiquer les prochains événements au travers
 == Strucutre
 
 Le projet se sépare en deux parties :
- - Dossier `client` : pour les sources du front-end (réalisé en React sur un server Deno)
+ - Dossier `client` : pour les sources du front-end (réalisé en React sur un serveur Deno)
  - Dossier `server` : le backend avec les entités et controller
- - Dossier db : la base de données du server
+ - Dossier db : la base de données du serveur
 
-Pour lancer le projet il suffit d'installer #link("https://docs.deno.com/runtime/getting_started/installation/")[Deno] et #link("https://github.com/casey/just")[Just] pour lancer le server frontend et back.
+Pour lancer le projet il suffit d'installer #link("https://docs.deno.com/runtime/getting_started/installation/")[Deno] et #link("https://github.com/casey/just")[Just] pour lancer le serveur frontend et back.
 
-Utiliser les commandes : `just db`, `just back` et `just db` dans des terminals différents pour lancer les différentes parties du projet.
+Utiliser les commandes : `just db`, `just back` et `just front` dans des terminals différents pour lancer les différentes parties du projet.
 
 
 Les différents routes du backend sont listées dans le Readme de ce projet (avec leur route et méthode)
