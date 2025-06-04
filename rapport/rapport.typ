@@ -41,6 +41,8 @@ Pour lancer le projet il suffit d'installer #link("https://docs.deno.com/runtime
 
 Utiliser les commandes : `just db`, `just back` et `just db` dans des terminals différents pour lancer les différentes parties du projet.
 
+
+Les différents routes du backend sont listées dans le Readme de ce projet (avec leur route et méthode)
 == Entités
 
 
