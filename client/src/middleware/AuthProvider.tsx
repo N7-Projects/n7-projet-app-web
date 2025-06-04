@@ -125,6 +125,8 @@ const AuthProvider = ({ children }) => {
         hasId: true,
       };
 
+      console.log(registrationData);
+
       await registerUser(registrationData);
     } catch (error) {
       console.error("Error associating with homonym:", error);

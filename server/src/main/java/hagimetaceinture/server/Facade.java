@@ -440,7 +440,16 @@ public class Facade {
     }
 
     @PostMapping("/api/teams/new")
-    public RacingTeam newteam(@RequestBody RacingTeam newRacingTeam) {
+    public RacingTeam newTeam(@RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody RacingTeam newRacingTeam) {
+        String token = authorizationHeader.startsWith("Bearer ") ? authorizationHeader.substring(7)
+                : authorizationHeader;
+
+        if (!jwtService.isTokenValid(token)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Token invalide");
+        }
+
         System.out.println("Added new team " + newRacingTeam);
         return racingTeamRepo.save(newRacingTeam);
     }
@@ -505,7 +514,8 @@ public class Facade {
         String hashed = passwordEncoder.encode(request.getPassword());
         member.setEmail(request.getEmail());
         member.setPassword(hashed);
-        member.setVehicules(new ArrayList<Vehicule>());
+        member.getVehicules().clear();
+        member.getVehicules().addAll(new ArrayList<Vehicule>());
         member.setTeams(new ArrayList<RacingTeam>());
 
         memberRepo.save(member);
@@ -578,8 +588,12 @@ public class Facade {
 
     @PostMapping("/api/members/new")
     public Member newMember(@RequestBody Member member) {
+        if (member.getVehicules() == null) {
+            member.setVehicules(new ArrayList<Vehicule>());
+        }
         System.out.println("Added new member" + member);
         return memberRepo.save(member);
+
     }
 
     // Vehicule CRUD

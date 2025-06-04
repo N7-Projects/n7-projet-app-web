@@ -61,9 +61,6 @@ function NewTeam() {
       const allMembres = await responseMembres.json() as MemberType[];
       const allSponsors = await responseSponsors.json() as SponsorType[];
 
-      console.log(allMembres[0].name);
-      console.log(allSponsors[0].name);
-
       return { membres: allMembres, sponsors: allSponsors };
     },
   });
@@ -94,9 +91,9 @@ function NewTeam() {
         setNewMemberName("");
         setShowAddMemberDialog(false);
 
-        // Invalidate and refetch data to update the members list
+        // Invalidate and refetch data to update the sponsors list
         queryClient.invalidateQueries({
-          queryKey: [{ membres: "all-membres" }],
+          queryKey: [{ membresAndSponsors: "all-membres-sponsors" }],
         });
       } else {
         alert("Échec de l'ajout du membre");
@@ -121,8 +118,9 @@ function NewTeam() {
 
     setIsSubmitting(true);
 
-    const newSponsorDuration = newSponsorSponsorshipEnd?.getTime() -
-      newSponsorSponsorshipStart?.getTime();
+    const newSponsorDuration = `PT${
+      (newSponsorSponsorshipEnd - newSponsorSponsorshipStart) / (1000 * 3600)
+    }H`;
     try {
       const response = await fetch("/api/sponsors/new", {
         method: "POST",
@@ -199,6 +197,7 @@ function NewTeam() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.token}`,
         },
         body: JSON.stringify(teamData),
       });
@@ -472,7 +471,7 @@ function NewTeam() {
               showIcon
             />
             <Calendar
-              id="sponsorFundationDate"
+              id="sponsorFundationDateEnd"
               value={newSponsorSponsorshipEnd}
               onChange={(e) => setNewSponsorSponsorshipEnd(e.value as Date)}
               dateFormat="dd/mm/yy"
