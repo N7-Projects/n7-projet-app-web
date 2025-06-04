@@ -27,4 +27,7 @@ public class LoginInformation {
         this.token = token;
     }
 
+    public LoginInformation() {
+    };
+
 }
